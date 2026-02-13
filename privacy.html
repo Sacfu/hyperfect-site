@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Nexus by Hyperfect LLC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #09090b;
+            --bg-secondary: #0f0f12;
+            --bg-tertiary: #1a1a1f;
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-tertiary: #71717a;
+            --accent: #2563eb;
+            --border: rgba(255, 255, 255, 0.08);
+            --glass-bg: rgba(255, 255, 255, 0.04);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        body.light-mode {
+            --bg-primary: #fafafa;
+            --bg-secondary: #f4f4f5;
+            --bg-tertiary: #e4e4e7;
+            --text-primary: #18181b;
+            --text-secondary: #52525b;
+            --text-tertiary: #71717a;
+            --border: rgba(0, 0, 0, 0.08);
+            --glass-bg: rgba(0, 0, 0, 0.03);
+            --glass-border: rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(var(--bg-primary-rgb, 9), var(--bg-primary-rgb, 9), var(--bg-primary-rgb, 11), 0.8);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+        }
+
+        body.light-mode nav {
+            background: rgba(250, 250, 250, 0.8);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.125rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo:hover {
+            opacity: 0.8;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.25rem;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--glass-bg);
+            color: var(--accent);
+        }
+
+        .cta-button {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.65rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cta-button:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 4rem 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+
+        .effective-date {
+            color: var(--text-tertiary);
+            font-size: 0.95rem;
+            margin-bottom: 3rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        ul, ol {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.75rem;
+        }
+
+        strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .section {
+            margin-bottom: 2.5rem;
+        }
+
+        .highlight {
+            background-color: var(--glass-bg);
+            border-left: 3px solid var(--accent);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .footer-section li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-section a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--accent);
+        }
+
+        .footer-brand {
+            margin-bottom: 1rem;
+        }
+
+        .footer-brand .logo {
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-brand p {
+            font-size: 0.85rem;
+            margin-bottom: 0;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border);
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-copyright {
+            color: var(--text-tertiary);
+            font-size: 0.85rem;
+        }
+
+        .footer-disclaimer {
+            color: var(--text-tertiary);
+            font-size: 0.75rem;
+            max-width: 600px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            main {
+                padding: 2rem 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.25rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            main {
+                padding: 1.5rem 1rem;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <span style="color: var(--text-primary)">Hyperfect</span><span style="color: var(--text-tertiary); margin: 0 0.35rem; font-weight: 400">/</span><span style="color: var(--accent); font-weight: 600">Nexus</span>
+            </a>
+            <div class="nav-links">
+                <a href="/#features">Features</a>
+                <a href="/#how-it-works">How It Works</a>
+                <a href="/#faq">FAQ</a>
+                <a href="/#contact">Contact</a>
+            </div>
+            <div class="nav-controls">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☀️</button>
+                <a href="/#waitlist" class="cta-button">Join Waitlist</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <h1>Privacy Policy</h1>
+        <p class="effective-date">Effective Date: February 2026</p>
+
+        <!-- Introduction -->
+        <section class="section">
+            <h2>Introduction and Commitment to Privacy</h2>
+            <p>At Hyperfect LLC, we are committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our desktop application, <strong>Nexus</strong>, and our website.</p>
+            <p>Nexus is fundamentally designed with privacy as a core feature. Unlike typical SaaS applications, Nexus runs locally on your computer. Your job application data, resumes, and personal information never leave your device unless you explicitly choose to send them to external services.</p>
+            <div class="highlight">
+                <strong>Privacy-First Design:</strong> Nexus is a privacy-first application. Your data lives on your machine. We don't access, store, or process your job application data, resumes, or any personal information related to your job search on our servers.
+            </div>
+        </section>
+
+        <!-- Information We Collect -->
+        <section class="section">
+            <h2>Information We Collect</h2>
+            <p>We collect minimal information necessary to operate and improve Nexus. Here's what we collect:</p>
+
+            <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem;">License Activation Data</h3>
+            <p>When you activate a Nexus license, we collect:</p>
+            <ul>
+                <li>Email address associated with your license</li>
+                <li>License key (hashed for security)</li>
+                <li>Activation timestamp</li>
+                <li>Device identifier (for license validation)</li>
+            </ul>
+            <p>This data is used solely for license verification and activation purposes.</p>
+
+            <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem;">Website Form Submissions</h3>
+            <p>When you submit forms on our website (waitlist, contact form, etc.), we collect:</p>
+            <ul>
+                <li>Name</li>
+                <li>Email address</li>
+                <li>Any message content you provide</li>
+                <li>Submission timestamp</li>
+            </ul>
+
+            <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem;">Anonymized Application Telemetry</h3>
+            <p>To improve Nexus, we collect anonymized usage statistics:</p>
+            <ul>
+                <li>Application version</li>
+                <li>Operating system type and version</li>
+                <li>Feature usage frequency (anonymized, no personal data)</li>
+                <li>Application crash reports (without personal data)</li>
+                <li>Session duration</li>
+                <li>Performance metrics</li>
+            </ul>
+            <p><strong>Important:</strong> Telemetry data is completely anonymized. We never collect information about specific job applications, companies, resumes, or any data related to your job search activities.</p>
+
+            <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem;">Website Cookies and Local Storage</h3>
+            <p>Our website uses:</p>
+            <ul>
+                <li><strong>Theme preference:</strong> A cookie to remember your light/dark mode preference</li>
+                <li><strong>Analytics:</strong> Optional analytics to understand site usage (Plausible or similar privacy-respecting service)</li>
+            </ul>
+            <p>You can disable cookies in your browser settings at any time.</p>
+        </section>
+
+        <!-- Information We Do NOT Collect -->
+        <section class="section">
+            <h2>Information We Do NOT Collect</h2>
+            <p>Nexus is designed to keep your data private. We explicitly do NOT collect, store, or have access to:</p>
+            <ul>
+                <li><strong>Resumes:</strong> Your resume files remain on your device</li>
+                <li><strong>Job Application Data:</strong> Customizations, job descriptions, and application history stay local</li>
+                <li><strong>Passwords:</strong> Any passwords, authentication tokens, or credentials</li>
+                <li><strong>Browsing History:</strong> Websites you visit or your browsing activity</li>
+                <li><strong>Personal Data:</strong> Social security numbers, financial information, or sensitive personal data</li>
+                <li><strong>Email Content:</strong> Email addresses of recruiters or hiring managers (beyond what you explicitly enter)</li>
+                <li><strong>Job Applications:</strong> Records of jobs you've applied to or applications you've customized</li>
+            </ul>
+            <div class="highlight">
+                <strong>Your Data = Your Responsibility:</strong> All data related to your job search remains entirely on your device. We have no ability to access it.
+            </div>
+        </section>
+
+        <!-- Local Data Storage -->
+        <section class="section">
+            <h2>How Your Data Is Stored Locally</h2>
+            <p>Nexus stores all application data locally on your computer in encrypted format:</p>
+            <ul>
+                <li><strong>Database Location:</strong> Data is stored in your user directory (platform-specific)</li>
+                <li><strong>Encryption:</strong> Sensitive data is encrypted at rest</li>
+                <li><strong>No Cloud Backup:</strong> We do not automatically back up your data to cloud servers</li>
+                <li><strong>Your Control:</strong> You have full control over your data and can export, backup, or delete it at any time</li>
+            </ul>
+            <p>You are responsible for backing up your data. We recommend regularly exporting your application configurations and data.</p>
+        </section>
+
+        <!-- Third-Party AI Services -->
+        <section class="section">
+            <h2>Use of Third-Party AI Services</h2>
+            <p>Nexus offers optional integration with external Large Language Models (LLMs) such as OpenAI's GPT models. <strong>This is entirely optional and user-controlled.</strong></p>
+            <p>If you choose to use external AI services:</p>
+            <ul>
+                <li>You must provide your own API key to those services</li>
+                <li>Job descriptions or application data you send to these services are subject to their privacy policies</li>
+                <li>We are not responsible for how third-party AI providers handle your data</li>
+                <li>By using external AI services, you are agreeing to their terms and privacy policies</li>
+            </ul>
+            <p><strong>Default Behavior:</strong> By default, Nexus operates entirely locally without connecting to external AI services. External AI integrations are opt-in features.</p>
+            <p>We recommend reviewing the privacy policies of any external AI service before using it:</p>
+            <ul>
+                <li><a href="https://openai.com/privacy" target="_blank" style="color: var(--accent); text-decoration: none;">OpenAI Privacy Policy</a></li>
+                <li><a href="https://www.anthropic.com/privacy" target="_blank" style="color: var(--accent); text-decoration: none;">Anthropic Privacy Policy</a></li>
+            </ul>
+        </section>
+
+        <!-- License Verification -->
+        <section class="section">
+            <h2>License Verification</h2>
+            <p>Nexus performs periodic license verification to ensure your license remains valid:</p>
+            <ul>
+                <li><strong>Frequency:</strong> License checks occur periodically (typically daily)</li>
+                <li><strong>Data Sent:</strong> Only a hashed version of your license key and device identifier are sent</li>
+                <li><strong>Server Response:</strong> We only respond with license validity status</li>
+                <li><strong>No Personal Data:</strong> No information about your applications, resumes, or job search is included in verification requests</li>
+            </ul>
+            <p>License verification is necessary to prevent unauthorized use and protect your investment in Nexus.</p>
+        </section>
+
+        <!-- Website Data Collection -->
+        <section class="section">
+            <h2>Website Data Collection</h2>
+            <p>Our website uses minimal tracking and respects your privacy:</p>
+
+            <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem;">Cookies</h3>
+            <ul>
+                <li><strong>Theme Preference:</strong> Remembers your light/dark mode selection</li>
+                <li><strong>Essential:</strong> Minimal first-party cookies for functionality</li>
+            </ul>
+
+            <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem;">Analytics</h3>
+            <p>We use privacy-respecting analytics to understand how visitors use our site. Analytics data is anonymized and does not track individual users across sites.</p>
+
+            <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem;">Third-Party Tools</h3>
+            <p>We use the following services on our website:</p>
+            <ul>
+                <li><strong>Stripe & LemonSqueezy:</strong> Payment processors (see their privacy policies for details)</li>
+                <li><strong>Plausible/Fathom Analytics:</strong> Privacy-respecting website analytics</li>
+            </ul>
+        </section>
+
+        <!-- How We Use Information -->
+        <section class="section">
+            <h2>How We Use Information</h2>
+            <p>We use the information we collect for the following purposes:</p>
+            <ul>
+                <li><strong>License Management:</strong> Activating, validating, and managing your Nexus license</li>
+                <li><strong>Customer Support:</strong> Responding to your inquiries and providing support</li>
+                <li><strong>Product Improvement:</strong> Understanding usage patterns to improve Nexus features</li>
+                <li><strong>Security:</strong> Detecting and preventing fraud or unauthorized access</li>
+                <li><strong>Legal Compliance:</strong> Meeting legal obligations and enforcing our terms</li>
+                <li><strong>Communication:</strong> Sending important updates about your license or security issues</li>
+            </ul>
+            <p>We will never sell your information to third parties or use it for marketing without your consent.</p>
+        </section>
+
+        <!-- Data Sharing -->
+        <section class="section">
+            <h2>Data Sharing</h2>
+            <p><strong>We do not sell your data.</strong> We only share information in the following circumstances:</p>
+
+            <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem;">Payment Processors</h3>
+            <p>When you purchase a Nexus license, your payment information is processed through:</p>
+            <ul>
+                <li><strong>Stripe</strong> - For credit card transactions</li>
+                <li><strong>LemonSqueezy</strong> - For alternative payment methods</li>
+            </ul>
+            <p>We share only the minimum necessary information (email, transaction amount) with these processors to complete your purchase. See their privacy policies for details on how they handle your data.</p>
+
+            <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem;">Legal Requirements</h3>
+            <p>We may disclose your information if required by law, such as in response to:</p>
+            <ul>
+                <li>Court orders or legal process</li>
+                <li>Government or regulatory requests</li>
+                <li>To protect our legal rights or the rights of others</li>
+            </ul>
+
+            <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem;">Service Providers</h3>
+            <p>We may share anonymized data with service providers who help us operate Nexus:</p>
+            <ul>
+                <li>Hosting providers</li>
+                <li>Analytics providers</li>
+                <li>Email service providers (for support communications)</li>
+            </ul>
+            <p>All service providers are bound by strict confidentiality agreements.</p>
+        </section>
+
+        <!-- Data Security -->
+        <section class="section">
+            <h2>Data Security</h2>
+            <p>We implement industry-standard security measures to protect your information:</p>
+            <ul>
+                <li><strong>Encryption:</strong> Data in transit is encrypted using TLS/SSL</li>
+                <li><strong>Local Encryption:</strong> Sensitive data stored locally in Nexus is encrypted</li>
+                <li><strong>Secure Storage:</strong> Server-side data is stored securely with access controls</li>
+                <li><strong>Access Controls:</strong> Only authorized personnel have access to your information</li>
+                <li><strong>Regular Updates:</strong> We keep our systems updated with security patches</li>
+            </ul>
+            <p><strong>Important Limitation:</strong> While we implement strong security measures, no system is completely secure. We cannot guarantee absolute security of your information.</p>
+        </section>
+
+        <!-- Children's Privacy -->
+        <section class="section">
+            <h2>Children's Privacy</h2>
+            <p>Nexus is not directed to children under the age of 13. We do not knowingly collect information from children under 13. If we become aware that we have collected information from a child under 13, we will take steps to delete such information promptly.</p>
+            <p>Parents or guardians who believe their child has provided information to us should contact us immediately.</p>
+        </section>
+
+        <!-- Your Rights -->
+        <section class="section">
+            <h2>Your Rights</h2>
+            <p>Depending on your location, you may have the following rights:</p>
+
+            <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem;">Right to Access</h3>
+            <p>You have the right to request what information we hold about you and how it's used.</p>
+
+            <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem;">Right to Deletion</h3>
+            <p>You can request that we delete your personal information, subject to certain exceptions (e.g., legal obligations).</p>
+
+            <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem;">Right to Correction</h3>
+            <p>You have the right to correct inaccurate information about yourself.</p>
+
+            <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem;">Right to Opt-Out</h3>
+            <p>You can opt out of non-essential data collection and communications.</p>
+
+            <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem;">Right to Data Portability</h3>
+            <p>You can request your data in a portable format.</p>
+
+            <p style="margin-top: 1.5rem;">To exercise any of these rights, please contact us at <strong>Hyperfecllc@gmail.com</strong> with details of your request. We will respond within 30 days.</p>
+        </section>
+
+        <!-- Changes to Privacy Policy -->
+        <section class="section">
+            <h2>Changes to This Privacy Policy</h2>
+            <p>We may update this Privacy Policy periodically to reflect changes in our practices, technology, legal requirements, or other factors. When we make material changes, we will notify you by:</p>
+            <ul>
+                <li>Updating the "Effective Date" at the top of this policy</li>
+                <li>Sending an email notification to users with registered accounts (if applicable)</li>
+                <li>Displaying a prominent notice on our website</li>
+            </ul>
+            <p>Your continued use of Nexus after changes are posted constitutes your acceptance of the updated Privacy Policy.</p>
+        </section>
+
+        <!-- Contact Information -->
+        <section class="section">
+            <h2>Contact Information</h2>
+            <p>If you have questions about this Privacy Policy, concerns about your privacy, or wish to exercise your rights, please contact us:</p>
+            <div class="highlight">
+                <strong>Hyperfect LLC</strong><br>
+                Email: <a href="mailto:Hyperfecllc@gmail.com" style="color: var(--accent); text-decoration: none;">Hyperfecllc@gmail.com</a><br><br>
+                <strong>Product:</strong> Nexus - AI-Powered Job Application Automation
+            </div>
+            <p>We'll do our best to respond to your request within 10 business days.</p>
+        </section>
+
+        <!-- Closing -->
+        <section class="section">
+            <p style="margin-top: 3rem; color: var(--text-tertiary); font-size: 0.9rem;">
+                This Privacy Policy was last updated in February 2026. Thank you for trusting Hyperfect LLC with your privacy. We're committed to keeping your data secure and maintaining the privacy-first principles that Nexus was built on.
+            </p>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-brand">
+                        <a href="/" class="logo" style="margin-bottom: 0.5rem; display: inline-block;">
+                            <span style="color: var(--text-primary)">Hyperfect</span><span style="color: var(--text-tertiary); margin: 0 0.35rem; font-weight: 400">/</span><span style="color: var(--accent); font-weight: 600">Nexus</span>
+                        </a>
+                        <p>Nexus is a product of Hyperfect LLC</p>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Product</h3>
+                    <ul>
+                        <li><a href="/#features">Features</a></li>
+                        <li><a href="/#how-it-works">How It Works</a></li>
+                        <li><a href="/#faq">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="/">About</a></li>
+                        <li><a href="/#contact">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="/terms.html">Terms of Service</a></li>
+                        <li><a href="/privacy.html">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p class="footer-copyright">© 2026 Hyperfect LLC. All rights reserved.</p>
+                <p class="footer-disclaimer">Nexus is not affiliated with LinkedIn, OpenAI, or any other third-party service. All trademarks and logos are the property of their respective owners.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Theme Toggle Script -->
+    <script>
+        // Initialize theme from localStorage
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        const htmlElement = document.documentElement;
+        const themeToggle = document.getElementById('themeToggle');
+
+        // Apply saved theme
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+            themeToggle.textContent = '🌙';
+        } else {
+            document.body.classList.remove('light-mode');
+            themeToggle.textContent = '☀️';
+        }
+
+        // Theme toggle listener
+        themeToggle.addEventListener('click', () => {
+            const isLightMode = document.body.classList.toggle('light-mode');
+            const theme = isLightMode ? 'light' : 'dark';
+            localStorage.setItem('theme', theme);
+            themeToggle.textContent = isLightMode ? '🌙' : '☀️';
+        });
+    </script>
+</body>
+</html>

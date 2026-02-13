@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - Hyperfect / Nexus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #09090b;
+            --bg-secondary: #0f0f12;
+            --bg-tertiary: #1a1a1f;
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-tertiary: #71717a;
+            --accent: #2563eb;
+            --border: rgba(255, 255, 255, 0.08);
+            --glass-bg: rgba(255, 255, 255, 0.04);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        body.light-mode {
+            --bg-primary: #fafafa;
+            --bg-secondary: #f4f4f5;
+            --bg-tertiary: #e4e4e7;
+            --text-primary: #18181b;
+            --text-secondary: #52525b;
+            --text-tertiary: #71717a;
+            --border: rgba(0, 0, 0, 0.08);
+            --glass-bg: rgba(0, 0, 0, 0.03);
+            --glass-border: rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(var(--bg-primary-rgb, 9, 9, 11), 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            text-decoration: none;
+            font-size: 1.125rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            transition: color 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            color: var(--accent);
+        }
+
+        .btn-waitlist {
+            padding: 0.5rem 1.25rem;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .btn-waitlist:hover {
+            opacity: 0.9;
+        }
+
+        /* Main Content */
+        main {
+            min-height: calc(100vh - 200px);
+            padding: 4rem 2rem;
+            background-color: var(--bg-primary);
+        }
+
+        .content-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .last-updated {
+            color: var(--text-tertiary);
+            font-size: 0.95rem;
+            margin-bottom: 3rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            margin-top: 2.5rem;
+        }
+
+        p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        li {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 0.75rem;
+            margin-left: 1.5rem;
+        }
+
+        ul {
+            margin-bottom: 1.5rem;
+        }
+
+        ol {
+            margin-bottom: 1.5rem;
+            margin-left: 1.5rem;
+        }
+
+        ol li {
+            margin-left: 0;
+        }
+
+        strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        em {
+            color: var(--text-secondary);
+        }
+
+        .section-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 2.5rem 0;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            margin: 0;
+        }
+
+        .footer-section li {
+            margin: 0;
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-section a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--accent);
+        }
+
+        .footer-brand {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .footer-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 2rem 0;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .footer-bottom p {
+            margin: 0.5rem 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem;
+            }
+
+            .nav-container {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                order: 3;
+                width: 100%;
+            }
+
+            .nav-links a {
+                font-size: 0.9rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.25rem;
+            }
+
+            main {
+                padding: 2rem 1rem;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <span style="color: var(--text-primary)">Hyperfect</span>
+                <span style="color: var(--text-tertiary); margin: 0 0.35rem; font-weight: 400">/</span>
+                <span style="color: var(--accent); font-weight: 600">Nexus</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/">Features</a></li>
+                <li><a href="/">How It Works</a></li>
+                <li><a href="/">FAQ</a></li>
+                <li><a href="/">Contact</a></li>
+            </ul>
+            <div class="nav-right">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <span id="themeIcon">🌙</span>
+                </button>
+                <a href="/#waitlist" class="btn-waitlist">Join Waitlist</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <div class="content-wrapper">
+            <h1>Terms of Service</h1>
+            <p class="last-updated">Last updated: February 2026</p>
+
+            <div class="section-divider"></div>
+
+            <section>
+                <h2>1. Acceptance of Terms</h2>
+                <p>
+                    By accessing, downloading, installing, and using Nexus (the "Software" or "Service"), a desktop application developed and provided by Hyperfect LLC ("Company," "we," "us," or "our"), you agree to be bound by these Terms of Service (the "Terms"). If you do not agree to these Terms, you must not use the Software. These Terms constitute a legally binding agreement between you and Hyperfect LLC.
+                </p>
+            </section>
+
+            <section>
+                <h2>2. Description of Service</h2>
+                <p>
+                    Nexus is an AI-powered desktop application designed to automate job application workflows. The Software utilizes artificial intelligence and machine learning technologies to assist users in preparing, customizing, and submitting job applications to various online job platforms and career websites. Nexus is provided as a tool to enhance efficiency and streamline the job application process, subject to the terms and conditions outlined herein.
+                </p>
+                <p>
+                    The Software operates as a client-side desktop application and integrates with third-party job platforms including but not limited to LinkedIn, Indeed, Glassdoor, and other employment websites. Your use of Nexus is subject to compliance with the terms of service and usage policies of all third-party platforms you access through or with the assistance of the Software.
+                </p>
+            </section>
+
+            <section>
+                <h2>3. Account, License, and Activation</h2>
+                <p>
+                    <strong>License Grant.</strong> Hyperfect LLC grants you a limited, non-exclusive, non-transferable, revocable license to install and use the Software on your personal computer(s) for personal, non-commercial purposes, subject to these Terms. This license does not include the right to sublicense, modify, translate, reverse engineer, decompile, disassemble, or create derivative works based on the Software.
+                </p>
+                <p>
+                    <strong>Activation and Activation Keys.</strong> The Software may require activation via a unique activation key or account credentials to enable full functionality. You agree to use only your own activation key and credentials and not to share, distribute, or use activation keys belonging to others. Hyperfect LLC reserves the right to deactivate or revoke access to the Software at any time for violation of these Terms or unauthorized use.
+                </p>
+                <p>
+                    <strong>Beta Program and Pricing.</strong> Nexus is currently available in a closed beta program at no charge. During the beta period, the Software may have limited features, contain bugs, or be subject to changes without notice. Hyperfect LLC reserves the right to introduce paid subscription tiers upon the Software's official launch. Beta users will receive advance notice of any pricing changes and may be offered preferential pricing or early-access benefits at Hyperfect LLC's discretion.
+                </p>
+                <p>
+                    <strong>Account Registration.</strong> You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You agree to provide accurate, current, and complete information during account registration and to promptly update any information that becomes inaccurate. You are solely responsible for unauthorized access to your account.
+                </p>
+            </section>
+
+            <section>
+                <h2>4. User Responsibilities</h2>
+                <p>
+                    You agree to use Nexus in compliance with all applicable laws and regulations, including all labor laws, data protection laws, and the terms of service of third-party platforms you access through the Software. You are solely responsible for:
+                </p>
+                <ul>
+                    <li>Ensuring your use of the Software complies with the terms of service of all third-party job platforms (LinkedIn, Indeed, Glassdoor, etc.)</li>
+                    <li>Maintaining accurate and truthful information in all job applications submitted through the Software</li>
+                    <li>Not impersonating others or providing false information in any application</li>
+                    <li>Obtaining all necessary permissions and consents required to use your personal information and credentials</li>
+                    <li>Complying with all applicable laws regarding privacy, data protection, and employment practices</li>
+                    <li>Monitoring your account activity and reporting any unauthorized access immediately</li>
+                    <li>Backing up your own data and recognizing that you use the Software at your own risk</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>5. Acceptable Use Policy</h2>
+                <p>
+                    You agree not to use Nexus in any manner that violates the terms of service of third-party platforms, infringes intellectual property rights, or constitutes abuse or misuse of the Software. Specifically, you agree not to:
+                </p>
+                <ul>
+                    <li>Engage in excessive automation that violates the terms of job platforms or creates server load beyond normal use</li>
+                    <li>Submit false, misleading, or fraudulent information in job applications</li>
+                    <li>Use the Software to circumvent security measures or restrictions imposed by third-party platforms</li>
+                    <li>Attempt to gain unauthorized access to the Software's code, servers, or systems</li>
+                    <li>Reverse engineer, decompile, or otherwise attempt to derive the source code of the Software</li>
+                    <li>Use the Software for spam, harassment, or any illegal purpose</li>
+                    <li>Interfere with or disrupt the normal operation of the Software or its related systems</li>
+                    <li>Share your activation keys or account credentials with others</li>
+                    <li>Redistribute, resell, or rent the Software or any component thereof</li>
+                    <li>Use the Software to develop competing products or services</li>
+                </ul>
+                <p>
+                    Hyperfect LLC reserves the right to suspend or terminate your access to the Software immediately upon discovery of any violation of this Acceptable Use Policy.
+                </p>
+            </section>
+
+            <section>
+                <h2>6. Intellectual Property Rights</h2>
+                <p>
+                    <strong>Ownership.</strong> The Software and all associated documentation, including but not limited to code, algorithms, design, graphics, user interface elements, and branding materials, are the exclusive property of Hyperfect LLC and are protected by copyright and other applicable intellectual property laws. The names "Hyperfect" and "Nexus" are unregistered trademarks of Hyperfect LLC. No registered trademarks or patents are claimed at this time. You do not acquire any ownership rights to the Software, only the limited license rights granted herein.
+                </p>
+                <p>
+                    <strong>User Content.</strong> You retain all rights to any content you create, upload, or submit through your use of Nexus ("User Content"), including your resumes, cover letters, and application data. Nexus processes your content locally on your device. Hyperfect LLC does not collect, store, or access your User Content on our servers. Your data stays on your machine.
+                </p>
+            </section>
+
+            <section>
+                <h2>7. Privacy and Data Protection</h2>
+                <p>
+                    Your use of Nexus is also governed by our separate Privacy Policy, which is incorporated into these Terms by reference. The Privacy Policy describes how we collect, use, protect, and share your personal information. Please review the Privacy Policy carefully before using the Software. By using Nexus, you consent to the data practices described in the Privacy Policy, including the collection and processing of personal information necessary to provide the Service.
+                </p>
+                <p>
+                    You acknowledge that the Software may access credentials, personal information, and data from third-party platforms. You are responsible for ensuring that such access complies with applicable privacy laws and the terms of those third-party services.
+                </p>
+            </section>
+
+            <section>
+                <h2>8. Disclaimers and No Warranties</h2>
+                <p>
+                    <strong>No Guarantee of Results.</strong> Hyperfect LLC makes no representations or warranties regarding the outcome of your use of Nexus. Job placement, interview offers, and employment opportunities are not guaranteed and depend on numerous factors beyond the control of the Software, including employer preferences, qualifications, market conditions, and economic factors. Results vary widely based on individual circumstances, skills, experience, and market demand.
+                </p>
+                <p>
+                    <strong>Disclaimer of Warranties.</strong> THE SOFTWARE IS PROVIDED ON AN "AS-IS" AND "AS-AVAILABLE" BASIS. HYPERFECT LLC DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, AND TITLE. HYPERFECT LLC DOES NOT WARRANT THAT THE SOFTWARE WILL BE UNINTERRUPTED, ERROR-FREE, SECURE, OR FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS.
+                </p>
+                <p>
+                    <strong>Third-Party Integrations.</strong> The Software integrates with third-party platforms. Hyperfect LLC is not responsible for the availability, security, functionality, or content of third-party services. Your use of third-party platforms is governed by their respective terms of service and privacy policies, which are beyond Hyperfect LLC's control.
+                </p>
+                <p>
+                    <strong>No Professional Advice.</strong> Nexus is not a substitute for professional career counseling, legal advice, or employment guidance. You should consult with qualified professionals for personalized advice regarding your career and job search strategy.
+                </p>
+            </section>
+
+            <section>
+                <h2>9. Limitation of Liability</h2>
+                <p>
+                    <strong>Maximum Liability.</strong> TO THE MAXIMUM EXTENT PERMITTED BY LAW, HYPERFECT LLC'S TOTAL LIABILITY FOR ANY CLAIMS ARISING OUT OF OR RELATED TO THESE TERMS OR THE SOFTWARE SHALL NOT EXCEED THE TOTAL AMOUNT YOU HAVE PAID TO HYPERFECT LLC WITHIN THE TWELVE (12) MONTHS IMMEDIATELY PRECEDING THE EVENT GIVING RISE TO LIABILITY.
+                </p>
+                <p>
+                    <strong>Exclusion of Damages.</strong> IN NO EVENT SHALL HYPERFECT LLC BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING BUT NOT LIMITED TO DAMAGES FOR LOST PROFITS, LOST REVENUE, LOST DATA, BUSINESS INTERRUPTION, OR ANY OTHER PECUNIARY LOSS, EVEN IF HYPERFECT LLC HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+                </p>
+                <p>
+                    <strong>Applicable Limitations.</strong> Some jurisdictions do not allow the exclusion or limitation of incidental or consequential damages, so some of the above limitations may not apply to you. In such cases, Hyperfect LLC's liability shall be limited to the maximum extent permitted by applicable law.
+                </p>
+            </section>
+
+            <section>
+                <h2>10. Modifications to Terms and Service</h2>
+                <p>
+                    Hyperfect LLC reserves the right to modify, update, or revise these Terms at any time, with or without notice. Changes will be effective immediately upon posting to the Nexus website or within the Software. Your continued use of the Software following any modifications constitutes your acceptance of the revised Terms. We recommend reviewing these Terms periodically to stay informed of any changes.
+                </p>
+                <p>
+                    Hyperfect LLC also reserves the right to modify, suspend, or discontinue the Software or any features thereof at any time. We will endeavor to provide notice of material changes, but Hyperfect LLC is not obligated to do so. Your continued use of the Software is at your own risk, and Hyperfect LLC is not liable for any modifications or discontinuation of the Service.
+                </p>
+            </section>
+
+            <section>
+                <h2>11. Termination of Access</h2>
+                <p>
+                    <strong>Termination by You.</strong> You may terminate your use of Nexus at any time by ceasing to use the Software and, if applicable, requesting deactivation of your account.
+                </p>
+                <p>
+                    <strong>Termination by Hyperfect LLC.</strong> Hyperfect LLC may suspend or terminate your access to the Software immediately, without notice or liability, if you:
+                </p>
+                <ul>
+                    <li>Violate any provision of these Terms</li>
+                    <li>Violate the terms of service of any third-party platform you access through Nexus</li>
+                    <li>Engage in illegal activity or fraud</li>
+                    <li>Abuse or misuse the Software in any manner</li>
+                    <li>Fail to pay for services if applicable</li>
+                </ul>
+                <p>
+                    <strong>Effect of Termination.</strong> Upon termination, your license to use the Software is immediately revoked. Sections of these Terms that by their nature are intended to survive termination, including disclaimers, limitations of liability, and governing law provisions, shall continue in effect after termination.
+                </p>
+            </section>
+
+            <section>
+                <h2>12. Governing Law and Jurisdiction</h2>
+                <p>
+                    These Terms are governed by and construed in accordance with the laws of the State of New Jersey, without regard to its conflict of law provisions. You agree to submit to the exclusive jurisdiction of the state and federal courts located in New Jersey for resolution of any disputes arising out of or related to these Terms or your use of the Software.
+                </p>
+            </section>
+
+            <section>
+                <h2>13. Contact Information</h2>
+                <p>
+                    If you have questions, concerns, or wish to report a violation of these Terms, please contact Hyperfect LLC at:
+                </p>
+                <p>
+                    <strong>Email:</strong> <a href="mailto:Hyperfecllc@gmail.com" style="color: var(--accent); text-decoration: none;">Hyperfecllc@gmail.com</a>
+                </p>
+                <p>
+                    We will endeavor to respond to your inquiry within a reasonable timeframe.
+                </p>
+            </section>
+
+            <section>
+                <h2>14. Disclaimers and Acknowledgments</h2>
+                <p>
+                    <strong>Third-Party Platform Affiliation.</strong> Hyperfect LLC is not affiliated with, endorsed by, or sponsored by LinkedIn, Indeed, Glassdoor, or any other third-party job platforms. These companies do not endorse or support Nexus. Any trademarks or brand names of third-party platforms are the property of their respective owners. Your use of Nexus to access third-party platforms is subject to those platforms' terms of service and acceptable use policies.
+                </p>
+                <p>
+                    <strong>Independent Verification.</strong> Hyperfect LLC strongly recommends that you review all information generated or submitted through Nexus for accuracy before submission to any third-party platform. You are solely responsible for verifying the contents of any job applications submitted through the Software.
+                </p>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <section>
+                <p style="font-size: 0.9rem; color: var(--text-tertiary); margin-top: 3rem;">
+                    By using Nexus, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service in their entirety. If you do not agree with any part of these Terms, you must discontinue your use of the Software immediately.
+                </p>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <div class="footer-brand">
+                    <strong style="color: var(--text-primary); display: block; margin-bottom: 0.5rem;">Hyperfect LLC</strong>
+                    Nexus is a product of Hyperfect LLC
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Product</h3>
+                <ul>
+                    <li><a href="/">Features</a></li>
+                    <li><a href="/">How It Works</a></li>
+                    <li><a href="/">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="/">About</a></li>
+                    <li><a href="/">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="/terms.html">Terms of Service</a></li>
+                    <li><a href="/privacy.html">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-divider"></div>
+
+        <div class="footer-bottom">
+            <p>© 2026 Hyperfect LLC. All rights reserved.</p>
+            <p>Nexus is not affiliated with or endorsed by LinkedIn, Indeed, Glassdoor, or any other third-party employment platforms.</p>
+        </div>
+    </footer>
+
+    <!-- Theme Toggle Script -->
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const htmlElement = document.documentElement;
+
+        // Check for saved theme preference or default to dark mode
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        if (currentTheme === 'light') {
+            document.body.classList.add('light-mode');
+            themeIcon.textContent = '☀️';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const isLightMode = document.body.classList.toggle('light-mode');
+            const newTheme = isLightMode ? 'light' : 'dark';
+            localStorage.setItem('theme', newTheme);
+            themeIcon.textContent = isLightMode ? '☀️' : '🌙';
+        });
+    </script>
+</body>
+</html>
