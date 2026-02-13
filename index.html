@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - AI Job Application Automation | Hyperfect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Custom Properties - Design System */
+        :root {
+            --bg-primary: #09090b;
+            --bg-secondary: #0f0f12;
+            --bg-tertiary: #1a1a1f;
+            --accent-purple: #8b5cf6;
+            --accent-blue: #3b82f6;
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-tertiary: #71717a;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Utility Classes */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: var(--transition);
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(9, 9, 11, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            font-size: 1.5rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-purple);
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            color: white;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(139, 92, 246, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
+                display: none;
+            }
+            .nav-links.mobile-open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background: var(--bg-secondary);
+                padding: 1rem;
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 8rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+        }
+
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .blob-1 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, var(--accent-purple), transparent);
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, var(--accent-blue), transparent);
+            bottom: -150px;
+            right: -100px;
+            animation-delay: 2s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, 30px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .hero .subheading {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.8;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.9rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-block;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            color: white;
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1.5px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--accent-purple);
+        }
+
+        /* Dashboard Mockup */
+        .mockup-container {
+            margin: 4rem auto;
+            max-width: 900px;
+            perspective: 1000px;
+        }
+
+        .mockup {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 100px rgba(139, 92, 246, 0.1);
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 500px;
+            animation: slideUp 0.8s ease-out 0.3s both;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .mockup-sidebar {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.5rem 1rem;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .mockup-sidebar-item {
+            color: var(--text-secondary);
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .mockup-sidebar-item:first-child {
+            background: rgba(139, 92, 246, 0.2);
+            color: var(--accent-purple);
+        }
+
+        .mockup-sidebar-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .mockup-main {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .mockup-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            padding: 1.25rem;
+            border-radius: 12px;
+        }
+
+        .stat-label {
+            color: var(--text-tertiary);
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .mockup-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        .list-company {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-applied {
+            background: rgba(139, 92, 246, 0.2);
+            color: var(--accent-purple);
+        }
+
+        .badge-interview {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--accent-blue);
+        }
+
+        .badge-offer {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .trust-badges {
+            text-align: center;
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .trust-platforms {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .platform-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .mockup {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+            .mockup-sidebar {
+                display: none;
+            }
+            .mockup-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: linear-gradient(90deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1));
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 3rem 0;
+            margin: 4rem 0;
+        }
+
+        .stats-content {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .stat-block {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+
+        .trust-text {
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-right: 2rem;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            color: var(--text-primary);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            border-radius: 12px;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-4px);
+            border-color: var(--border-color);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 6rem 0;
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+            position: relative;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: white;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .step-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .step-arrow {
+            position: absolute;
+            top: 35px;
+            right: -40px;
+            color: var(--accent-purple);
+            font-size: 1.5rem;
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            .step:not(:last-child) .step-arrow {
+                display: block;
+            }
+        }
+
+        /* Pricing Section */
+        .pricing {
+            padding: 6rem 0;
+        }
+
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem;
+            border-radius: 12px;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .pricing-card.popular {
+            background: rgba(139, 92, 246, 0.1);
+            border: 2px solid var(--accent-purple);
+            transform: scale(1.05);
+            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.2);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.75rem;
+        }
+
+        .pricing-tier {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .pricing-price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.25rem;
+        }
+
+        .pricing-period {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-feature {
+            color: var(--text-secondary);
+            padding: 0.6rem 0;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .pricing-feature::before {
+            content: '✓';
+            color: var(--accent-purple);
+            font-weight: 700;
+        }
+
+        .pricing-card:hover {
+            border-color: var(--accent-purple);
+        }
+
+        .pricing-footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* FAQ Accordion */
+        .faq {
+            padding: 6rem 0;
+        }
+
+        .faq-container {
+            max-width: 700px;
+            margin: 3rem auto 0;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .faq-header {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+            user-select: none;
+        }
+
+        .faq-header:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .faq-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            flex: 1;
+        }
+
+        .faq-toggle {
+            color: var(--accent-purple);
+            font-weight: 700;
+            transition: var(--transition);
+            transform: rotate(0deg);
+        }
+
+        .faq-item.open .faq-toggle {
+            transform: rotate(180deg);
+        }
+
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding: 0 1.5rem;
+        }
+
+        .faq-item.open .faq-content {
+            max-height: 500px;
+            padding: 1.5rem;
+        }
+
+        .faq-answer {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        /* Final CTA */
+        .final-cta {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2));
+            border: 1px solid var(--border-color);
+            padding: 4rem 2rem;
+            border-radius: 16px;
+            text-align: center;
+            margin: 6rem 0;
+        }
+
+        .final-cta h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .final-cta p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 0;
+            margin-top: 6rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a:hover {
+            color: var(--accent-purple);
+        }
+
+        .footer-tagline {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+            text-align: center;
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+
+        .footer-disclaimer {
+            margin-top: 1rem;
+            color: var(--text-tertiary);
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 4rem 0;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .cta-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .stats-content {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .trust-text {
+                margin-right: 0;
+                margin-bottom: 1rem;
+                display: block;
+                width: 100%;
+            }
+
+            .pricing-card.popular {
+                transform: scale(1);
+            }
+
+            .mockup-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes countUp {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .stat-number.animated {
+            animation: countUp 1s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="nav-content">
+                <a href="#" class="logo">
+                    <span class="logo-icon">⚡</span>
+                    Hyperfect
+                </a>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><button class="nav-cta" onclick="scrollToSection('final-cta')">Get Nexus</button></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg">
+            <div class="blob blob-1"></div>
+            <div class="blob blob-2"></div>
+        </div>
+        <div class="container">
+            <div class="hero-content fade-in">
+                <h1>Your Job Search, on Autopilot</h1>
+                <p class="subheading">Nexus uses AI to automatically find, match, and apply to jobs across LinkedIn, Indeed, and more — while you focus on what matters.</p>
+                <div class="cta-group">
+                    <button class="btn btn-primary" onclick="scrollToSection('final-cta')">Start Free Trial</button>
+                    <button class="btn btn-secondary">Watch Demo</button>
+                </div>
+
+                <!-- Dashboard Mockup -->
+                <div class="mockup-container">
+                    <div class="mockup fade-in">
+                        <div class="mockup-sidebar">
+                            <div class="mockup-sidebar-item">Dashboard</div>
+                            <div class="mockup-sidebar-item">Applications</div>
+                            <div class="mockup-sidebar-item">Tasks</div>
+                            <div class="mockup-sidebar-item">Settings</div>
+                        </div>
+                        <div class="mockup-main">
+                            <div class="mockup-stats">
+                                <div class="stat-card">
+                                    <div class="stat-label">Applications</div>
+                                    <div class="stat-value">847</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-label">Response Rate</div>
+                                    <div class="stat-value">23%</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-label">Interviews</div>
+                                    <div class="stat-value">12</div>
+                                </div>
+                            </div>
+                            <div class="mockup-list">
+                                <div class="list-item">
+                                    <span class="list-company">TechCorp AI</span>
+                                    <span class="badge badge-interview">Interview</span>
+                                </div>
+                                <div class="list-item">
+                                    <span class="list-company">CloudScale Systems</span>
+                                    <span class="badge badge-offer">Offer</span>
+                                </div>
+                                <div class="list-item">
+                                    <span class="list-company">DataFlow Analytics</span>
+                                    <span class="badge badge-applied">Applied</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="trust-badges">
+                        <div>Works with:</div>
+                        <div class="trust-platforms">
+                            <span class="platform-badge">LinkedIn</span>
+                            <span class="platform-badge">Indeed</span>
+                            <span class="platform-badge">Glassdoor</span>
+                            <span class="platform-badge">Greenhouse</span>
+                            <span class="platform-badge">Lever</span>
+                            <span class="platform-badge">Workday</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <section class="stats-bar fade-in">
+        <div class="container">
+            <div class="stats-content">
+                <div class="trust-text">Trusted by 500+ job seekers</div>
+                <div class="stat-block">
+                    <div class="stat-number" data-target="10000">0</div>
+                    <div class="stat-description">Applications Sent</div>
+                </div>
+                <div class="stat-block">
+                    <div class="stat-number">2x</div>
+                    <div class="stat-description">Faster Job Search</div>
+                </div>
+                <div class="stat-block">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-description">Automation</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title fade-in">Everything You Need to Land Your Next Role</h2>
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🤖</div>
+                    <h3 class="feature-title">AI-Powered Applications</h3>
+                    <p class="feature-description">Our AI reads job descriptions, matches your resume, and fills out every form field intelligently.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🌐</div>
+                    <h3 class="feature-title">Multi-Platform Support</h3>
+                    <p class="feature-description">Apply across LinkedIn Easy Apply, Indeed, and external ATS systems like Greenhouse and Workday.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">Smart Job Matching</h3>
+                    <p class="feature-description">Set your minimum match score and let Nexus skip irrelevant jobs. Only apply where you're a fit.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Real-Time Dashboard</h3>
+                    <p class="feature-description">Watch applications happen live. Track success rates, view logs, and manage campaigns.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">📄</div>
+                    <h3 class="feature-title">Resume Intelligence</h3>
+                    <p class="feature-description">Upload multiple resumes and Nexus picks the best one for each application automatically.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-title">Privacy First</h3>
+                    <p class="feature-description">Everything runs locally on your computer. Your data never leaves your machine.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <div class="container">
+            <h2 class="section-title fade-in">How It Works</h2>
+            <div class="steps-container">
+                <div class="step fade-in">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Upload Your Resume</h3>
+                    <p class="step-description">Add your resume and configure your preferences.</p>
+                    <span class="step-arrow">→</span>
+                </div>
+                <div class="step fade-in">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Create a Search Task</h3>
+                    <p class="step-description">Choose platform, keywords, location, and filters.</p>
+                    <span class="step-arrow">→</span>
+                </div>
+                <div class="step fade-in">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Watch Nexus Work</h3>
+                    <p class="step-description">Sit back while Nexus applies automatically and tracks everything.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <h2 class="section-title fade-in">Simple, Transparent Pricing</h2>
+            <div class="pricing-cards">
+                <div class="pricing-card fade-in">
+                    <h3 class="pricing-tier">Basic</h3>
+                    <div class="pricing-price">$29</div>
+                    <div class="pricing-period">/month, billed monthly</div>
+                    <ul class="pricing-features">
+                        <li class="pricing-feature">50 apps/day</li>
+                        <li class="pricing-feature">LinkedIn + Indeed</li>
+                        <li class="pricing-feature">External ATS support</li>
+                        <li class="pricing-feature">Single resume</li>
+                        <li class="pricing-feature">Email support</li>
+                    </ul>
+                    <button class="btn btn-primary" style="width: 100%;">Get Started</button>
+                </div>
+                <div class="pricing-card popular fade-in">
+                    <div class="popular-badge">MOST POPULAR</div>
+                    <h3 class="pricing-tier">Pro</h3>
+                    <div class="pricing-price">$49</div>
+                    <div class="pricing-period">/month, billed monthly</div>
+                    <ul class="pricing-features">
+                        <li class="pricing-feature">200 apps/day</li>
+                        <li class="pricing-feature">All platforms</li>
+                        <li class="pricing-feature">Multiple resumes</li>
+                        <li class="pricing-feature">Priority support</li>
+                        <li class="pricing-feature">Advanced filters</li>
+                    </ul>
+                    <button class="btn btn-primary" style="width: 100%;">Get Started</button>
+                </div>
+                <div class="pricing-card fade-in">
+                    <h3 class="pricing-tier">Unlimited</h3>
+                    <div class="pricing-price">$79</div>
+                    <div class="pricing-period">/month, billed monthly</div>
+                    <ul class="pricing-features">
+                        <li class="pricing-feature">Unlimited apps</li>
+                        <li class="pricing-feature">All platforms</li>
+                        <li class="pricing-feature">Multiple resumes</li>
+                        <li class="pricing-feature">Priority support</li>
+                        <li class="pricing-feature">Early access features</li>
+                        <li class="pricing-feature">Dedicated support</li>
+                    </ul>
+                    <button class="btn btn-primary" style="width: 100%;">Get Started</button>
+                </div>
+            </div>
+            <div class="pricing-footer">
+                7-day money-back guarantee • Cancel anytime • All plans include API access
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Accordion -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <h2 class="section-title fade-in">Frequently Asked Questions</h2>
+            <div class="faq-container">
+                <div class="faq-item fade-in">
+                    <div class="faq-header" onclick="toggleFaq(this)">
+                        <h3 class="faq-title">Is this against LinkedIn's Terms of Service?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-content">
+                        <p class="faq-answer">Nexus operates in a gray area. It automates your own profile's actions (using browser automation), similar to how you would manually apply. However, we recommend reviewing LinkedIn's ToS and using Nexus responsibly. It's designed to augment your job search, not violate platform policies. Use at your own discretion.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item fade-in">
+                    <div class="faq-header" onclick="toggleFaq(this)">
+                        <h3 class="faq-title">Do I need to keep my computer on?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-content">
+                        <p class="faq-answer">Yes, Nexus runs on your local machine as a desktop application. Your computer needs to stay on for continuous applications. However, you can set scheduled automation windows so it only runs during specific times. This also keeps your data completely private—everything stays on your device.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item fade-in">
+                    <div class="faq-header" onclick="toggleFaq(this)">
+                        <h3 class="faq-title">What AI/LLM does it use?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-content">
+                        <p class="faq-answer">Nexus is LLM-agnostic. You can plug in your preferred model: LM Studio (local), OpenAI (GPT-4), Anthropic (Claude), or Ollama. This flexibility means you control which AI powers your applications and can choose based on cost and privacy preferences.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item fade-in">
+                    <div class="faq-header" onclick="toggleFaq(this)">
+                        <h3 class="faq-title">Is my data sent anywhere?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-content">
+                        <p class="faq-answer">No. Everything runs locally on your machine by default. Your resume, job preferences, and application history never leave your computer. The only communication is a periodic license verification ping. If you use an external LLM (OpenAI, Claude), only the job description gets sent to process—your personal data remains private.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item fade-in">
+                    <div class="faq-header" onclick="toggleFaq(this)">
+                        <h3 class="faq-title">What platforms are supported?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-content">
+                        <p class="faq-answer">Nexus currently supports LinkedIn Easy Apply, Indeed, and Glassdoor. It also integrates with external ATS systems like Greenhouse, Lever, Workday, and BambooHR. We're continuously adding platform support based on user demand.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item fade-in">
+                    <div class="faq-header" onclick="toggleFaq(this)">
+                        <h3 class="faq-title">Can I get a refund?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-content">
+                        <p class="faq-answer">Yes, we offer a 7-day money-back guarantee. If Nexus doesn't meet your expectations within the first week, we'll refund your subscription in full—no questions asked. We're confident you'll love it.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta" id="final-cta">
+        <div class="container fade-in">
+            <h2>Ready to Automate Your Job Search?</h2>
+            <p>Join hundreds of job seekers who've already landed interviews with Nexus.</p>
+            <button class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2.5rem;">Get Started Free</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <span style="font-size: 1.25rem;">⚡</span>
+                        <h4 style="margin: 0;">Hyperfect</h4>
+                    </div>
+                    <p class="footer-tagline">Building tools that work for you.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="#features">Nexus</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Hyperfect. All rights reserved.</p>
+                <p class="footer-disclaimer">Nexus is not affiliated with LinkedIn, Indeed, Glassdoor, or any job platform. Use responsibly and in accordance with each platform's terms of service.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Count-up animation for stats
+        const statNumbers = document.querySelectorAll('.stat-number[data-target]');
+        const statsBarObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
+                    const target = parseInt(entry.target.getAttribute('data-target'));
+                    const duration = 1500;
+                    const steps = 60;
+                    const increment = target / steps;
+                    let current = 0;
+
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            entry.target.textContent = target.toLocaleString();
+                            clearInterval(timer);
+                        } else {
+                            entry.target.textContent = Math.floor(current).toLocaleString();
+                        }
+                    }, duration / steps);
+
+                    entry.target.classList.add('animated');
+                    statsBarObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        statNumbers.forEach(stat => statsBarObserver.observe(stat));
+
+        // FAQ Accordion
+        function toggleFaq(header) {
+            const item = header.parentElement;
+            item.classList.toggle('open');
+        }
+
+        // Smooth scroll helper
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Mobile menu toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const navLinks = document.getElementById('navLinks');
+
+        // Close mobile menu on link click
+        if (navLinks) {
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('mobile-open');
+                });
+            });
+        }
+    </script>
+</body>
+</html>
