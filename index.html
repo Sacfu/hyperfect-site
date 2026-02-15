@@ -10,6 +10,21 @@
     <meta property="og:description" content="AI-powered desktop app that automatically finds, matches, and applies to jobs across LinkedIn, Indeed, and more.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://hyperfect.dev">
+    <meta property="og:image" content="https://hyperfect.dev/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nexus by Hyperfect — Your Job Search, on Autopilot">
+    <meta name="twitter:description" content="AI-powered desktop app that automatically finds, matches, and applies to jobs across LinkedIn, Indeed, and more.">
+    <meta name="twitter:image" content="https://hyperfect.dev/og-image.png">
+    <!-- Google Analytics (GA4) — Replace G-XXXXXXXXXX with your Measurement ID from analytics.google.com -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         /* ========================================
@@ -160,7 +175,8 @@
         }
 
         .theme-toggle:hover {
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--glass-bg);
+            border-color: var(--accent);
             color: var(--text-primary);
         }
 
@@ -181,10 +197,80 @@
             box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
         }
 
+        /* Mobile Hamburger Menu */
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .hamburger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: currentColor;
+            margin: 5px 0;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
         @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+                order: 3;
+            }
+
             .nav-center {
                 display: none;
-                gap: 1rem;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: var(--bg-primary);
+                border-bottom: 1px solid var(--border);
+                padding: 1rem 20px;
+                gap: 0;
+            }
+
+            .nav-center.open {
+                display: flex;
+            }
+
+            .nav-center li {
+                list-style: none;
+            }
+
+            .nav-center a {
+                display: block;
+                padding: 0.75rem 0;
+                border-bottom: 1px solid var(--border);
+                font-size: 1rem;
+            }
+
+            .nav-center li:last-child a {
+                border-bottom: none;
+            }
+
+            .cta-button {
+                display: none;
+            }
+
+            nav .container {
+                position: relative;
             }
         }
 
@@ -570,12 +656,50 @@
             font-weight: 500;
         }
 
+        /* Mobile mockup tabs (replaces hidden sidebar) */
+        .mockup-tabs {
+            display: none;
+            overflow-x: auto;
+            gap: 0;
+            border-bottom: 1px solid var(--glass-border);
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .mockup-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .mockup-tab {
+            padding: 0.6rem 1rem;
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            white-space: nowrap;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            background: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+        }
+
+        .mockup-tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
         @media (max-width: 768px) {
             .mockup-body {
                 grid-template-columns: 1fr;
             }
             .mockup-sidebar {
                 display: none;
+            }
+            .mockup-tabs {
+                display: flex;
             }
             .stats-grid {
                 grid-template-columns: 1fr;
@@ -620,7 +744,7 @@
         }
 
         .feature-card:hover {
-            background: var(--glass-bg);
+            background: rgba(37, 99, 235, 0.04);
             border-color: var(--accent);
             transform: translateY(-4px);
         }
@@ -1173,6 +1297,151 @@
         }
 
         /* ========================================
+           ONBOARDING MODAL
+           ======================================== */
+        .onboarding-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .onboarding-overlay.visible {
+            opacity: 1;
+        }
+
+        .onboarding-modal {
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            max-width: 520px;
+            width: 100%;
+            padding: 2.5rem;
+            position: relative;
+            transform: scale(0.95) translateY(10px);
+            transition: transform 0.3s;
+        }
+
+        .onboarding-overlay.visible .onboarding-modal {
+            transform: scale(1) translateY(0);
+        }
+
+        .onboarding-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            font-size: 1.25rem;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .onboarding-close:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+
+        .onboarding-badge {
+            display: inline-block;
+            background: rgba(37, 99, 235, 0.12);
+            color: var(--accent);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.35rem 0.85rem;
+            border-radius: 100px;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            margin-bottom: 1.25rem;
+        }
+
+        .onboarding-modal h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .onboarding-modal p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.65;
+            margin-bottom: 1.5rem;
+        }
+
+        .onboarding-features {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            margin-bottom: 2rem;
+        }
+
+        .onboarding-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .onboarding-feature-icon {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            background: rgba(37, 99, 235, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2px;
+        }
+
+        .onboarding-feature-icon svg {
+            width: 10px;
+            height: 10px;
+            stroke: var(--accent);
+            fill: none;
+            stroke-width: 3;
+        }
+
+        .onboarding-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .onboarding-actions .btn {
+            flex: 1;
+            text-align: center;
+        }
+
+        @media (max-width: 480px) {
+            .onboarding-modal {
+                padding: 1.75rem;
+            }
+            .onboarding-modal h2 {
+                font-size: 1.25rem;
+            }
+            .onboarding-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* ========================================
            BRANDING & PRODUCT BADGE
            ======================================== */
         .logo-divider {
@@ -1329,12 +1598,42 @@
 </head>
 <body>
     <!-- ========================================
+         ONBOARDING MODAL (first-time visitors)
+         ======================================== -->
+    <div class="onboarding-overlay" id="onboarding">
+        <div class="onboarding-modal">
+            <button class="onboarding-close" id="onboarding-close" aria-label="Close">&times;</button>
+            <div class="onboarding-badge">Closed Beta</div>
+            <h2>Welcome to Nexus</h2>
+            <p>Nexus is an AI-powered desktop app that automatically finds, matches, and applies to jobs for you — across LinkedIn, Indeed, and more.</p>
+            <div class="onboarding-features">
+                <div class="onboarding-feature">
+                    <div class="onboarding-feature-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+                    <span><strong>100% local.</strong> Your resume and data never leave your machine.</span>
+                </div>
+                <div class="onboarding-feature">
+                    <div class="onboarding-feature-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+                    <span><strong>BYO model.</strong> Use OpenAI, Claude, LM Studio, or Ollama.</span>
+                </div>
+                <div class="onboarding-feature">
+                    <div class="onboarding-feature-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+                    <span><strong>Set it and forget it.</strong> Nexus applies while you sleep.</span>
+                </div>
+            </div>
+            <div class="onboarding-actions">
+                <button class="btn btn-primary" onclick="closeOnboarding(); document.getElementById('waitlist').scrollIntoView({ behavior: 'smooth' });">Join Waitlist</button>
+                <button class="btn btn-secondary" onclick="closeOnboarding()">Explore the Site</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================
          NAVIGATION
          ======================================== -->
     <nav>
         <div class="container">
             <div class="nav-content">
-                <a href="#" class="logo">
+                <a href="/" class="logo" aria-label="Hyperfect Nexus - Home">
                     <span>Hyperfect</span><span class="logo-divider">/</span><span class="logo-product">Nexus</span>
                 </a>
                 <ul class="nav-center">
@@ -1344,7 +1643,12 @@
                     <li><a href="#contact">Contact</a></li>
                 </ul>
                 <div class="nav-right">
-                    <button class="theme-toggle" id="themeToggle" title="Toggle light/dark mode">
+                    <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">
                         <svg id="sunIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="12" cy="12" r="5"/>
                             <line x1="12" y1="1" x2="12" y2="3"/>
@@ -1419,14 +1723,23 @@
                             <div class="toolbar-status"><div class="status-dot"></div> 3 tasks running</div>
                         </div>
 
+                        <!-- Mobile Tabs (visible on small screens only) -->
+                        <div class="mockup-tabs">
+                            <button class="mockup-tab active" onclick="switchMockupView('dashboard', this)">Dashboard</button>
+                            <button class="mockup-tab" onclick="switchMockupView('tasks', this)">Tasks</button>
+                            <button class="mockup-tab" onclick="switchMockupView('profiles', this)">Profiles</button>
+                            <button class="mockup-tab" onclick="switchMockupView('accounts', this)">Accounts</button>
+                            <button class="mockup-tab" onclick="switchMockupView('settings', this)">Settings</button>
+                        </div>
+
                         <!-- Mockup Body -->
                         <div class="mockup-body">
                             <div class="mockup-sidebar">
-                                <div class="sidebar-item active" onclick="switchMockupView('dashboard')">Dashboard</div>
-                                <div class="sidebar-item" onclick="switchMockupView('tasks')">Tasks</div>
-                                <div class="sidebar-item" onclick="switchMockupView('profiles')">Profiles</div>
-                                <div class="sidebar-item" onclick="switchMockupView('accounts')">Accounts</div>
-                                <div class="sidebar-item" onclick="switchMockupView('settings')">Settings</div>
+                                <div class="sidebar-item active" onclick="switchMockupView('dashboard', this)">Dashboard</div>
+                                <div class="sidebar-item" onclick="switchMockupView('tasks', this)">Tasks</div>
+                                <div class="sidebar-item" onclick="switchMockupView('profiles', this)">Profiles</div>
+                                <div class="sidebar-item" onclick="switchMockupView('accounts', this)">Accounts</div>
+                                <div class="sidebar-item" onclick="switchMockupView('settings', this)">Settings</div>
                             </div>
 
                             <div class="mockup-main">
@@ -1564,7 +1877,7 @@
 
             <div class="features-grid">
                 <div class="feature-card fade-in">
-                    <div class="feature-icon">
+                    <div class="feature-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24">
                             <path d="M12 2L15.09 8.26H21.77L16.84 12.45L18.94 18.71L12 14.52L5.06 18.71L7.16 12.45L2.23 8.26H8.91L12 2Z"/>
                         </svg>
@@ -1574,7 +1887,7 @@
                 </div>
 
                 <div class="feature-card fade-in">
-                    <div class="feature-icon">
+                    <div class="feature-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24">
                             <circle cx="12" cy="12" r="10"/>
                             <path d="M12 6V12L16 14"/>
@@ -1585,7 +1898,7 @@
                 </div>
 
                 <div class="feature-card fade-in">
-                    <div class="feature-icon">
+                    <div class="feature-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24">
                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                         </svg>
@@ -1595,7 +1908,7 @@
                 </div>
 
                 <div class="feature-card fade-in">
-                    <div class="feature-icon">
+                    <div class="feature-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24">
                             <rect x="3" y="3" width="18" height="18" rx="2"/>
                             <path d="M9 3v18M15 3v18M3 9h18M3 15h18"/>
@@ -1606,7 +1919,7 @@
                 </div>
 
                 <div class="feature-card fade-in">
-                    <div class="feature-icon">
+                    <div class="feature-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24">
                             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                             <polyline points="14 2 14 8 20 8"/>
@@ -1619,7 +1932,7 @@
                 </div>
 
                 <div class="feature-card fade-in">
-                    <div class="feature-icon">
+                    <div class="feature-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24">
                             <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
                             <polyline points="10 17 14 13 10 9"/>
@@ -1677,7 +1990,7 @@
                 </div>
 
                 <div class="error-message" id="waitlist-error">
-                    Something went wrong. Please try again or email us at <a href="mailto:Hyperfecllc@gmail.com" style="color: #ef4444; text-decoration: underline;">Hyperfecllc@gmail.com</a>
+                    Something went wrong. Please try again or email us at <a href="mailto:Hyperfectllc@gmail.com" style="color: #ef4444; text-decoration: underline;">Hyperfectllc@gmail.com</a>
                 </div>
 
                 <form id="waitlist-form" class="fade-in">
@@ -1779,7 +2092,7 @@
                 </div>
 
                 <div class="error-message" id="contact-error">
-                    Something went wrong. Please try again or email us at <a href="mailto:Hyperfecllc@gmail.com" style="color: #ef4444; text-decoration: underline;">Hyperfecllc@gmail.com</a>
+                    Something went wrong. Please try again or email us at <a href="mailto:Hyperfectllc@gmail.com" style="color: #ef4444; text-decoration: underline;">Hyperfectllc@gmail.com</a>
                 </div>
 
                 <form id="contact-form" class="fade-in">
@@ -1802,7 +2115,7 @@
                 </form>
 
                 <div class="email-fallback">
-                    Or email us directly at <a href="mailto:Hyperfecllc@gmail.com">Hyperfecllc@gmail.com</a>
+                    Or email us directly at <a href="mailto:Hyperfectllc@gmail.com">Hyperfectllc@gmail.com</a>
                 </div>
             </div>
         </div>
@@ -1835,7 +2148,7 @@
                     <h3>Company</h3>
                     <ul>
                         <li><a href="#contact">Contact</a></li>
-                        <li><a href="mailto:Hyperfecllc@gmail.com">Hyperfecllc@gmail.com</a></li>
+                        <li><a href="mailto:Hyperfectllc@gmail.com">Hyperfectllc@gmail.com</a></li>
                     </ul>
                 </div>
 
@@ -1863,7 +2176,7 @@
         // FormSubmit.co — zero-signup form service
         // First submission triggers a confirmation email to your inbox.
         // Click confirm once, then all future submissions arrive automatically.
-        const FORM_ENDPOINT = 'https://formsubmit.co/ajax/Hyperfecllc@gmail.com';
+        const FORM_ENDPOINT = 'https://formsubmit.co/ajax/Hyperfectllc@gmail.com';
 
         // ========== Theme Toggle ==========
         const themeToggle = document.getElementById('themeToggle');
@@ -1906,13 +2219,14 @@
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
         // ========== Interactive Mockup ==========
-        function switchMockupView(viewName) {
+        function switchMockupView(viewName, clickedEl) {
             document.querySelectorAll('.mockup-content').forEach(v => v.classList.remove('active'));
             document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+            document.querySelectorAll('.mockup-tab').forEach(t => t.classList.remove('active'));
 
             const view = document.getElementById(`${viewName}-view`);
             if (view) view.classList.add('active');
-            event.target.classList.add('active');
+            if (clickedEl) clickedEl.classList.add('active');
         }
 
         // Toolbar button actions (cosmetic for mockup demo)
@@ -1936,7 +2250,7 @@
 
         // ========== Form Handling (FormSubmit.co) ==========
         // NOTE: FormSubmit.co requires email activation on first submission.
-        // The very first form submit sends a confirmation email to Hyperfecllc@gmail.com.
+        // The very first form submit sends a confirmation email to Hyperfectllc@gmail.com.
         // You MUST click the link in that email before forms will work.
         async function submitForm(formData, formEl, successEl, errorEl) {
             const submitBtn = formEl.querySelector('.form-submit');
@@ -2020,8 +2334,8 @@
         // 3. Go to OAuth2 > General
         // 4. Add redirect: https://hyperfect.dev (your domain)
         // 5. Copy Client ID below
-        const DISCORD_CLIENT_ID = 'YOUR_DISCORD_CLIENT_ID';
-        const DISCORD_REDIRECT_URI = window.location.origin + window.location.pathname;
+        const DISCORD_CLIENT_ID = '1472604757687275723';
+        const DISCORD_REDIRECT_URI = window.location.origin + '/';
         const DOWNLOAD_URL = 'https://github.com/Sacfu/nexus/releases/latest';
 
         function initDiscordAuth() {
@@ -2069,8 +2383,16 @@
 
         document.getElementById('discord-login-btn').addEventListener('click', () => {
             if (DISCORD_CLIENT_ID === 'YOUR_DISCORD_CLIENT_ID') {
-                alert('Discord OAuth not configured yet. Set DISCORD_CLIENT_ID in the page source.\n\nFor now, download from GitHub Releases.');
-                window.open(DOWNLOAD_URL, '_blank');
+                // Show inline tooltip instead of ugly alert
+                const btn = document.getElementById('discord-login-btn');
+                const existing = btn.parentElement.querySelector('.discord-tooltip');
+                if (existing) existing.remove();
+                const tip = document.createElement('div');
+                tip.className = 'discord-tooltip';
+                tip.textContent = 'Discord login coming soon — join the waitlist for early access.';
+                tip.style.cssText = 'color: var(--text-tertiary); font-size: 0.8rem; margin-top: 0.5rem; text-align: center;';
+                btn.parentElement.appendChild(tip);
+                setTimeout(() => tip.remove(), 5000);
                 return;
             }
             const params = new URLSearchParams({
@@ -2088,9 +2410,52 @@
             document.getElementById('hero-logged-out').classList.add('active');
         });
 
+        // ========== Mobile Hamburger Menu ==========
+        const hamburger = document.getElementById('hamburger');
+        const navCenter = document.querySelector('.nav-center');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navCenter.classList.toggle('open');
+        });
+
+        // Close mobile menu when a link is clicked
+        navCenter.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navCenter.classList.remove('open');
+            });
+        });
+
+        // ========== Onboarding Modal ==========
+        function closeOnboarding() {
+            const overlay = document.getElementById('onboarding');
+            overlay.classList.remove('visible');
+            setTimeout(() => overlay.remove(), 300);
+            localStorage.setItem('nexus_onboarded', 'true');
+        }
+
+        function initOnboarding() {
+            if (localStorage.getItem('nexus_onboarded')) return;
+            const overlay = document.getElementById('onboarding');
+            if (!overlay) return;
+            // Small delay so it feels intentional, not jarring
+            setTimeout(() => overlay.classList.add('visible'), 400);
+
+            document.getElementById('onboarding-close').addEventListener('click', closeOnboarding);
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) closeOnboarding();
+            });
+        }
+
         // ========== Initialize ==========
         initializeTheme();
         initDiscordAuth();
+        initOnboarding();
     </script>
+    <!-- Vercel Analytics -->
+    <script defer src="/_vercel/insights/script.js"></script>
+    <!-- Vercel Web Vitals -->
+    <script defer src="/_vercel/speed-insights/script.js"></script>
 </body>
 </html>
