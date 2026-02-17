@@ -58,7 +58,7 @@ module.exports = async function handler(req, res) {
             return res.status(403).json({
                 error: 'not_member',
                 message: 'You need to join our Discord server first to download Nexus.',
-                invite: 'https://discord.gg/YOUR_INVITE_CODE',
+                invite: 'https://discord.gg/G8tK3fuw',
             });
         }
 

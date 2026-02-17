@@ -48,7 +48,7 @@ async function sendLicenseEmail(email, licenseKey, plan) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            from: 'Nexus by Hyperfect <onboarding@resend.dev>',
+            from: 'Nexus by Hyperfect <noreply@admin.hyperfect.dev>',
             to: email,
             subject: 'Your Nexus License Key',
             html: `
