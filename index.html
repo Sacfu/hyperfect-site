@@ -2338,7 +2338,7 @@
         // 5. Copy Client ID below
         const DISCORD_CLIENT_ID = '1472604757687275723';
         const DISCORD_REDIRECT_URI = window.location.origin + '/';
-        const DOWNLOAD_URL = 'https://github.com/Sacfu/nexus/releases/latest';
+        const DISCORD_INVITE = 'https://discord.gg/YOUR_INVITE_CODE'; // TODO: Replace with real invite
 
         function initDiscordAuth() {
             const fragment = new URLSearchParams(window.location.hash.slice(1));
@@ -2346,16 +2346,19 @@
 
             if (accessToken) {
                 window.history.replaceState({}, document.title, window.location.pathname);
+                localStorage.setItem('discord_token', accessToken);
                 fetchDiscordUser(accessToken);
                 return;
             }
 
+            const storedToken = localStorage.getItem('discord_token');
             const storedUser = localStorage.getItem('discord_user');
-            if (storedUser) {
+            if (storedUser && storedToken) {
                 try {
-                    showLoggedIn(JSON.parse(storedUser));
+                    showLoggedIn(JSON.parse(storedUser), storedToken);
                 } catch (e) {
                     localStorage.removeItem('discord_user');
+                    localStorage.removeItem('discord_token');
                 }
             }
         }
@@ -2368,35 +2371,64 @@
                 if (!res.ok) throw new Error('Failed to fetch user');
                 const user = await res.json();
                 localStorage.setItem('discord_user', JSON.stringify(user));
-                showLoggedIn(user);
+                showLoggedIn(user, token);
             } catch (err) {
                 console.error('Discord auth error:', err);
             }
         }
 
-        function showLoggedIn(user) {
+        async function showLoggedIn(user, token) {
             document.getElementById('hero-logged-out').classList.remove('active');
             document.getElementById('hero-logged-in').classList.add('active');
             document.getElementById('discord-avatar').src = user.avatar
                 ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=56`
                 : `https://cdn.discordapp.com/embed/avatars/${parseInt(user.discriminator || '0') % 5}.png`;
-            document.getElementById('download-link').href = DOWNLOAD_URL;
+
+            const downloadBtn = document.getElementById('download-link');
+            downloadBtn.textContent = 'Checking access...';
+            downloadBtn.href = '#';
+            downloadBtn.style.opacity = '0.6';
+
+            // Check server membership via our API
+            try {
+                const res = await fetch('/api/download', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        accessToken: token,
+                        platform: navigator.platform.includes('Mac') ? 'mac-arm64'
+                                : navigator.platform.includes('Win') ? 'win' : 'linux'
+                    })
+                });
+                const data = await res.json();
+
+                if (res.ok && data.downloadUrl) {
+                    // User is in the server — show download
+                    downloadBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download Nexus';
+                    downloadBtn.href = data.downloadUrl;
+                    downloadBtn.style.opacity = '1';
+                } else if (data.error === 'not_member') {
+                    // User not in server — show join prompt
+                    downloadBtn.innerHTML = 'Join Discord to Download';
+                    downloadBtn.href = data.invite || DISCORD_INVITE;
+                    downloadBtn.target = '_blank';
+                    downloadBtn.style.opacity = '1';
+                    downloadBtn.style.background = '#5865F2';
+                } else {
+                    downloadBtn.textContent = 'Download unavailable';
+                    downloadBtn.style.opacity = '0.5';
+                }
+            } catch (err) {
+                // API error — fallback to join Discord
+                downloadBtn.innerHTML = 'Join Discord to Download';
+                downloadBtn.href = DISCORD_INVITE;
+                downloadBtn.target = '_blank';
+                downloadBtn.style.opacity = '1';
+                downloadBtn.style.background = '#5865F2';
+            }
         }
 
         document.getElementById('discord-login-btn').addEventListener('click', () => {
-            if (DISCORD_CLIENT_ID === 'YOUR_DISCORD_CLIENT_ID') {
-                // Show inline tooltip instead of ugly alert
-                const btn = document.getElementById('discord-login-btn');
-                const existing = btn.parentElement.querySelector('.discord-tooltip');
-                if (existing) existing.remove();
-                const tip = document.createElement('div');
-                tip.className = 'discord-tooltip';
-                tip.textContent = 'Discord login coming soon — join the waitlist for early access.';
-                tip.style.cssText = 'color: var(--text-tertiary); font-size: 0.8rem; margin-top: 0.5rem; text-align: center;';
-                btn.parentElement.appendChild(tip);
-                setTimeout(() => tip.remove(), 5000);
-                return;
-            }
             const params = new URLSearchParams({
                 client_id: DISCORD_CLIENT_ID,
                 redirect_uri: DISCORD_REDIRECT_URI,
@@ -2408,6 +2440,7 @@
 
         document.getElementById('discord-logout').addEventListener('click', () => {
             localStorage.removeItem('discord_user');
+            localStorage.removeItem('discord_token');
             document.getElementById('hero-logged-in').classList.remove('active');
             document.getElementById('hero-logged-out').classList.add('active');
         });

@@ -1,0 +1,37 @@
+<svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="gridPattern" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="20" cy="20" r="1" fill="#2563eb" opacity="0.1"/>
+      <line x1="0" y1="20" x2="40" y2="20" stroke="#2563eb" stroke-width="0.5" opacity="0.05"/>
+      <line x1="20" y1="0" x2="20" y2="40" stroke="#2563eb" stroke-width="0.5" opacity="0.05"/>
+    </pattern>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#09090b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a1a23;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="540" fill="url(#bgGradient)"/>
+
+  <!-- Grid Pattern -->
+  <rect width="960" height="540" fill="url(#gridPattern)"/>
+
+  <!-- Accent bar on left -->
+  <rect width="8" height="540" fill="#2563eb" opacity="0.3"/>
+
+  <!-- Main Text: NEXUS -->
+  <text x="480" y="240" font-family="Inter, sans-serif" font-size="120" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle" letter-spacing="8">
+    NEXUS
+  </text>
+
+  <!-- Subtitle: by Hyperfect -->
+  <text x="480" y="310" font-family="Inter, sans-serif" font-size="32" font-weight="500" fill="#2563eb" text-anchor="middle" dominant-baseline="middle">
+    by Hyperfect
+  </text>
+
+  <!-- Tagline at bottom -->
+  <text x="480" y="480" font-family="Inter, sans-serif" font-size="20" font-weight="400" fill="#94a3b8" text-anchor="middle" dominant-baseline="middle">
+    Your Job Search, on Autopilot
+  </text>
+</svg>

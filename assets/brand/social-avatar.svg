@@ -1,0 +1,34 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="blueGradientAvatar" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2563eb;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="darkBgAvatar" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#09090b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a1a23;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <circle cx="200" cy="200" r="200" fill="url(#darkBgAvatar)"/>
+
+  <!-- Subtle border for visibility -->
+  <circle cx="200" cy="200" r="200" fill="none" stroke="#2563eb" stroke-width="1" opacity="0.15"/>
+
+  <!-- N lettermark - centered and optimized for circular crop -->
+  <g transform="translate(200, 200)">
+    <!-- Left diagonal stroke -->
+    <line x1="-55" y1="70" x2="-15" y2="-70" stroke="url(#blueGradientAvatar)" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Right diagonal stroke -->
+    <line x1="15" y1="-70" x2="55" y2="70" stroke="url(#blueGradientAvatar)" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Connection bridge -->
+    <line x1="-15" y1="-60" x2="15" y2="-60" stroke="url(#blueGradientAvatar)" stroke-width="6" opacity="0.4" stroke-linecap="round"/>
+  </g>
+
+  <!-- Glow effect -->
+  <circle cx="200" cy="200" r="140" fill="none" stroke="#2563eb" stroke-width="0.5" opacity="0.2"/>
+  <circle cx="200" cy="200" r="160" fill="none" stroke="#2563eb" stroke-width="0.5" opacity="0.1"/>
+</svg>

@@ -32,8 +32,8 @@ module.exports = async function handler(req, res) {
             payment_method_types: ['card'],
             line_items: [{ price: priceId, quantity: 1 }],
             mode: mode, // 'subscription' or 'payment'
-            success_url: `${process.env.SITE_URL || 'https://hyperfect.dev'}?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${process.env.SITE_URL || 'https://hyperfect.dev'}?checkout=cancelled`,
+            success_url: `${process.env.SITE_URL || 'https://hyperfect.dev'}/success?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${process.env.SITE_URL || 'https://hyperfect.dev'}/?checkout=cancelled`,
             allow_promotion_codes: true, // Lets users enter discount codes at checkout
         };
 
