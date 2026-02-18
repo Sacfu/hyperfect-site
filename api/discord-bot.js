@@ -18,7 +18,7 @@
 //   SITE_URL — https://hyperfect.dev
 //   ADMIN_ROLE_ID — (optional) Discord role ID required to use commands
 
-const crypto = require('crypto');
+const nacl = require('tweetnacl');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 // Discord interaction types
@@ -32,40 +32,17 @@ const INTERACTION_RESPONSE_TYPE = {
     CHANNEL_MESSAGE: 4,
 };
 
-// Verify Discord request signature
+// Verify Discord request signature using tweetnacl
 function verifyDiscordSignature(rawBody, signature, timestamp) {
     const publicKey = process.env.DISCORD_PUBLIC_KEY;
     if (!publicKey) return false;
 
-    const message = Buffer.from(timestamp + rawBody);
-    const sig = Buffer.from(signature, 'hex');
-    const key = Buffer.from(publicKey, 'hex');
-
     try {
-        return crypto.verify(
-            null,
-            message,
-            { key: crypto.createPublicKey({ key, format: 'der', type: 'spki' }), dsaEncoding: 'ieee-p1363' },
-            sig
+        return nacl.sign.detached.verify(
+            Buffer.from(timestamp + rawBody),
+            Buffer.from(signature, 'hex'),
+            Buffer.from(publicKey, 'hex')
         );
-    } catch {
-        // Fallback: use tweetnacl-compatible verification
-        return verifyEd25519(message, sig, key);
-    }
-}
-
-// Ed25519 signature verification using Node.js crypto
-function verifyEd25519(message, signature, publicKey) {
-    try {
-        const key = crypto.createPublicKey({
-            key: Buffer.concat([
-                Buffer.from('302a300506032b6570032100', 'hex'), // Ed25519 DER prefix
-                publicKey,
-            ]),
-            format: 'der',
-            type: 'spki',
-        });
-        return crypto.verify(null, message, key, signature);
     } catch {
         return false;
     }
