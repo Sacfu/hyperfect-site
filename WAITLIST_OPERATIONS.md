@@ -36,6 +36,11 @@ All admin methods accept:
 
 ## Endpoints
 
+### Status actions semantics
+
+- `Approve`: marks entry as approved for internal review queueing only (no invite email is sent).
+- `Approve + Invite`: generates a Stripe checkout invite link, stores invite metadata, and sends that checkout link to the user by email (via Resend).
+
 ### Public submit
 
 `POST /api/waitlist`
@@ -118,6 +123,8 @@ No manual `ADMIN_SECRET` entry is required for normal admin usage.
 - `ADMIN_ROLE_ID`
 - `BETA_PRICE_ID` (required for invite generation)
 - `SITE_URL` (recommended `https://www.hyperfect.dev`)
+- `RESEND_API_KEY` (required if you want invite emails to send automatically)
+- `WAITLIST_INVITE_FROM` (optional; default sender: `Nexus by Hyperfect <noreply@admin.hyperfect.dev>`)
 
 ## Optional notification variables
 

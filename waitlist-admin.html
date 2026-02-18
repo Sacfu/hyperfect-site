@@ -721,7 +721,12 @@
 
                 if (result.invite?.invite_url) {
                     inviteLinks[customerId] = result.invite.invite_url;
-                    showToast('Invite created successfully.', 'ok');
+                    if (result.invite_email?.ok) {
+                        showToast('Invite created and emailed.', 'ok');
+                    } else {
+                        const reason = result.invite_email?.error || 'email delivery did not complete';
+                        showToast(`Invite created, but email failed: ${reason}`, 'bad');
+                    }
                 } else {
                     showToast('Entry approved.', 'ok');
                 }

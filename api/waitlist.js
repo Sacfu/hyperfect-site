@@ -31,6 +31,9 @@ const WAITLIST_NOTIFY_ENABLED = String(process.env.WAITLIST_NOTIFY_ENABLED || 't
 const WAITLIST_NOTIFY_ENDPOINT = String(
     process.env.WAITLIST_NOTIFY_ENDPOINT || 'https://formsubmit.co/ajax/Hyperfectllc@gmail.com'
 ).trim();
+const WAITLIST_INVITE_FROM = String(
+    process.env.WAITLIST_INVITE_FROM || 'Nexus by Hyperfect <noreply@admin.hyperfect.dev>'
+).trim();
 
 function setCors(res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -235,6 +238,68 @@ async function createInviteForCustomer(email, name, customerId) {
     };
 }
 
+async function sendInviteCheckoutEmail({ email, name, inviteUrl, expiresIn = '24 hours' }) {
+    if (!process.env.RESEND_API_KEY) {
+        return { ok: false, error: 'RESEND_API_KEY not configured' };
+    }
+
+    const safeEmail = normalizeEmail(email);
+    if (!safeEmail) {
+        return { ok: false, error: 'Invite email is missing a valid recipient' };
+    }
+
+    const safeName = cleanText(name, 120) || safeEmail;
+    const safeUrl = cleanText(inviteUrl, 2000);
+    const safeExpiresIn = cleanText(expiresIn, 60) || '24 hours';
+
+    const response = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            from: WAITLIST_INVITE_FROM,
+            to: safeEmail,
+            subject: 'Your Nexus Beta Invite Is Ready',
+            html: `
+                <div style="background:#0f172a;padding:20px 12px;">
+                    <div style="max-width:560px;margin:0 auto;background:#0b1220;border:1px solid #23314a;border-radius:12px;padding:24px;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#e2e8f0;">
+                        <h1 style="margin:0 0 10px;font-size:24px;color:#f8fafc;">You're invited to Nexus beta</h1>
+                        <p style="margin:0 0 16px;color:#cbd5e1;line-height:1.6;">Hi ${safeName}, your waitlist request has been approved. Use your private checkout link below to activate access.</p>
+                        <div style="margin:18px 0;">
+                            <a href="${safeUrl}" style="display:inline-block;background:#2563eb;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px;">Activate Beta Access</a>
+                        </div>
+                        <p style="margin:10px 0;color:#93c5fd;font-size:13px;">This link expires in ${safeExpiresIn}.</p>
+                        <p style="margin:16px 0 0;color:#94a3b8;font-size:12px;line-height:1.6;">If the button doesn't open, copy and paste this URL into your browser:<br><span style="color:#dbeafe;word-break:break-all;">${safeUrl}</span></p>
+                    </div>
+                </div>
+            `,
+            text: [
+                `Hi ${safeName},`,
+                '',
+                'Your Nexus beta waitlist request has been approved.',
+                `Activate here: ${safeUrl}`,
+                `This link expires in ${safeExpiresIn}.`,
+            ].join('\n'),
+        }),
+    });
+
+    if (!response.ok) {
+        const detail = await response.text().catch(() => '');
+        return {
+            ok: false,
+            error: `Invite email failed (HTTP ${response.status})${detail ? `: ${cleanText(detail, 180)}` : ''}`,
+        };
+    }
+
+    const payload = await response.json().catch(() => ({}));
+    return {
+        ok: true,
+        id: payload?.id || '',
+    };
+}
+
 async function handlePublicSubmit(req, res) {
     const body = req.body && typeof req.body === 'object' ? req.body : {};
     const name = cleanText(body.name, 120);
@@ -433,6 +498,7 @@ async function handleAdminUpdate(req, res) {
     };
 
     let invite = null;
+    let inviteEmail = null;
     if (sendInvite) {
         if (!normalizeEmail(customer.email)) {
             return res.status(400).json({ success: false, error: 'Customer is missing an email; cannot generate invite' });
@@ -448,8 +514,17 @@ async function handleAdminUpdate(req, res) {
         }
 
         invite = inviteResult;
+        inviteEmail = await sendInviteCheckoutEmail({
+            email: normalizeEmail(customer.email),
+            name: previous.waitlist_name || customer.name || customer.email || '',
+            inviteUrl: inviteResult.invite_url,
+            expiresIn: inviteResult.expires_in,
+        });
         metadata.waitlist_status = 'invited';
         metadata.waitlist_invited_at = now;
+        metadata.waitlist_invite_email_sent_at = inviteEmail.ok ? now : '';
+        metadata.waitlist_invite_email_id = inviteEmail.ok ? cleanText(inviteEmail.id, 120) : '';
+        metadata.waitlist_invite_email_error = inviteEmail.ok ? '' : cleanText(inviteEmail.error, 240);
     }
 
     const updated = await stripe.customers.update(customer.id, { metadata });
@@ -457,6 +532,7 @@ async function handleAdminUpdate(req, res) {
         success: true,
         entry: mapWaitlistCustomer(updated),
         invite,
+        invite_email: inviteEmail,
     });
 }
 
