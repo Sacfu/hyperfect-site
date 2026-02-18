@@ -34,7 +34,7 @@ module.exports = async function handler(req, res) {
             after_completion: {
                 type: 'redirect',
                 redirect: {
-                    url: 'https://hyperfect.dev?checkout=success',
+                    url: `${process.env.SITE_URL || 'https://hyperfect.dev'}/success`,
                 },
             },
         };
