@@ -215,35 +215,92 @@ function firstAssetByNames(assets, candidateNames) {
   return null;
 }
 
-function pickManifestAsset(assets, { channel, platform, arch }) {
-  const candidates = [];
+function listManifestAssets(assets, { channel, platform, arch }) {
+  const source = Array.isArray(assets) ? assets : [];
+  const manifests = source.filter((asset) => /\.yml$/i.test(String(asset?.name || '')));
+  const ordered = [];
+  const seen = new Set();
+
+  function pushAsset(asset) {
+    if (!asset) return;
+    const id = String(asset.id || '') || String(asset.name || '');
+    if (!id || seen.has(id)) return;
+    seen.add(id);
+    ordered.push(asset);
+  }
+
+  function pushByNames(names) {
+    for (const name of names) {
+      pushAsset(firstAssetByNames(manifests, [name]));
+    }
+  }
+
+  function pushByRegex(regex) {
+    for (const asset of manifests) {
+      const name = String(asset.name || '');
+      if (regex.test(name)) {
+        pushAsset(asset);
+      }
+    }
+  }
 
   if (platform === 'mac') {
     if (arch === 'arm64') {
-      candidates.push('latest-mac-arm64.yml', 'latest-mac-beta.yml', 'latest-mac.yml');
+      pushByNames([
+        'latest-mac-arm64.yml',
+        'latest-mac-arm64-beta.yml',
+        'latest-mac-beta-arm64.yml',
+        'latest-mac-universal.yml',
+        'latest-mac-universal-beta.yml',
+      ]);
+      pushByRegex(/latest.*mac.*(arm64|universal).*\.yml$/i);
     } else {
-      candidates.push('latest-mac.yml', 'latest-mac-x64.yml', 'latest-mac-beta.yml');
+      pushByNames(['latest-mac-x64.yml', 'latest-mac.yml', 'latest-mac-beta.yml']);
+      pushByRegex(/latest.*mac.*x64.*\.yml$/i);
     }
-  } else if (platform === 'win') {
-    if (channel === 'beta') {
-      candidates.push('latest-beta.yml');
-    }
-    candidates.push('latest.yml');
+    pushByNames(['latest-mac-beta.yml', 'latest-mac.yml']);
+    pushByRegex(/latest.*mac.*\.yml$/i);
   } else if (platform === 'linux') {
-    candidates.push('latest-linux.yml', `latest-linux-${arch}.yml`, 'latest.yml');
+    pushByNames([`latest-linux-${arch}.yml`, 'latest-linux.yml', 'latest.yml']);
+    pushByRegex(/latest.*linux.*\.yml$/i);
+  } else {
+    // windows
+    if (channel === 'beta') pushByNames(['latest-beta.yml']);
+    pushByNames(['latest.yml']);
+    pushByRegex(/^latest(?!.*(mac|linux)).*\.yml$/i);
   }
 
-  const direct = firstAssetByNames(assets, candidates);
-  if (direct) return direct;
+  // Last-resort fallback for any remaining manifest assets.
+  for (const asset of manifests) {
+    pushAsset(asset);
+  }
 
-  const regex =
-    platform === 'mac'
-      ? /latest.*mac.*\.yml$/i
-      : platform === 'linux'
-        ? /latest.*linux.*\.yml$/i
-        : /^latest(?!.*(mac|linux)).*\.yml$/i;
+  return ordered;
+}
 
-  return (assets || []).find((asset) => regex.test(String(asset.name || '')));
+function isArtifactCompatible(fileName, platform, arch) {
+  const name = String(fileName || '').toLowerCase();
+  if (!name) return false;
+
+  if (platform === 'mac' && !name.includes('mac')) return false;
+  if (platform === 'linux' && !name.includes('linux')) return false;
+  if (platform === 'win' && (name.includes('mac') || name.includes('linux'))) return false;
+
+  const hasArm = name.includes('arm64') || name.includes('aarch64');
+  const hasX64 = name.includes('x64') || name.includes('amd64');
+  const hasUniversal = name.includes('universal');
+
+  if (arch === 'arm64') {
+    if (hasX64 && !hasUniversal) return false;
+    return true;
+  }
+
+  if (arch === 'x64') {
+    if (hasArm && !hasUniversal) return false;
+    return true;
+  }
+
+  return true;
 }
 
 function parseManifestYml(ymlText) {
@@ -259,7 +316,8 @@ function parseManifestYml(ymlText) {
   const shaMatches = [...text.matchAll(/^\s*sha512:\s*"?([^\n"]+)"?\s*$/gm)];
 
   const version = cleanText(versionMatch?.[1] || '', 80);
-  const releaseDate = cleanText(releaseDateMatch?.[1] || '', 80) || new Date().toISOString();
+  const releaseDateRaw = cleanText(releaseDateMatch?.[1] || '', 80);
+  const releaseDate = releaseDateRaw.replace(/^['"]+|['"]+$/g, '') || new Date().toISOString();
   const fileUrl = cleanText(fileBlockMatch?.[1] || pathMatch?.[1] || '', 400);
   const sha512 = cleanText(fileBlockMatch?.[2] || (shaMatches.length > 0 ? shaMatches[shaMatches.length - 1][1] : ''), 3000);
   const size = parseNumeric(fileBlockMatch?.[3] || '0', 0);
@@ -309,52 +367,60 @@ async function getGitHubUpdateConfig({ channel, platform, arch }) {
     const release = pickReleaseForChannel(releases, normalizedChannel);
     if (!release) return null;
 
-    const manifestAsset = pickManifestAsset(release.assets || [], {
+    const candidates = listManifestAssets(release.assets || [], {
       channel: normalizedChannel,
       platform: normalizedPlatform,
       arch: normalizedArch,
     });
-    if (!manifestAsset || !manifestAsset.url) return null;
+    if (candidates.length === 0) return null;
 
-    const manifestResponse = await githubRequest(
-      `/repos/${gh.owner}/${gh.repo}/releases/assets/${manifestAsset.id}`,
-      {
-        token: gh.token,
-        accept: 'application/octet-stream',
+    for (const manifestAsset of candidates) {
+      const manifestResponse = await githubRequest(
+        `/repos/${gh.owner}/${gh.repo}/releases/assets/${manifestAsset.id}`,
+        {
+          token: gh.token,
+          accept: 'application/octet-stream',
+        }
+      );
+
+      if (!manifestResponse.ok) {
+        const detail = await manifestResponse.text().catch(() => '');
+        console.error(`Manifest asset fetch failed (${manifestResponse.status}): ${detail.slice(0, 180)}`);
+        continue;
       }
-    );
 
-    if (!manifestResponse.ok) {
-      const detail = await manifestResponse.text().catch(() => '');
-      throw new Error(`Manifest asset fetch failed (${manifestResponse.status}): ${detail.slice(0, 180)}`);
+      const manifestText = await manifestResponse.text();
+      const parsed = parseManifestYml(manifestText);
+      if (!parsed) continue;
+      if (!isArtifactCompatible(parsed.fileName, normalizedPlatform, normalizedArch)) {
+        continue;
+      }
+
+      const binaryAsset = findAssetByName(release.assets || [], parsed.fileName);
+      if (!binaryAsset) {
+        continue;
+      }
+
+      return {
+        source: 'github',
+        channel: normalizedChannel,
+        platform: normalizedPlatform,
+        arch: normalizedArch,
+        version: parsed.version,
+        releaseDate: parsed.releaseDate,
+        releaseNotes: parsed.releaseNotes || cleanText(release.body || '', 2000),
+        sha512: parsed.sha512,
+        size: parsed.size,
+        fileName: parsed.fileName,
+        owner: gh.owner,
+        repo: gh.repo,
+        releaseTag: cleanText(release.tag_name || '', 120),
+        binaryAssetId: binaryAsset.id,
+        binaryAssetName: cleanText(binaryAsset.name || parsed.fileName, 200),
+      };
     }
 
-    const manifestText = await manifestResponse.text();
-    const parsed = parseManifestYml(manifestText);
-    if (!parsed) return null;
-
-    const binaryAsset = findAssetByName(release.assets || [], parsed.fileName);
-    if (!binaryAsset) {
-      throw new Error(`Release asset not found: ${parsed.fileName}`);
-    }
-
-    return {
-      source: 'github',
-      channel: normalizedChannel,
-      platform: normalizedPlatform,
-      arch: normalizedArch,
-      version: parsed.version,
-      releaseDate: parsed.releaseDate,
-      releaseNotes: parsed.releaseNotes || cleanText(release.body || '', 2000),
-      sha512: parsed.sha512,
-      size: parsed.size,
-      fileName: parsed.fileName,
-      owner: gh.owner,
-      repo: gh.repo,
-      releaseTag: cleanText(release.tag_name || '', 120),
-      binaryAssetId: binaryAsset.id,
-      binaryAssetName: cleanText(binaryAsset.name || parsed.fileName, 200),
-    };
+    return null;
   } catch (err) {
     console.error('GitHub updater config lookup failed:', err?.message || String(err));
     return null;
