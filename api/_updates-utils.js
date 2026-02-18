@@ -164,7 +164,7 @@ function getGitHubRepoConfig() {
 }
 
 function getUpdatesSourceMode() {
-  const mode = cleanText(process.env.UPDATE_SOURCE || 'auto', 16).toLowerCase();
+  const mode = cleanText(process.env.UPDATE_SOURCE || 'github', 16).toLowerCase();
   if (mode === 'env' || mode === 'github') return mode;
   return 'auto';
 }
@@ -454,13 +454,20 @@ async function getGitHubUpdateConfig({ channel, platform, arch }) {
 async function getUpdateConfig({ channel, platform, arch }) {
   const mode = getUpdatesSourceMode();
 
-  if (mode === 'env' || mode === 'auto') {
+  if (mode === 'env') {
     const envConfig = getEnvUpdateConfig({ channel, platform, arch });
     if (envConfig) return envConfig;
-    if (mode === 'env') return null;
+    return null;
   }
 
-  return getGitHubUpdateConfig({ channel, platform, arch });
+  if (mode === 'github' || mode === 'auto') {
+    const githubConfig = await getGitHubUpdateConfig({ channel, platform, arch });
+    if (githubConfig) return githubConfig;
+    if (mode === 'github') return null;
+  }
+
+  // Auto-mode fallback when GitHub metadata is unavailable.
+  return getEnvUpdateConfig({ channel, platform, arch });
 }
 
 async function getGitHubAssetRedirect({ owner, repo, assetId }) {
