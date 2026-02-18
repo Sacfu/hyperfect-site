@@ -69,6 +69,27 @@ Body example (approve + invite):
 }
 ```
 
+### Admin remove from waitlist (soft delete)
+
+`DELETE /api/waitlist`
+
+Headers:
+
+`Authorization: Bearer <ADMIN_SECRET>`
+
+Body example:
+
+```json
+{
+  "customer_id": "cus_123"
+}
+```
+
+Notes:
+
+- This removes the user from the waitlist queue by clearing waitlist metadata.
+- It does **not** delete the Stripe customer record.
+
 ## Admin UI
 
 A simple internal admin page is included:

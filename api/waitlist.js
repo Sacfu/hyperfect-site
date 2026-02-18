@@ -8,6 +8,8 @@
 //   GET /api/waitlist?status=pending|approved|rejected|invited|converted|all&limit=50&cursor=cus_xxx
 //   PATCH /api/waitlist
 //   Body: { customer_id?, email?, status, notes?, send_invite? }
+//   DELETE /api/waitlist
+//   Body: { customer_id? email? }
 //
 // Data is persisted on Stripe customers via metadata.
 // This keeps costs low while providing a queue-style review workflow.
@@ -31,7 +33,7 @@ const WAITLIST_NOTIFY_ENDPOINT = String(
 
 function setCors(res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 }
 
@@ -436,6 +438,60 @@ async function handleAdminUpdate(req, res) {
     });
 }
 
+async function handleAdminDelete(req, res) {
+    if (!requireAdmin(req, res)) return;
+
+    const body = req.body && typeof req.body === 'object' ? req.body : {};
+    const customerId = cleanText(body.customer_id, 64);
+    const email = normalizeEmail(body.email);
+
+    if (!customerId && !email) {
+        return res.status(400).json({ success: false, error: 'customer_id or email is required' });
+    }
+
+    let customer = null;
+    if (customerId) {
+        customer = await stripe.customers.retrieve(customerId);
+    } else {
+        customer = await findCustomerByEmail(email);
+    }
+
+    if (!customer || customer.deleted) {
+        return res.status(404).json({ success: false, error: 'Waitlist customer not found' });
+    }
+    if (!isWaitlistCustomer(customer.metadata || {})) {
+        return res.status(404).json({ success: false, error: 'Waitlist customer not found' });
+    }
+
+    const previous = customer.metadata || {};
+    const now = new Date().toISOString();
+    const metadata = {
+        ...previous,
+        waitlist: 'false',
+        waitlist_status: '',
+        waitlist_name: '',
+        waitlist_interest: '',
+        waitlist_source: '',
+        waitlist_consent: '',
+        waitlist_submission_count: '',
+        waitlist_last_submitted_at: '',
+        waitlist_created_at: '',
+        waitlist_updated_at: now,
+        waitlist_reviewed_at: '',
+        waitlist_review_notes: '',
+        waitlist_invited_at: '',
+        waitlist_converted_at: '',
+        waitlist_removed_at: now,
+    };
+
+    const updated = await stripe.customers.update(customer.id, { metadata });
+    return res.status(200).json({
+        success: true,
+        removed: true,
+        entry: mapWaitlistCustomer(updated),
+    });
+}
+
 module.exports = async function handler(req, res) {
     setCors(res);
 
@@ -451,6 +507,7 @@ module.exports = async function handler(req, res) {
         if (req.method === 'POST') return await handlePublicSubmit(req, res);
         if (req.method === 'GET') return await handleAdminList(req, res);
         if (req.method === 'PATCH') return await handleAdminUpdate(req, res);
+        if (req.method === 'DELETE') return await handleAdminDelete(req, res);
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     } catch (err) {
         console.error('Waitlist API error:', err?.stack || err?.message || String(err));

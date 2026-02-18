@@ -242,6 +242,7 @@
                             <button class="ok" onclick="reviewEntry('${escapeHtml(entry.customer_id)}', 'approved', false)">Approve</button>
                             <button class="ok" onclick="reviewEntry('${escapeHtml(entry.customer_id)}', 'approved', true)">Approve + Invite</button>
                             <button class="bad" onclick="reviewEntry('${escapeHtml(entry.customer_id)}', 'rejected', false)">Reject</button>
+                            <button class="bad" onclick="removeEntry('${escapeHtml(entry.customer_id)}')">Remove</button>
                             <button class="secondary" onclick="promptNotes('${escapeHtml(entry.customer_id)}')">Add Note</button>
                         </div>
                         <div class="invite" id="invite-${escapeHtml(entry.customer_id)}"></div>
@@ -276,6 +277,30 @@
                 await loadWaitlist();
             } catch (err) {
                 alert(`Update failed: ${err.message || err}`);
+            }
+        }
+
+        async function removeEntry(customerId) {
+            const confirmed = window.confirm('Remove this person from the waitlist queue? This keeps Stripe customer history.');
+            if (!confirmed) return;
+
+            try {
+                const res = await fetch('/api/waitlist', {
+                    method: 'DELETE',
+                    headers: withAuthHeaders(),
+                    body: JSON.stringify({
+                        customer_id: customerId,
+                    }),
+                });
+
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok || !data.success) {
+                    throw new Error(data.error || `HTTP ${res.status}`);
+                }
+
+                await loadWaitlist();
+            } catch (err) {
+                alert(`Remove failed: ${err.message || err}`);
             }
         }
 
