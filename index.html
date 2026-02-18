@@ -1055,7 +1055,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 44px 8px 14px;
+            padding: 30px 8px 14px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
@@ -1085,7 +1085,7 @@
             font-size: 0.62rem;
             letter-spacing: 1.15px;
             color: #93a0b5;
-            margin-top: 2px;
+            margin-top: 1px;
         }
 
         .mockup-sidebar-nav {
@@ -1144,8 +1144,8 @@
             width: 8px;
             height: 8px;
             border-radius: 999px;
-            background: #f87171;
-            box-shadow: 0 0 10px rgba(248, 113, 113, 0.75);
+            background: #34d399;
+            box-shadow: 0 0 10px rgba(52, 211, 153, 0.75);
         }
 
         .mockup-sidebar-license {
@@ -1179,27 +1179,11 @@
             gap: 0.72rem;
         }
 
-        .mockup-hero-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-            color: #ecf2ff;
-            line-height: 1.1;
-            margin-bottom: 0.18rem;
-        }
-
         .mockup-hero-subline {
-            font-size: 0.74rem;
-            color: #a5b4cc;
+            font-size: 0.78rem;
+            color: #cad7eb;
             letter-spacing: 0.02em;
-        }
-
-        .mockup-hero-time {
-            font-size: 0.66rem;
-            text-align: right;
-            color: #9eaac0;
-            line-height: 1.4;
-            white-space: nowrap;
+            font-weight: 600;
         }
 
         .stats-grid {
@@ -1259,7 +1243,9 @@
         .dashboard-layout {
             grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
             gap: 0.58rem;
-            align-items: start;
+            align-items: stretch;
+            flex: 1;
+            min-height: 0;
         }
 
         .mockup-panel {
@@ -1336,6 +1322,10 @@
             color: #fbbf24;
         }
 
+        .connection-status.status-good {
+            color: #34d399;
+        }
+
         .connection-action {
             border: 1px solid rgba(128, 149, 180, 0.36);
             border-radius: 999px;
@@ -1349,6 +1339,12 @@
         .connection-action.primary {
             color: #d6e9ff;
             border-color: rgba(63, 131, 222, 0.62);
+        }
+
+        .connection-action.connected {
+            color: #baf7d8;
+            border-color: rgba(52, 211, 153, 0.55);
+            background: rgba(52, 211, 153, 0.12);
         }
 
         .session-summary {
@@ -1406,6 +1402,18 @@
             font-size: 0.66rem;
         }
 
+        #dashboard-view.active {
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        #dashboard-view .mockup-panel {
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
         @media (max-width: 1024px) {
             .stats-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1436,15 +1444,8 @@
                 padding: 0.52rem 0.58rem;
                 gap: 0.4rem;
             }
-            .mockup-hero-title {
-                font-size: 0.92rem;
-                margin-bottom: 0.08rem;
-            }
             .mockup-hero-subline {
-                font-size: 0.56rem;
-            }
-            .mockup-hero-time {
-                font-size: 0.52rem;
+                font-size: 0.58rem;
             }
             .stats-grid {
                 grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -2769,11 +2770,11 @@
                             <div class="mockup-sidebar">
                                 <div class="mockup-sidebar-brand">
                                     <div class="mockup-brand-icon">
-                                        <img src="icon.svg" alt="Nexus icon">
+                                        <img src="assets/brand/app-icon.png" alt="Nexus icon">
                                     </div>
                                     <div>
                                         <div class="mockup-brand-name">Nexus</div>
-                                        <div class="mockup-brand-subtitle">JOB AUTOMATION</div>
+                                        <div class="mockup-brand-subtitle">CAREER COPILOT</div>
                                     </div>
                                 </div>
                                 <div class="mockup-sidebar-nav">
@@ -2796,11 +2797,11 @@
                                 <div class="mockup-sidebar-bottom">
                                     <div class="mockup-sidebar-chip">
                                         <span class="mockup-chip-dot"></span>
-                                        API Disconnected
+                                        API Connected
                                     </div>
                                     <div class="mockup-sidebar-license">
                                         <span>License</span>
-                                        <strong>Unlimited</strong>
+                                        <strong>Pro</strong>
                                     </div>
                                 </div>
                             </div>
@@ -2809,31 +2810,27 @@
                                 <!-- Dashboard View -->
                                 <div id="dashboard-view" class="mockup-content active">
                                     <div class="mockup-hero-panel">
-                                        <div>
-                                            <div class="mockup-hero-title">Good morning</div>
-                                            <div class="mockup-hero-subline">Session overview</div>
-                                        </div>
-                                        <div class="mockup-hero-time">Wed, Feb 18<br>12:53 AM</div>
+                                        <div class="mockup-hero-subline">Session overview • Live task telemetry and decision logs</div>
                                     </div>
                                     <div class="stats-grid">
                                         <div class="stat-card">
                                             <div class="stat-icon icon-good">&#10003;</div>
-                                            <div class="stat-value">0</div>
+                                            <div class="stat-value">42</div>
                                             <div class="stat-label">Applications</div>
                                         </div>
                                         <div class="stat-card">
                                             <div class="stat-icon icon-neutral">&#9638;</div>
-                                            <div class="stat-value">0</div>
+                                            <div class="stat-value">6</div>
                                             <div class="stat-label">Total Tasks</div>
                                         </div>
                                         <div class="stat-card">
                                             <div class="stat-icon icon-neutral">&#9646;</div>
-                                            <div class="stat-value">0%</div>
+                                            <div class="stat-value">76%</div>
                                             <div class="stat-label">Success Rate</div>
                                         </div>
                                         <div class="stat-card">
                                             <div class="stat-icon icon-warn">&#8594;</div>
-                                            <div class="stat-value">0</div>
+                                            <div class="stat-value">11</div>
                                             <div class="stat-label">Jobs Skipped</div>
                                         </div>
                                     </div>
@@ -2847,45 +2844,69 @@
                                                         <div class="connection-icon">AI</div>
                                                         <div>
                                                             <div class="connection-name">LM Studio</div>
-                                                            <div class="connection-status status-bad">Not Connected</div>
+                                                            <div class="connection-status status-good">Connected</div>
                                                         </div>
                                                     </div>
-                                                    <div class="connection-action">Refresh</div>
+                                                    <div class="connection-action connected">Ready</div>
                                                 </div>
                                                 <div class="connection-item">
                                                     <div class="connection-left">
                                                         <div class="connection-icon blue">in</div>
                                                         <div>
                                                             <div class="connection-name">LinkedIn</div>
-                                                            <div class="connection-status status-warn">Not Logged In</div>
+                                                            <div class="connection-status status-good">Logged In</div>
                                                         </div>
                                                     </div>
-                                                    <div class="connection-action primary">Login</div>
+                                                    <div class="connection-action connected">Ready</div>
                                                 </div>
                                                 <div class="connection-item">
                                                     <div class="connection-left">
                                                         <div class="connection-icon blue">I</div>
                                                         <div>
                                                             <div class="connection-name">Indeed</div>
-                                                            <div class="connection-status status-warn">Not Logged In</div>
+                                                            <div class="connection-status status-good">Logged In</div>
                                                         </div>
                                                     </div>
-                                                    <div class="connection-action primary">Login</div>
+                                                    <div class="connection-action connected">Ready</div>
                                                 </div>
                                             </div>
                                             <div class="session-summary">
-                                                <div class="session-row"><span>Total Tasks</span><strong>0</strong></div>
-                                                <div class="session-row"><span>Completed</span><strong>0</strong></div>
-                                                <div class="session-row"><span>Failed</span><strong>0</strong></div>
-                                                <div class="session-row"><span>Resumes</span><strong>0</strong></div>
+                                                <div class="session-row"><span>Total Tasks</span><strong>6</strong></div>
+                                                <div class="session-row"><span>Completed</span><strong>4</strong></div>
+                                                <div class="session-row"><span>Failed</span><strong>1</strong></div>
+                                                <div class="session-row"><span>Resumes</span><strong>3</strong></div>
                                             </div>
                                         </div>
                                         <div class="mockup-panel">
                                             <div class="mockup-panel-title">All Tasks</div>
-                                            <div class="empty-tasks-preview">
-                                                <div class="empty-tasks-title">No tasks</div>
-                                                <div class="empty-tasks-subtitle">No tasks yet</div>
-                                                <div class="empty-tasks-hint">Go to Tasks page to create one</div>
+                                            <div class="task-table">
+                                                <div class="task-mini">
+                                                    <div>
+                                                        <div class="task-mini-title">Power Platform Engineer</div>
+                                                        <div class="task-mini-meta">LinkedIn • Score 8.7 • Applying</div>
+                                                    </div>
+                                                    <span class="row-chip run">Running</span>
+                                                </div>
+                                                <div class="task-mini">
+                                                    <div>
+                                                        <div class="task-mini-title">Indeed Recommendations</div>
+                                                        <div class="task-mini-meta">Indeed • Score 7.9 • Queue</div>
+                                                    </div>
+                                                    <span class="row-chip">Queued</span>
+                                                </div>
+                                                <div class="task-mini">
+                                                    <div>
+                                                        <div class="task-mini-title">External ATS Sweep</div>
+                                                        <div class="task-mini-meta">Greenhouse/Lever • Score 8.1</div>
+                                                    </div>
+                                                    <span class="row-chip pause">Paused</span>
+                                                </div>
+                                            </div>
+                                            <div class="log-list" style="margin-top: 0.5rem; max-height: none; flex: 1;">
+                                                <div class="log-line">[22:41:08] Matched resume: Senior_Software_Developer.pdf</div>
+                                                <div class="log-line">[22:41:14] LLM scored listing 8.7/10 — submit started</div>
+                                                <div class="log-line">[22:41:33] Applied successfully — Senior Platform Engineer</div>
+                                                <div class="log-line">[22:42:10] External domain queued for ATS module handling</div>
                                             </div>
                                         </div>
                                     </div>
@@ -2936,6 +2957,9 @@
                                 <div id="profiles-view" class="mockup-content">
                                     <div class="mockup-panel">
                                         <div class="mockup-panel-title">Primary Resume + Autofill Defaults</div>
+                                        <div style="display:flex; justify-content:flex-end; margin-bottom:0.45rem;">
+                                            <span class="connection-action primary">Upload Resume</span>
+                                        </div>
                                         <div class="kv-grid">
                                             <div class="kv-item">
                                                 <div class="kv-label">Resume</div>
@@ -2986,17 +3010,10 @@
                                             </div>
                                             <div class="account-mini">
                                                 <div class="account-mini-head">
-                                                    <span class="account-mini-name">Greenhouse</span>
-                                                    <span class="row-chip">Test Mode</span>
+                                                    <span class="account-mini-name">Glassdoor</span>
+                                                    <span class="row-chip run">Ready</span>
                                                 </div>
-                                                <div class="account-mini-meta">Custom URL lab enabled</div>
-                                            </div>
-                                            <div class="account-mini">
-                                                <div class="account-mini-head">
-                                                    <span class="account-mini-name">Lever + Workday</span>
-                                                    <span class="row-chip">In Progress</span>
-                                                </div>
-                                                <div class="account-mini-meta">Domain mapping and orchestration</div>
+                                                <div class="account-mini-meta">Account connected • Application flow ready</div>
                                             </div>
                                         </div>
                                     </div>
