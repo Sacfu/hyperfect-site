@@ -1,9 +1,18 @@
 {
   "rewrites": [
+    { "source": "/getting-started", "destination": "/getting-started.html" },
     { "source": "/success", "destination": "/success.html" },
     { "source": "/api/:path*", "destination": "/api/:path*" }
   ],
   "headers": [
+    {
+      "source": "/api/waitlist",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, PATCH, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" }
+      ]
+    },
     {
       "source": "/api/validate-license",
       "headers": [

@@ -307,6 +307,22 @@
             font-weight: 400;
         }
 
+        .hero-guide-link {
+            margin: -0.9rem 0 1.2rem;
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+        }
+
+        .hero-guide-link a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .hero-guide-link a:hover {
+            text-decoration: underline;
+        }
+
         .button-group {
             display: flex;
             gap: 1rem;
@@ -366,16 +382,16 @@
            INTERACTIVE APP MOCKUP
            ======================================== */
         .mockup-container {
-            max-width: 900px;
+            max-width: 1020px;
             margin: 0 auto;
         }
 
         .mockup-window {
-            background: var(--bg-secondary);
+            background: linear-gradient(160deg, rgba(16, 18, 30, 0.94), rgba(11, 13, 22, 0.98));
             border: 1px solid var(--glass-border);
-            border-radius: 12px;
+            border-radius: 18px;
             overflow: hidden;
-            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.3), 0 0 60px rgba(37, 99, 235, 0.08);
+            box-shadow: 0 36px 80px rgba(0, 0, 0, 0.42), 0 0 90px rgba(37, 99, 235, 0.11);
             animation: slideUp 0.8s ease-out 0.2s both;
         }
 
@@ -411,13 +427,13 @@
 
         .mockup-body {
             display: grid;
-            grid-template-columns: 220px 1fr;
-            min-height: 400px;
+            grid-template-columns: 230px 1fr;
+            min-height: 455px;
         }
 
         .mockup-sidebar {
-            background: rgba(0, 0, 0, 0.15);
-            padding: 1.25rem 0.75rem;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 1.25rem 0.85rem;
             border-right: 1px solid var(--glass-border);
         }
 
@@ -437,16 +453,16 @@
         }
 
         .sidebar-item.active {
-            background: rgba(37, 99, 235, 0.15);
-            color: var(--accent);
+            background: linear-gradient(120deg, rgba(37, 99, 235, 0.22), rgba(37, 99, 235, 0.08));
+            color: #e9f0ff;
             font-weight: 600;
         }
 
         .mockup-main {
-            padding: 2rem;
+            padding: 1.35rem 1.4rem;
             display: flex;
             flex-direction: column;
-            gap: 1.75rem;
+            gap: 1rem;
         }
 
         .mockup-content {
@@ -459,15 +475,15 @@
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 0.7rem;
         }
 
         .stat-card {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            padding: 1.25rem;
-            border-radius: 8px;
+            padding: 0.95rem;
+            border-radius: 10px;
         }
 
         .stat-label {
@@ -480,7 +496,7 @@
         }
 
         .stat-value {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: var(--accent);
         }
@@ -634,6 +650,266 @@
             color: #22c55e;
         }
 
+        .mockup-panel {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 0.85rem;
+        }
+
+        .mockup-panel-title {
+            color: var(--text-tertiary);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.55px;
+            margin-bottom: 0.65rem;
+            font-weight: 600;
+        }
+
+        .status-strip {
+            display: flex;
+            gap: 0.45rem;
+            flex-wrap: wrap;
+        }
+
+        .status-pill {
+            border: 1px solid var(--glass-border);
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            padding: 0.28rem 0.62rem;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .status-pill.connected {
+            border-color: rgba(34, 197, 94, 0.4);
+            color: #34d399;
+            background: rgba(16, 185, 129, 0.12);
+        }
+
+        .status-pill.warning {
+            border-color: rgba(245, 158, 11, 0.35);
+            color: #fbbf24;
+            background: rgba(245, 158, 11, 0.12);
+        }
+
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+        }
+
+        .task-mini {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.6rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 0.62rem 0.68rem;
+            margin-bottom: 0.5rem;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .task-mini:last-child {
+            margin-bottom: 0;
+        }
+
+        .task-mini-title {
+            font-size: 0.82rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .task-mini-meta {
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            margin-top: 0.14rem;
+        }
+
+        .score-chip {
+            font-size: 0.72rem;
+            font-weight: 700;
+            border-radius: 999px;
+            padding: 0.2rem 0.58rem;
+            color: #93c5fd;
+            border: 1px solid rgba(59, 130, 246, 0.35);
+            background: rgba(59, 130, 246, 0.14);
+            white-space: nowrap;
+        }
+
+        .log-list {
+            max-height: 196px;
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+            padding-right: 0.2rem;
+        }
+
+        .log-line {
+            font-size: 0.72rem;
+            color: #bac4d9;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            line-height: 1.4;
+            background: rgba(10, 14, 24, 0.55);
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            border-radius: 6px;
+            padding: 0.44rem 0.52rem;
+        }
+
+        .task-table {
+            display: flex;
+            flex-direction: column;
+            gap: 0.56rem;
+        }
+
+        .task-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto auto;
+            gap: 0.5rem;
+            align-items: center;
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 0.62rem 0.68rem;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .task-row-main {
+            min-width: 0;
+        }
+
+        .task-row-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .task-row-meta {
+            font-size: 0.71rem;
+            color: var(--text-secondary);
+            margin-top: 0.12rem;
+        }
+
+        .row-chip {
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.28px;
+            border-radius: 999px;
+            border: 1px solid var(--glass-border);
+            padding: 0.2rem 0.52rem;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .row-chip.run {
+            color: #22c55e;
+            border-color: rgba(34, 197, 94, 0.42);
+            background: rgba(34, 197, 94, 0.12);
+        }
+
+        .row-chip.pause {
+            color: #fbbf24;
+            border-color: rgba(245, 158, 11, 0.42);
+            background: rgba(245, 158, 11, 0.12);
+        }
+
+        .kv-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.5rem 0.7rem;
+            margin-top: 0.5rem;
+        }
+
+        .kv-item {
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 0.52rem 0.6rem;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .kv-label {
+            color: var(--text-tertiary);
+            font-size: 0.68rem;
+            margin-bottom: 0.24rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22px;
+        }
+
+        .kv-value {
+            color: var(--text-primary);
+            font-size: 0.77rem;
+            font-weight: 600;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .account-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.6rem;
+        }
+
+        .account-mini {
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 0.62rem 0.7rem;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .account-mini-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.6rem;
+            margin-bottom: 0.34rem;
+        }
+
+        .account-mini-name {
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .account-mini-meta {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        .setting-mini {
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 0.65rem 0.72rem;
+            background: rgba(255, 255, 255, 0.02);
+            margin-bottom: 0.52rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .setting-mini:last-child {
+            margin-bottom: 0;
+        }
+
+        .setting-mini-label {
+            color: var(--text-primary);
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .setting-mini-value {
+            color: var(--text-secondary);
+            font-size: 0.74rem;
+        }
+
         .trust-info {
             text-align: center;
             color: var(--text-tertiary);
@@ -702,6 +978,15 @@
                 display: flex;
             }
             .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .dashboard-layout {
+                grid-template-columns: 1fr;
+            }
+            .kv-grid {
+                grid-template-columns: 1fr;
+            }
+            .account-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -841,6 +1126,116 @@
         }
 
         /* ========================================
+           DEMO + SUPPORT SECTIONS
+           ======================================== */
+        .demo-gallery {
+            padding: 2rem 0 3rem;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 1.4rem;
+        }
+
+        .demo-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .demo-title {
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-weight: 700;
+            margin-bottom: 0.45rem;
+        }
+
+        .demo-description {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .demo-media-wrap {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.32);
+            min-height: 170px;
+        }
+
+        .demo-gif {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .demo-placeholder {
+            min-height: 170px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 1rem;
+            gap: 0.42rem;
+            color: var(--text-tertiary);
+            background: linear-gradient(160deg, rgba(30, 41, 59, 0.4), rgba(15, 23, 42, 0.76));
+        }
+
+        .demo-placeholder strong {
+            color: var(--text-secondary);
+            font-size: 0.82rem;
+        }
+
+        .support-hub {
+            padding: 2.5rem 0 3rem;
+        }
+
+        .support-grid {
+            margin-top: 1.35rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1rem;
+        }
+
+        .support-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.2rem;
+        }
+
+        .support-card h3 {
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: 0.45rem;
+        }
+
+        .support-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+            line-height: 1.6;
+        }
+
+        .support-card a {
+            color: var(--accent);
+            font-size: 0.85rem;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .support-card a:hover {
+            text-decoration: underline;
+        }
+
+        /* ========================================
            WAITLIST SECTION
            ======================================== */
         .waitlist {
@@ -937,6 +1332,34 @@
             margin-top: 1.5rem;
             font-size: 0.85rem;
             color: var(--text-tertiary);
+        }
+
+        .form-consent {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 0.25rem 0 0.75rem 0;
+            text-align: left;
+        }
+
+        .form-consent input {
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+
+        .form-consent label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .form-consent a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .form-consent a:hover {
+            text-decoration: underline;
         }
 
         .success-message {
@@ -1641,6 +2064,8 @@
                 <ul class="nav-center">
                     <li><a href="#features">Features</a></li>
                     <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#demo-gallery">Demos</a></li>
+                    <li><a href="/getting-started">Setup Guide</a></li>
                     <li><a href="#faq">FAQ</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
@@ -1681,6 +2106,7 @@
                 <div class="product-badge">Introducing <strong>Nexus</strong> — a Hyperfect product</div>
                 <h1>Your Job Search, on Autopilot</h1>
                 <p class="subheading">Nexus by Hyperfect uses AI to automatically find, match, and apply to jobs across LinkedIn, Indeed, and more — while you focus on what matters.</p>
+                <p class="hero-guide-link">New here? Start with the <a href="/getting-started">full setup guide</a>.</p>
 
                 <div class="button-group">
                     <button class="btn btn-primary" onclick="document.getElementById('waitlist').scrollIntoView({ behavior: 'smooth' })">Join Waitlist</button>
@@ -1727,126 +2153,222 @@
 
                         <!-- Mobile Tabs (visible on small screens only) -->
                         <div class="mockup-tabs">
-                            <button class="mockup-tab active" onclick="switchMockupView('dashboard', this)">Dashboard</button>
-                            <button class="mockup-tab" onclick="switchMockupView('tasks', this)">Tasks</button>
-                            <button class="mockup-tab" onclick="switchMockupView('profiles', this)">Profiles</button>
-                            <button class="mockup-tab" onclick="switchMockupView('accounts', this)">Accounts</button>
-                            <button class="mockup-tab" onclick="switchMockupView('settings', this)">Settings</button>
+                            <button class="mockup-tab active" data-view="dashboard" onclick="switchMockupView('dashboard', this)">Dashboard</button>
+                            <button class="mockup-tab" data-view="tasks" onclick="switchMockupView('tasks', this)">Tasks</button>
+                            <button class="mockup-tab" data-view="profiles" onclick="switchMockupView('profiles', this)">Profiles</button>
+                            <button class="mockup-tab" data-view="accounts" onclick="switchMockupView('accounts', this)">Accounts</button>
+                            <button class="mockup-tab" data-view="settings" onclick="switchMockupView('settings', this)">Settings</button>
                         </div>
 
                         <!-- Mockup Body -->
                         <div class="mockup-body">
                             <div class="mockup-sidebar">
-                                <div class="sidebar-item active" onclick="switchMockupView('dashboard', this)">Dashboard</div>
-                                <div class="sidebar-item" onclick="switchMockupView('tasks', this)">Tasks</div>
-                                <div class="sidebar-item" onclick="switchMockupView('profiles', this)">Profiles</div>
-                                <div class="sidebar-item" onclick="switchMockupView('accounts', this)">Accounts</div>
-                                <div class="sidebar-item" onclick="switchMockupView('settings', this)">Settings</div>
+                                <div class="sidebar-item active" data-view="dashboard" onclick="switchMockupView('dashboard', this)">Dashboard</div>
+                                <div class="sidebar-item" data-view="tasks" onclick="switchMockupView('tasks', this)">Tasks</div>
+                                <div class="sidebar-item" data-view="profiles" onclick="switchMockupView('profiles', this)">Profiles</div>
+                                <div class="sidebar-item" data-view="accounts" onclick="switchMockupView('accounts', this)">Accounts</div>
+                                <div class="sidebar-item" data-view="settings" onclick="switchMockupView('settings', this)">Settings</div>
                             </div>
 
                             <div class="mockup-main">
                                 <!-- Dashboard View -->
                                 <div id="dashboard-view" class="mockup-content active">
-                                    <div class="stats-grid">
-                                        <div class="stat-card">
-                                            <div class="stat-label">Apps Sent</div>
-                                            <div class="stat-value">147</div>
-                                        </div>
-                                        <div class="stat-card">
-                                            <div class="stat-label">Today</div>
-                                            <div class="stat-value">23</div>
-                                        </div>
-                                        <div class="stat-card">
-                                            <div class="stat-label">Active Tasks</div>
-                                            <div class="stat-value">3</div>
+                                    <div class="mockup-panel">
+                                        <div class="mockup-panel-title">Session Health</div>
+                                        <div class="status-strip">
+                                            <span class="status-pill connected">LinkedIn Connected</span>
+                                            <span class="status-pill connected">Indeed Connected</span>
+                                            <span class="status-pill connected">LLM Connected</span>
+                                            <span class="status-pill warning">Discord Webhook Pending</span>
                                         </div>
                                     </div>
-                                    <div style="font-size: 0.8rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Recent Applications</div>
-                                    <div class="list-container">
-                                        <div class="list-row">
-                                            <span class="row-company">Software Engineer — Stripe</span>
-                                            <span class="badge badge-applied">LinkedIn</span>
+                                    <div class="stats-grid">
+                                        <div class="stat-card">
+                                            <div class="stat-label">Applied</div>
+                                            <div class="stat-value">38</div>
                                         </div>
-                                        <div class="list-row">
-                                            <span class="row-company">Full Stack Dev — Notion</span>
-                                            <span class="badge badge-applied">Indeed</span>
+                                        <div class="stat-card">
+                                            <div class="stat-label">Skipped</div>
+                                            <div class="stat-value">14</div>
                                         </div>
-                                        <div class="list-row">
-                                            <span class="row-company">Backend Engineer — Vercel</span>
-                                            <span class="badge badge-applied">LinkedIn</span>
+                                        <div class="stat-card">
+                                            <div class="stat-label">Failed</div>
+                                            <div class="stat-value">2</div>
                                         </div>
-                                        <div class="list-row">
-                                            <span class="row-company">SRE — Cloudflare</span>
-                                            <span class="badge badge-applied">Glassdoor</span>
+                                        <div class="stat-card">
+                                            <div class="stat-label">Queue</div>
+                                            <div class="stat-value">6</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="dashboard-layout">
+                                        <div class="mockup-panel">
+                                            <div class="mockup-panel-title">Active Tasks</div>
+                                            <div class="task-mini">
+                                                <div>
+                                                    <div class="task-mini-title">Power Platform — LinkedIn + Indeed</div>
+                                                    <div class="task-mini-meta">Location: New Jersey • Easy Apply only</div>
+                                                </div>
+                                                <span class="score-chip">8.2/10</span>
+                                            </div>
+                                            <div class="task-mini">
+                                                <div>
+                                                    <div class="task-mini-title">Greenhouse Test URLs</div>
+                                                    <div class="task-mini-meta">Custom links • External form automation</div>
+                                                </div>
+                                                <span class="score-chip">7.6/10</span>
+                                            </div>
+                                            <div class="task-mini">
+                                                <div>
+                                                    <div class="task-mini-title">Indeed Recommended Feed</div>
+                                                    <div class="task-mini-meta">No keyword mode • Resume: PowerPlatform.pdf</div>
+                                                </div>
+                                                <span class="score-chip">7.9/10</span>
+                                            </div>
+                                        </div>
+                                        <div class="mockup-panel">
+                                            <div class="mockup-panel-title">Live Task Logs</div>
+                                            <div class="log-list">
+                                                <div class="log-line">22:41:09 [Task 419acd2d] Resume file set on frame[0] input[type=file]</div>
+                                                <div class="log-line">22:41:18 [Task 419acd2d] Question solved via LLM: "Authorized to work?" => Yes</div>
+                                                <div class="log-line">22:41:32 [Task 419acd2d] Application submitted: Power Platform Architect</div>
+                                                <div class="log-line">22:41:48 [Task 419acd2d] External domain not automated yet: careers.ey.com (logged + webhook)</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- Tasks View -->
                                 <div id="tasks-view" class="mockup-content">
-                                    <div class="task-item">
-                                        <div class="task-header">
-                                            <span class="task-name">Search: Senior Engineer</span>
-                                            <span class="task-status">Running</span>
+                                    <div class="mockup-panel">
+                                        <div class="mockup-panel-title">Task Queue</div>
+                                        <div class="task-table">
+                                            <div class="task-row">
+                                                <div class="task-row-main">
+                                                    <div class="task-row-name">Power platform jobs in New Jersey</div>
+                                                    <div class="task-row-meta">LinkedIn + Indeed • Limit 25/day • Resume A</div>
+                                                </div>
+                                                <span class="row-chip run">Running</span>
+                                                <span class="score-chip">8.0+</span>
+                                            </div>
+                                            <div class="task-row">
+                                                <div class="task-row-main">
+                                                    <div class="task-row-name">Greenhouse custom URL test bench</div>
+                                                    <div class="task-row-meta">External module mode • Manual assist allowed</div>
+                                                </div>
+                                                <span class="row-chip">Pending</span>
+                                                <span class="score-chip">7.0+</span>
+                                            </div>
+                                            <div class="task-row">
+                                                <div class="task-row-main">
+                                                    <div class="task-row-name">Indeed home recommendations</div>
+                                                    <div class="task-row-meta">Keyword empty • Location from profile defaults</div>
+                                                </div>
+                                                <span class="row-chip pause">Paused</span>
+                                                <span class="score-chip">7.5+</span>
+                                            </div>
                                         </div>
-                                        <div class="task-description">LinkedIn, Indeed • Match score: 80%+</div>
                                     </div>
-                                    <div class="task-item">
-                                        <div class="task-header">
-                                            <span class="task-name">Apply to Saved Jobs</span>
-                                            <span class="task-status">Completed</span>
+                                    <div class="mockup-panel" style="margin-top: 0.7rem;">
+                                        <div class="mockup-panel-title">Run Controls</div>
+                                        <div class="status-strip">
+                                            <span class="status-pill connected">Safe Mode: On</span>
+                                            <span class="status-pill">Easy Apply Only: On</span>
+                                            <span class="status-pill">External Apply: Off</span>
                                         </div>
-                                        <div class="task-description">Matched 12 positions • Applied to 8</div>
                                     </div>
                                 </div>
 
                                 <!-- Profiles View -->
                                 <div id="profiles-view" class="mockup-content">
-                                    <div class="profile-card">
-                                        <div class="profile-row">
-                                            <span class="profile-label">Resume Name</span>
-                                            <span class="profile-value">resume_2024.pdf</span>
-                                        </div>
-                                        <div class="profile-row">
-                                            <span class="profile-label">Last Updated</span>
-                                            <span class="profile-value">2 days ago</span>
-                                        </div>
-                                        <div class="profile-row">
-                                            <span class="profile-label">Status</span>
-                                            <span class="profile-value">Active</span>
+                                    <div class="mockup-panel">
+                                        <div class="mockup-panel-title">Primary Resume + Autofill Defaults</div>
+                                        <div class="kv-grid">
+                                            <div class="kv-item">
+                                                <div class="kv-label">Resume</div>
+                                                <div class="kv-value">SaqibAziz_PowerPlatform.pdf</div>
+                                            </div>
+                                            <div class="kv-item">
+                                                <div class="kv-label">Phone</div>
+                                                <div class="kv-value">(201) 555-0188</div>
+                                            </div>
+                                            <div class="kv-item">
+                                                <div class="kv-label">Location</div>
+                                                <div class="kv-value">Jersey City, NJ</div>
+                                            </div>
+                                            <div class="kv-item">
+                                                <div class="kv-label">Citizenship</div>
+                                                <div class="kv-value">Authorized to work in US</div>
+                                            </div>
+                                            <div class="kv-item">
+                                                <div class="kv-label">Race</div>
+                                                <div class="kv-value">Asian</div>
+                                            </div>
+                                            <div class="kv-item">
+                                                <div class="kv-label">Gender</div>
+                                                <div class="kv-value">Prefer not to say</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- Accounts View -->
                                 <div id="accounts-view" class="mockup-content">
-                                    <div class="account-card">
-                                        <div class="account-header">
-                                            <span class="account-name">LinkedIn</span>
-                                            <span class="account-status">Connected</span>
-                                        </div>
-                                    </div>
-                                    <div class="account-card">
-                                        <div class="account-header">
-                                            <span class="account-name">Indeed</span>
-                                            <span class="account-status">Connected</span>
+                                    <div class="mockup-panel">
+                                        <div class="mockup-panel-title">Connected Platforms</div>
+                                        <div class="account-grid">
+                                            <div class="account-mini">
+                                                <div class="account-mini-head">
+                                                    <span class="account-mini-name">LinkedIn</span>
+                                                    <span class="row-chip run">Ready</span>
+                                                </div>
+                                                <div class="account-mini-meta">Session verified • Easy Apply enabled</div>
+                                            </div>
+                                            <div class="account-mini">
+                                                <div class="account-mini-head">
+                                                    <span class="account-mini-name">Indeed</span>
+                                                    <span class="row-chip run">Ready</span>
+                                                </div>
+                                                <div class="account-mini-meta">Resume upload fallback configured</div>
+                                            </div>
+                                            <div class="account-mini">
+                                                <div class="account-mini-head">
+                                                    <span class="account-mini-name">Greenhouse</span>
+                                                    <span class="row-chip">Test Mode</span>
+                                                </div>
+                                                <div class="account-mini-meta">Custom URL lab enabled</div>
+                                            </div>
+                                            <div class="account-mini">
+                                                <div class="account-mini-head">
+                                                    <span class="account-mini-name">Lever + Workday</span>
+                                                    <span class="row-chip">In Progress</span>
+                                                </div>
+                                                <div class="account-mini-meta">Domain mapping and orchestration</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- Settings View -->
                                 <div id="settings-view" class="mockup-content">
-                                    <div class="settings-category">
-                                        <span class="settings-name">General</span>
-                                        <span style="color: var(--text-tertiary); font-size: 0.9rem;">&rarr;</span>
-                                    </div>
-                                    <div class="settings-category">
-                                        <span class="settings-name">LLM Provider</span>
-                                        <span style="color: var(--text-tertiary); font-size: 0.9rem;">&rarr;</span>
-                                    </div>
-                                    <div class="settings-category">
-                                        <span class="settings-name">License</span>
-                                        <span style="color: var(--text-tertiary); font-size: 0.9rem;">&rarr;</span>
+                                    <div class="mockup-panel">
+                                        <div class="mockup-panel-title">Runtime Settings</div>
+                                        <div class="setting-mini">
+                                            <span class="setting-mini-label">LLM Provider</span>
+                                            <span class="setting-mini-value">LM Studio (local)</span>
+                                        </div>
+                                        <div class="setting-mini">
+                                            <span class="setting-mini-label">Model</span>
+                                            <span class="setting-mini-value">qwen2.5-7b-instruct</span>
+                                        </div>
+                                        <div class="setting-mini">
+                                            <span class="setting-mini-label">Blocked Companies</span>
+                                            <span class="setting-mini-value">12 configured</span>
+                                        </div>
+                                        <div class="setting-mini">
+                                            <span class="setting-mini-label">Update Channel</span>
+                                            <span class="setting-mini-value">beta (auto-check enabled)</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1979,6 +2501,102 @@
     </section>
 
     <!-- ========================================
+         DEMO GALLERY
+         ======================================== -->
+    <section class="demo-gallery" id="demo-gallery">
+        <div class="container">
+            <h2 class="section-title fade-in">See Nexus In Action</h2>
+            <p class="section-subtitle fade-in">Short product clips from real task runs. Swap in your own capture files to keep this section fresh.</p>
+
+            <div class="demo-grid">
+                <article class="demo-card fade-in">
+                    <h3 class="demo-title">Create and Launch a Task</h3>
+                    <p class="demo-description">From task settings to run start in one flow.</p>
+                    <div class="demo-media-wrap">
+                        <img
+                            class="demo-gif"
+                            src="assets/demos/create-task.gif"
+                            alt="Creating and launching a task in Nexus"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                        >
+                        <div class="demo-placeholder" style="display:none;">
+                            <strong>Add demo GIF:</strong>
+                            <span>assets/demos/create-task.gif</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="demo-card fade-in">
+                    <h3 class="demo-title">Live Apply + Logs</h3>
+                    <p class="demo-description">Watch job scoring, question answering, and progression in real time.</p>
+                    <div class="demo-media-wrap">
+                        <img
+                            class="demo-gif"
+                            src="assets/demos/live-apply.gif"
+                            alt="Live application workflow and logs in Nexus"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                        >
+                        <div class="demo-placeholder" style="display:none;">
+                            <strong>Add demo GIF:</strong>
+                            <span>assets/demos/live-apply.gif</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="demo-card fade-in">
+                    <h3 class="demo-title">Task Review + Controls</h3>
+                    <p class="demo-description">Inspect task details, tweak settings, and relaunch quickly.</p>
+                    <div class="demo-media-wrap">
+                        <img
+                            class="demo-gif"
+                            src="assets/demos/task-review.gif"
+                            alt="Reviewing and editing task settings in Nexus"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                        >
+                        <div class="demo-placeholder" style="display:none;">
+                            <strong>Add demo GIF:</strong>
+                            <span>assets/demos/task-review.gif</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================
+         SUPPORT HUB
+         ======================================== -->
+    <section class="support-hub" id="support-hub">
+        <div class="container">
+            <h2 class="section-title fade-in">Setup + Support Hub</h2>
+            <p class="section-subtitle fade-in">A proper operator playbook for new users, not just marketing FAQ.</p>
+
+            <div class="support-grid">
+                <article class="support-card fade-in">
+                    <h3>Start-to-End Setup Guide</h3>
+                    <p>Install Nexus, activate license, connect sessions, configure defaults, and launch your first task.</p>
+                    <a href="/getting-started">Open guide</a>
+                </article>
+                <article class="support-card fade-in">
+                    <h3>LM Studio + Qwen Setup</h3>
+                    <p>Exact steps for local inference with LM Studio, including API server settings and model verification.</p>
+                    <a href="/getting-started#llm-setup">Jump to LLM setup</a>
+                </article>
+                <article class="support-card fade-in">
+                    <h3>Troubleshooting Playbook</h3>
+                    <p>Common issues: no login detected, LLM connection failures, captcha handling, and easy apply rate limits.</p>
+                    <a href="/getting-started#troubleshooting">View troubleshooting</a>
+                </article>
+                <article class="support-card fade-in">
+                    <h3>Power User Workflow</h3>
+                    <p>Bot-style operating rhythm: queue strategy, safe throttling, quality controls, and post-run review loops.</p>
+                    <a href="/getting-started#power-workflow">View workflow</a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================
          WAITLIST SECTION
          ======================================== -->
     <section class="waitlist" id="waitlist">
@@ -1988,7 +2606,7 @@
                 <p class="waitlist-subtitle fade-in">Be the first to know when Nexus launches. Early access spots are limited.</p>
 
                 <div class="success-message" id="waitlist-success">
-                    <strong>Thanks for joining!</strong> We'll be in touch soon.
+                    <strong>You're on the waitlist.</strong> We'll review applications and email you when you're approved.
                 </div>
 
                 <div class="error-message" id="waitlist-error">
@@ -2011,6 +2629,14 @@
                         <textarea id="waitlist-message" class="form-textarea" placeholder="Tell us about your job search..."></textarea>
                     </div>
 
+                    <div class="form-consent">
+                        <input type="checkbox" id="waitlist-consent" required>
+                        <label for="waitlist-consent">
+                            I agree to receive waitlist and launch updates from Hyperfect and acknowledge the
+                            <a href="privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
+                        </label>
+                    </div>
+
                     <button type="submit" class="form-submit">Join Waitlist</button>
                 </form>
 
@@ -2027,6 +2653,16 @@
             <h2 class="section-title fade-in">Frequently Asked Questions</h2>
 
             <div class="faq-container">
+                <div class="faq-item fade-in">
+                    <div class="faq-header" onclick="toggleFaq(this)">
+                        <h3 class="faq-question">Is there a full setup guide for new users?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="faq-text">Yes. We ship a full onboarding and operations guide that covers install, license activation, LM Studio setup, task configuration, and troubleshooting. Open <a href="/getting-started" style="color: var(--accent);">Getting Started</a> for the complete walkthrough.</p>
+                    </div>
+                </div>
+
                 <div class="faq-item fade-in">
                     <div class="faq-header" onclick="toggleFaq(this)">
                         <h3 class="faq-question">Do I need to keep my computer on?</h3>
@@ -2141,6 +2777,8 @@
                     <ul>
                         <li><a href="#features">Features</a></li>
                         <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#demo-gallery">Demos</a></li>
+                        <li><a href="/getting-started">Setup Guide</a></li>
                         <li><a href="#faq">FAQ</a></li>
                         <li><a href="#waitlist">Join Waitlist</a></li>
                     </ul>
@@ -2175,9 +2813,9 @@
          ======================================== -->
     <script>
         // ========== Configuration ==========
-        // FormSubmit.co — zero-signup form service
-        // First submission triggers a confirmation email to your inbox.
-        // Click confirm once, then all future submissions arrive automatically.
+        // Waitlist API (stored as structured queue in Stripe customer metadata)
+        const WAITLIST_ENDPOINT = '/api/waitlist';
+        // Contact form still uses FormSubmit for direct messages.
         const FORM_ENDPOINT = 'https://formsubmit.co/ajax/Hyperfectllc@gmail.com';
 
         // ========== Theme Toggle ==========
@@ -2229,6 +2867,9 @@
             const view = document.getElementById(`${viewName}-view`);
             if (view) view.classList.add('active');
             if (clickedEl) clickedEl.classList.add('active');
+
+            document.querySelectorAll(`.sidebar-item[data-view="${viewName}"]`).forEach(el => el.classList.add('active'));
+            document.querySelectorAll(`.mockup-tab[data-view="${viewName}"]`).forEach(el => el.classList.add('active'));
         }
 
         // Toolbar button actions (cosmetic for mockup demo)
@@ -2250,17 +2891,55 @@
             header.parentElement.classList.toggle('open');
         }
 
-        // ========== Form Handling (FormSubmit.co) ==========
-        // NOTE: FormSubmit.co requires email activation on first submission.
-        // The very first form submit sends a confirmation email to Hyperfectllc@gmail.com.
-        // You MUST click the link in that email before forms will work.
-        async function submitForm(formData, formEl, successEl, errorEl) {
+        // ========== Waitlist Form Handling ==========
+        async function submitWaitlistForm(formData, formEl, successEl, errorEl) {
             const submitBtn = formEl.querySelector('.form-submit');
             const originalText = submitBtn.textContent;
             submitBtn.textContent = 'Sending...';
             submitBtn.disabled = true;
 
             // Hide any previous messages
+            if (errorEl) errorEl.classList.remove('show');
+            if (successEl) successEl.classList.remove('show');
+
+            try {
+                const response = await fetch(WAITLIST_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json().catch(() => ({}));
+                if (response.ok && result.success) {
+                    formEl.style.display = 'none';
+                    successEl.classList.add('show');
+                    formEl.reset();
+                } else {
+                    throw new Error(result.error || 'Submission failed');
+                }
+            } catch (err) {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+                if (errorEl) {
+                    errorEl.classList.add('show');
+                    setTimeout(() => errorEl.classList.remove('show'), 8000);
+                }
+            }
+        }
+
+        // ========== Contact Form Handling (FormSubmit.co) ==========
+        // NOTE: FormSubmit.co requires email activation on first submission.
+        // The very first form submit sends a confirmation email to Hyperfectllc@gmail.com.
+        // You MUST click the link in that email before forms will work.
+        async function submitContactForm(formData, formEl, successEl, errorEl) {
+            const submitBtn = formEl.querySelector('.form-submit');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+
             if (errorEl) errorEl.classList.remove('show');
             if (successEl) successEl.classList.remove('show');
 
@@ -2274,11 +2953,9 @@
                     body: JSON.stringify(formData)
                 });
 
-                // FormSubmit returns HTML (not JSON) if email isn't confirmed yet
+                // FormSubmit returns HTML (not JSON) if email isn't confirmed yet.
                 const contentType = response.headers.get('content-type') || '';
                 if (!contentType.includes('application/json')) {
-                    // Likely the activation/confirmation page — treat as success
-                    // since FormSubmit received it and will send confirmation email
                     formEl.style.display = 'none';
                     successEl.classList.add('show');
                     formEl.reset();
@@ -2286,7 +2963,6 @@
                 }
 
                 const result = await response.json();
-
                 if (result.success === 'true' || result.success === true || response.ok) {
                     formEl.style.display = 'none';
                     successEl.classList.add('show');
@@ -2295,7 +2971,6 @@
                     throw new Error('Submission failed');
                 }
             } catch (err) {
-                // Network error or parse failure — try mailto fallback
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
                 if (errorEl) {
@@ -2307,19 +2982,18 @@
 
         document.getElementById('waitlist-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            submitForm({
+            submitWaitlistForm({
                 name: document.getElementById('waitlist-name').value,
                 email: document.getElementById('waitlist-email').value,
                 message: document.getElementById('waitlist-message').value,
-                _subject: 'Nexus Waitlist Signup',
-                _template: 'table',
-                _captcha: 'false'
+                consent: document.getElementById('waitlist-consent').checked,
+                source: 'website_waitlist'
             }, this, document.getElementById('waitlist-success'), document.getElementById('waitlist-error'));
         });
 
         document.getElementById('contact-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            submitForm({
+            submitContactForm({
                 name: document.getElementById('contact-name').value,
                 email: document.getElementById('contact-email').value,
                 message: document.getElementById('contact-message').value,

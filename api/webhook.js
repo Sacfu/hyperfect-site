@@ -140,6 +140,13 @@ module.exports = async function handler(req, res) {
             let customerId = session.customer;
             try {
                 if (!customerId && customerEmail) {
+                    const existingByEmail = await stripe.customers.list({ email: customerEmail, limit: 1 });
+                    if (existingByEmail.data && existingByEmail.data.length > 0) {
+                        customerId = existingByEmail.data[0].id;
+                    }
+                }
+
+                if (!customerId && customerEmail) {
                     const customer = await stripe.customers.create({
                         email: customerEmail,
                         metadata: {
@@ -151,11 +158,23 @@ module.exports = async function handler(req, res) {
                     customerId = customer.id;
                     console.log(`Created new customer ${customerId} for ${customerEmail}`);
                 } else if (customerId) {
+                    const existingCustomer = await stripe.customers.retrieve(customerId);
+                    const existingMetadata = existingCustomer?.metadata || {};
+                    const nowIso = new Date().toISOString();
+                    const fromWaitlist = existingMetadata.waitlist === 'true' || !!existingMetadata.waitlist_status;
+
                     await stripe.customers.update(customerId, {
                         metadata: {
+                            ...existingMetadata,
                             license_key: licenseKey,
-                            license_created: new Date().toISOString(),
+                            license_created: nowIso,
                             plan: plan,
+                            ...(fromWaitlist ? {
+                                waitlist: 'true',
+                                waitlist_status: 'converted',
+                                waitlist_converted_at: nowIso,
+                                waitlist_updated_at: nowIso,
+                            } : {}),
                         },
                     });
                 }

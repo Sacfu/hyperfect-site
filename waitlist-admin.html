@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Waitlist Admin</title>
+    <style>
+        :root {
+            --bg: #0b0c10;
+            --card: #141722;
+            --muted: #96a0b5;
+            --text: #f4f6fb;
+            --border: #283044;
+            --accent: #3b82f6;
+            --ok: #10b981;
+            --warn: #f59e0b;
+            --bad: #ef4444;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 24px;
+            background: radial-gradient(circle at top right, #1a2040, #0b0c10 48%);
+            color: var(--text);
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        h1 { margin: 0 0 12px; font-size: 26px; }
+        .sub { color: var(--muted); margin-bottom: 22px; }
+
+        .panel {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 180px 120px 120px;
+            gap: 10px;
+        }
+
+        input, select, button, textarea {
+            font: inherit;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #0f1320;
+            color: var(--text);
+            padding: 10px 12px;
+        }
+
+        button {
+            background: var(--accent);
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button.secondary { background: #1d253a; }
+        button.warn { background: var(--warn); }
+        button.bad { background: var(--bad); }
+        button.ok { background: var(--ok); }
+
+        .row {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+            background: #111627;
+            margin-bottom: 10px;
+        }
+
+        .row-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            color: var(--muted);
+        }
+
+        .pill.pending { color: #fbbf24; border-color: rgba(251, 191, 36, 0.4); }
+        .pill.approved, .pill.converted, .pill.invited { color: #34d399; border-color: rgba(52, 211, 153, 0.4); }
+        .pill.rejected { color: #f87171; border-color: rgba(248, 113, 113, 0.4); }
+
+        .meta {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .interest {
+            margin-top: 8px;
+            color: #d6dcef;
+            font-size: 14px;
+            white-space: pre-wrap;
+        }
+
+        .actions {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .message {
+            margin-top: 12px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .invite {
+            margin-top: 8px;
+            font-size: 13px;
+            color: #93c5fd;
+            word-break: break-all;
+        }
+
+        a { color: #93c5fd; }
+    </style>
+</head>
+<body>
+    <h1>Nexus Waitlist Admin</h1>
+    <div class="sub">Paste your admin token, load entries, and approve or invite candidates.</div>
+
+    <div class="panel">
+        <div class="controls">
+            <input id="token" type="password" placeholder="Admin token (ADMIN_SECRET)">
+            <select id="status">
+                <option value="pending">pending</option>
+                <option value="all">all</option>
+                <option value="approved">approved</option>
+                <option value="invited">invited</option>
+                <option value="converted">converted</option>
+                <option value="rejected">rejected</option>
+            </select>
+            <input id="limit" type="number" value="50" min="1" max="100">
+            <button id="load">Load</button>
+        </div>
+        <div class="message" id="meta"></div>
+    </div>
+
+    <div id="list"></div>
+
+    <script>
+        const tokenInput = document.getElementById('token');
+        const statusInput = document.getElementById('status');
+        const limitInput = document.getElementById('limit');
+        const loadBtn = document.getElementById('load');
+        const listEl = document.getElementById('list');
+        const metaEl = document.getElementById('meta');
+
+        function escapeHtml(text) {
+            return String(text || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function withAuthHeaders() {
+            return {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${tokenInput.value.trim()}`,
+            };
+        }
+
+        async function loadWaitlist() {
+            const token = tokenInput.value.trim();
+            if (!token) {
+                metaEl.textContent = 'Enter your admin token first.';
+                return;
+            }
+
+            loadBtn.disabled = true;
+            loadBtn.textContent = 'Loading...';
+            metaEl.textContent = '';
+            listEl.innerHTML = '';
+
+            try {
+                const status = encodeURIComponent(statusInput.value || 'pending');
+                const limit = Math.max(1, Math.min(100, parseInt(limitInput.value || '50', 10) || 50));
+                const res = await fetch(`/api/waitlist?status=${status}&limit=${limit}`, {
+                    method: 'GET',
+                    headers: withAuthHeaders(),
+                });
+
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok || !data.success) {
+                    throw new Error(data.error || `HTTP ${res.status}`);
+                }
+
+                const entries = data.entries || [];
+                metaEl.textContent = `Loaded ${entries.length} entries${data.next_cursor ? ' (more available)' : ''}.`;
+                renderEntries(entries);
+            } catch (err) {
+                metaEl.textContent = `Failed to load waitlist: ${err.message || err}`;
+            } finally {
+                loadBtn.disabled = false;
+                loadBtn.textContent = 'Load';
+            }
+        }
+
+        function renderEntries(entries) {
+            if (!entries.length) {
+                listEl.innerHTML = '<div class="panel">No entries found for this filter.</div>';
+                return;
+            }
+
+            listEl.innerHTML = entries.map((entry) => {
+                const name = escapeHtml(entry.name || '(no name)');
+                const email = escapeHtml(entry.email || '(no email)');
+                const status = escapeHtml(entry.status || 'pending');
+                const interest = escapeHtml(entry.interest || '');
+                const notes = escapeHtml(entry.notes || '');
+                const submitted = escapeHtml(entry.last_submitted_at || entry.created_at || '');
+
+                return `
+                    <div class="row" data-id="${escapeHtml(entry.customer_id)}" data-email="${email}">
+                        <div class="row-head">
+                            <div><strong>${name}</strong> &lt;${email}&gt;</div>
+                            <span class="pill ${status}">${status}</span>
+                        </div>
+                        <div class="meta">
+                            submissions: ${entry.submissions || 1} • submitted: ${submitted || 'unknown'} • source: ${escapeHtml(entry.source || 'website')}
+                        </div>
+                        ${interest ? `<div class="interest">${interest}</div>` : ''}
+                        ${notes ? `<div class="meta" style="margin-top:6px;">notes: ${notes}</div>` : ''}
+                        <div class="actions">
+                            <button class="ok" onclick="reviewEntry('${escapeHtml(entry.customer_id)}', 'approved', false)">Approve</button>
+                            <button class="ok" onclick="reviewEntry('${escapeHtml(entry.customer_id)}', 'approved', true)">Approve + Invite</button>
+                            <button class="bad" onclick="reviewEntry('${escapeHtml(entry.customer_id)}', 'rejected', false)">Reject</button>
+                            <button class="secondary" onclick="promptNotes('${escapeHtml(entry.customer_id)}')">Add Note</button>
+                        </div>
+                        <div class="invite" id="invite-${escapeHtml(entry.customer_id)}"></div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function reviewEntry(customerId, status, sendInvite, notes = '') {
+            try {
+                const res = await fetch('/api/waitlist', {
+                    method: 'PATCH',
+                    headers: withAuthHeaders(),
+                    body: JSON.stringify({
+                        customer_id: customerId,
+                        status,
+                        send_invite: sendInvite,
+                        notes,
+                    }),
+                });
+
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok || !data.success) {
+                    throw new Error(data.error || `HTTP ${res.status}`);
+                }
+
+                const inviteEl = document.getElementById(`invite-${customerId}`);
+                if (data.invite?.invite_url && inviteEl) {
+                    inviteEl.innerHTML = `Invite created: <a href="${data.invite.invite_url}" target="_blank" rel="noopener noreferrer">${data.invite.invite_url}</a>`;
+                }
+
+                await loadWaitlist();
+            } catch (err) {
+                alert(`Update failed: ${err.message || err}`);
+            }
+        }
+
+        function promptNotes(customerId) {
+            const notes = window.prompt('Add internal notes for this waitlist entry:') || '';
+            if (!notes.trim()) return;
+            reviewEntry(customerId, 'pending', false, notes.trim());
+        }
+
+        loadBtn.addEventListener('click', loadWaitlist);
+        tokenInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') loadWaitlist();
+        });
+    </script>
+</body>
+</html>
