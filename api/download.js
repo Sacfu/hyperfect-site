@@ -178,7 +178,17 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   const mode = cleanText(req.query?.mode || '', 16).toLowerCase();
-  if (req.method === 'GET' && mode === 'feed') {
+  const manifestHint = cleanText(req.query?.manifest || '', 128).toLowerCase();
+  const shouldHandleFeed = req.method === 'GET' && (
+    mode === 'feed' ||
+    (!!manifestHint && manifestHint.endsWith('.yml'))
+  );
+  const shouldHandleFile = req.method === 'GET' && (
+    mode === 'file' ||
+    (String(req.query?.artifact || '').trim().length > 0 && String(req.query?.t || '').trim().length > 0)
+  );
+
+  if (shouldHandleFeed) {
     try {
       return await handleUpdaterFeed(req, res);
     } catch (err) {
@@ -187,7 +197,7 @@ module.exports = async function handler(req, res) {
     }
   }
 
-  if (req.method === 'GET' && mode === 'file') {
+  if (shouldHandleFile) {
     try {
       return await handleUpdaterFile(req, res);
     } catch (err) {
