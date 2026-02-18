@@ -128,18 +128,31 @@ module.exports = async function handler(req, res) {
             console.log('================================');
 
             // Store the license key on the Stripe customer
-            if (session.customer) {
-                try {
-                    await stripe.customers.update(session.customer, {
+            // For $0 checkouts, Stripe may not auto-create a customer — create one if needed
+            let customerId = session.customer;
+            try {
+                if (!customerId && customerEmail) {
+                    const customer = await stripe.customers.create({
+                        email: customerEmail,
                         metadata: {
                             license_key: licenseKey,
                             license_created: new Date().toISOString(),
                             plan: plan,
                         },
                     });
-                } catch (err) {
-                    console.error('Failed to update customer metadata:', err.message);
+                    customerId = customer.id;
+                    console.log(`Created new customer ${customerId} for ${customerEmail}`);
+                } else if (customerId) {
+                    await stripe.customers.update(customerId, {
+                        metadata: {
+                            license_key: licenseKey,
+                            license_created: new Date().toISOString(),
+                            plan: plan,
+                        },
+                    });
                 }
+            } catch (err) {
+                console.error('Failed to store license on customer:', err.message);
             }
 
             // Email the license key to the customer
