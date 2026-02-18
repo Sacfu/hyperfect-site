@@ -6,105 +6,285 @@
     <title>Nexus Waitlist Admin</title>
     <style>
         :root {
-            --bg: #0b0c10;
-            --card: #141722;
-            --muted: #96a0b5;
-            --text: #f4f6fb;
-            --border: #283044;
+            --bg: #0b1627;
+            --bg-soft: #101f34;
+            --panel: rgba(255, 255, 255, 0.06);
+            --panel-strong: rgba(11, 22, 39, 0.78);
+            --border: rgba(148, 163, 184, 0.24);
+            --text: #f8fbff;
+            --muted: #b7c7dd;
             --accent: #3b82f6;
-            --ok: #10b981;
-            --warn: #f59e0b;
-            --bad: #ef4444;
+            --ok: #16a34a;
+            --warn: #d97706;
+            --bad: #dc2626;
+            --chip: rgba(59, 130, 246, 0.14);
         }
 
         * { box-sizing: border-box; }
+
         body {
             margin: 0;
-            padding: 24px;
-            background: radial-gradient(circle at top right, #1a2040, #0b0c10 48%);
-            color: var(--text);
+            min-height: 100vh;
             font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            padding: 28px 18px 40px;
         }
 
-        h1 { margin: 0 0 12px; font-size: 26px; }
-        .sub { color: var(--muted); margin-bottom: 22px; }
-
-        .panel {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 16px;
-            margin-bottom: 16px;
+        .container {
+            max-width: 1180px;
+            margin: 0 auto;
         }
 
-        .controls {
-            display: grid;
-            grid-template-columns: 1fr 180px 120px 120px;
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+
+        .title {
+            margin: 0;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            margin: 8px 0 0;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .top-links {
+            display: flex;
+            align-items: center;
             gap: 10px;
         }
 
-        input, select, button, textarea {
+        .link-btn,
+        button,
+        select,
+        input {
             font: inherit;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            background: #0f1320;
-            color: var(--text);
-            padding: 10px 12px;
         }
 
-        button {
-            background: var(--accent);
-            border: none;
+        .link-btn,
+        .btn {
+            border: 1px solid var(--border);
+            background: rgba(15, 25, 42, 0.75);
+            color: var(--text);
+            border-radius: 10px;
+            padding: 9px 13px;
+            text-decoration: none;
+            cursor: pointer;
             font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .btn.primary {
+            border-color: rgba(59, 130, 246, 0.5);
+            background: linear-gradient(180deg, rgba(59, 130, 246, 0.85), rgba(37, 99, 235, 0.88));
+        }
+
+        .btn.ok {
+            background: rgba(22, 163, 74, 0.18);
+            border-color: rgba(22, 163, 74, 0.4);
+        }
+
+        .btn.warn {
+            background: rgba(217, 119, 6, 0.2);
+            border-color: rgba(217, 119, 6, 0.45);
+        }
+
+        .btn.bad {
+            background: rgba(220, 38, 38, 0.2);
+            border-color: rgba(220, 38, 38, 0.45);
+        }
+
+        .btn.ghost {
+            background: transparent;
+        }
+
+        .panel {
+            background: var(--panel-strong);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 14px;
+            backdrop-filter: blur(8px);
+            margin-bottom: 12px;
+        }
+
+        .auth-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .auth-state {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-height: 28px;
+            color: var(--muted);
+            font-size: 0.93rem;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            background: #64748b;
+        }
+
+        .dot.ok { background: #22c55e; }
+        .dot.warn { background: #f59e0b; }
+        .dot.bad { background: #ef4444; }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: 160px 110px 1fr auto;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        select,
+        input[type="number"],
+        input[type="search"] {
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: rgba(15, 25, 42, 0.68);
+            color: var(--text);
+            padding: 10px 12px;
+            width: 100%;
+        }
+
+        .chip-row {
+            margin-top: 10px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .chip {
+            border: 1px solid var(--border);
+            background: var(--chip);
+            color: #dbeafe;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 0.82rem;
             cursor: pointer;
         }
 
-        button.secondary { background: #1d253a; }
-        button.warn { background: var(--warn); }
-        button.bad { background: var(--bad); }
-        button.ok { background: var(--ok); }
+        .chip.active {
+            border-color: rgba(59, 130, 246, 0.55);
+            background: rgba(59, 130, 246, 0.3);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .stat {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 10px;
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .meta {
+            color: var(--muted);
+            margin-top: 10px;
+            font-size: 0.88rem;
+        }
+
+        .entries {
+            display: grid;
+            gap: 10px;
+            margin-top: 12px;
+        }
 
         .row {
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 14px;
-            background: #111627;
-            margin-bottom: 10px;
+            background: rgba(15, 25, 42, 0.74);
+            padding: 12px;
         }
 
-        .row-head {
+        .row-top {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            gap: 8px;
+            align-items: flex-start;
+            gap: 12px;
             margin-bottom: 8px;
         }
 
+        .name {
+            font-weight: 700;
+            margin-bottom: 2px;
+            font-size: 0.98rem;
+        }
+
+        .email {
+            color: #bfd2ef;
+            font-size: 0.88rem;
+        }
+
         .pill {
-            display: inline-block;
-            padding: 3px 10px;
+            display: inline-flex;
+            align-items: center;
             border-radius: 999px;
-            font-size: 12px;
-            font-weight: 600;
             border: 1px solid var(--border);
+            padding: 4px 10px;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
             color: var(--muted);
+            background: rgba(148, 163, 184, 0.15);
         }
 
-        .pill.pending { color: #fbbf24; border-color: rgba(251, 191, 36, 0.4); }
-        .pill.approved, .pill.converted, .pill.invited { color: #34d399; border-color: rgba(52, 211, 153, 0.4); }
-        .pill.rejected { color: #f87171; border-color: rgba(248, 113, 113, 0.4); }
+        .pill.pending { color: #fbbf24; border-color: rgba(251, 191, 36, 0.35); background: rgba(251, 191, 36, 0.15); }
+        .pill.approved { color: #86efac; border-color: rgba(34, 197, 94, 0.35); background: rgba(34, 197, 94, 0.12); }
+        .pill.invited { color: #93c5fd; border-color: rgba(59, 130, 246, 0.38); background: rgba(59, 130, 246, 0.16); }
+        .pill.converted { color: #86efac; border-color: rgba(34, 197, 94, 0.45); background: rgba(34, 197, 94, 0.2); }
+        .pill.rejected { color: #fca5a5; border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.16); }
 
-        .meta {
+        .entry-meta {
             color: var(--muted);
-            font-size: 13px;
-            line-height: 1.5;
+            font-size: 0.83rem;
+            line-height: 1.45;
         }
 
-        .interest {
+        .interest,
+        .notes {
             margin-top: 8px;
-            color: #d6dcef;
-            font-size: 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 10px;
+            padding: 8px 10px;
+            font-size: 0.86rem;
+            color: #d7e3f7;
             white-space: pre-wrap;
+        }
+
+        .notes {
+            color: #cbd5e1;
         }
 
         .actions {
@@ -114,52 +294,174 @@
             gap: 8px;
         }
 
-        .message {
-            margin-top: 12px;
-            color: var(--muted);
-            font-size: 14px;
+        .actions .btn {
+            font-size: 0.8rem;
+            padding: 7px 10px;
         }
 
-        .invite {
+        .invite-link {
             margin-top: 8px;
-            font-size: 13px;
-            color: #93c5fd;
+            font-size: 0.82rem;
+            color: #bfdbfe;
             word-break: break-all;
         }
 
-        a { color: #93c5fd; }
+        .invite-link a { color: #bfdbfe; }
+
+        .empty {
+            text-align: center;
+            padding: 22px;
+            color: var(--muted);
+        }
+
+        .hidden { display: none !important; }
+
+        .toast-wrap {
+            position: fixed;
+            right: 16px;
+            bottom: 16px;
+            display: grid;
+            gap: 8px;
+            z-index: 40;
+        }
+
+        .toast {
+            background: rgba(15, 25, 42, 0.95);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 10px;
+            padding: 10px 12px;
+            min-width: 220px;
+            max-width: 360px;
+            font-size: 0.86rem;
+        }
+
+        .toast.ok { border-color: rgba(34, 197, 94, 0.5); }
+        .toast.bad { border-color: rgba(239, 68, 68, 0.5); }
+
+        @media (max-width: 960px) {
+            .controls-grid {
+                grid-template-columns: 1fr 110px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 18px 12px 30px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .controls-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Nexus Waitlist Admin</h1>
-    <div class="sub">Paste your admin token, load entries, and approve or invite candidates.</div>
-
-    <div class="panel">
-        <div class="controls">
-            <input id="token" type="password" placeholder="Admin token (ADMIN_SECRET)">
-            <select id="status">
-                <option value="pending">pending</option>
-                <option value="all">all</option>
-                <option value="approved">approved</option>
-                <option value="invited">invited</option>
-                <option value="converted">converted</option>
-                <option value="rejected">rejected</option>
-            </select>
-            <input id="limit" type="number" value="50" min="1" max="100">
-            <button id="load">Load</button>
+    <div class="container">
+        <div class="topbar">
+            <div>
+                <h1 class="title">Waitlist Admin</h1>
+                <p class="subtitle">Discord role-gated access for approvals, invites, and queue cleanup.</p>
+            </div>
+            <div class="top-links">
+                <a class="link-btn" href="/" aria-label="Back to site">Back to Site</a>
+            </div>
         </div>
-        <div class="message" id="meta"></div>
+
+        <section class="panel">
+            <div class="auth-row">
+                <div class="auth-state" id="auth-state">
+                    <span class="dot" id="auth-dot"></span>
+                    <span id="auth-text">Checking Discord session...</span>
+                </div>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <button class="btn primary" id="login-btn">Sign In with Discord</button>
+                    <button class="btn ghost hidden" id="logout-btn">Sign Out</button>
+                </div>
+            </div>
+            <div class="meta" id="auth-meta"></div>
+        </section>
+
+        <section class="panel hidden" id="dashboard-panel">
+            <div class="controls-grid">
+                <select id="status">
+                    <option value="pending">pending</option>
+                    <option value="all">all</option>
+                    <option value="approved">approved</option>
+                    <option value="invited">invited</option>
+                    <option value="converted">converted</option>
+                    <option value="rejected">rejected</option>
+                </select>
+                <input id="limit" type="number" value="50" min="1" max="100" title="Entries limit">
+                <input id="search" type="search" placeholder="Search name, email, source, notes...">
+                <button class="btn primary" id="load-btn">Refresh</button>
+            </div>
+
+            <div class="chip-row" id="chips">
+                <button class="chip" data-status="pending">Pending</button>
+                <button class="chip" data-status="all">All</button>
+                <button class="chip" data-status="approved">Approved</button>
+                <button class="chip" data-status="invited">Invited</button>
+                <button class="chip" data-status="converted">Converted</button>
+                <button class="chip" data-status="rejected">Rejected</button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat"><div class="stat-label">Total</div><div class="stat-value" id="stat-total">0</div></div>
+                <div class="stat"><div class="stat-label">Pending</div><div class="stat-value" id="stat-pending">0</div></div>
+                <div class="stat"><div class="stat-label">Approved</div><div class="stat-value" id="stat-approved">0</div></div>
+                <div class="stat"><div class="stat-label">Invited</div><div class="stat-value" id="stat-invited">0</div></div>
+                <div class="stat"><div class="stat-label">Converted</div><div class="stat-value" id="stat-converted">0</div></div>
+                <div class="stat"><div class="stat-label">Rejected</div><div class="stat-value" id="stat-rejected">0</div></div>
+            </div>
+
+            <div class="meta" id="meta"></div>
+        </section>
+
+        <section class="entries" id="entries"></section>
     </div>
 
-    <div id="list"></div>
+    <div class="toast-wrap" id="toast-wrap"></div>
 
     <script>
-        const tokenInput = document.getElementById('token');
+        const DISCORD_CLIENT_ID = '1472604757687275723';
+        const DISCORD_SCOPE = 'identify';
+        const TOKEN_KEY = 'discord_token';
+        const USER_KEY = 'discord_user';
+
+        const authDot = document.getElementById('auth-dot');
+        const authText = document.getElementById('auth-text');
+        const authMeta = document.getElementById('auth-meta');
+        const loginBtn = document.getElementById('login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const dashboardPanel = document.getElementById('dashboard-panel');
+
         const statusInput = document.getElementById('status');
         const limitInput = document.getElementById('limit');
-        const loadBtn = document.getElementById('load');
-        const listEl = document.getElementById('list');
+        const searchInput = document.getElementById('search');
+        const loadBtn = document.getElementById('load-btn');
+        const entriesEl = document.getElementById('entries');
         const metaEl = document.getElementById('meta');
+        const toastWrap = document.getElementById('toast-wrap');
+
+        let authToken = '';
+        let authUser = null;
+        let loadedEntries = [];
+        let allEntries = [];
+        const inviteLinks = {};
 
         function escapeHtml(text) {
             return String(text || '')
@@ -170,113 +472,296 @@
                 .replace(/'/g, '&#039;');
         }
 
+        function setAuthUI(state, message, detail = '') {
+            authDot.className = 'dot';
+            if (state === 'ok') authDot.classList.add('ok');
+            if (state === 'warn') authDot.classList.add('warn');
+            if (state === 'bad') authDot.classList.add('bad');
+            authText.textContent = message;
+            authMeta.textContent = detail || '';
+        }
+
+        function showToast(message, variant = 'ok') {
+            const el = document.createElement('div');
+            el.className = `toast ${variant}`;
+            el.textContent = message;
+            toastWrap.appendChild(el);
+            setTimeout(() => el.remove(), 3800);
+        }
+
         function withAuthHeaders() {
             return {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${tokenInput.value.trim()}`,
+                'Authorization': `Bearer ${authToken}`,
             };
         }
 
-        async function loadWaitlist() {
-            const token = tokenInput.value.trim();
-            if (!token) {
-                metaEl.textContent = 'Enter your admin token first.';
-                return;
-            }
+        function parseTokenFromHash() {
+            const hash = new URLSearchParams(window.location.hash.slice(1));
+            const token = hash.get('access_token');
+            if (!token) return;
+            localStorage.setItem(TOKEN_KEY, token);
+            const cleanUrl = `${window.location.origin}${window.location.pathname}`;
+            window.history.replaceState({}, document.title, cleanUrl);
+        }
 
-            loadBtn.disabled = true;
-            loadBtn.textContent = 'Loading...';
-            metaEl.textContent = '';
-            listEl.innerHTML = '';
-
+        async function fetchDiscordUser(token) {
             try {
-                const status = encodeURIComponent(statusInput.value || 'pending');
-                const limit = Math.max(1, Math.min(100, parseInt(limitInput.value || '50', 10) || 50));
-                const res = await fetch(`/api/waitlist?status=${status}&limit=${limit}`, {
-                    method: 'GET',
-                    headers: withAuthHeaders(),
+                const res = await fetch('https://discord.com/api/v10/users/@me', {
+                    headers: { Authorization: `Bearer ${token}` },
                 });
-
-                const data = await res.json().catch(() => ({}));
-                if (!res.ok || !data.success) {
-                    throw new Error(data.error || `HTTP ${res.status}`);
-                }
-
-                const entries = data.entries || [];
-                metaEl.textContent = `Loaded ${entries.length} entries${data.next_cursor ? ' (more available)' : ''}.`;
-                renderEntries(entries);
-            } catch (err) {
-                metaEl.textContent = `Failed to load waitlist: ${err.message || err}`;
-            } finally {
-                loadBtn.disabled = false;
-                loadBtn.textContent = 'Load';
+                if (!res.ok) return null;
+                return await res.json();
+            } catch {
+                return null;
             }
         }
 
-        function renderEntries(entries) {
-            if (!entries.length) {
-                listEl.innerHTML = '<div class="panel">No entries found for this filter.</div>';
+        async function fetchWaitlist(status, limit) {
+            const url = `/api/waitlist?status=${encodeURIComponent(status)}&limit=${limit}`;
+            const res = await fetch(url, {
+                method: 'GET',
+                headers: withAuthHeaders(),
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok || !data.success) {
+                return {
+                    ok: false,
+                    status: res.status,
+                    error: data.error || `HTTP ${res.status}`,
+                    data,
+                };
+            }
+            return { ok: true, status: res.status, data };
+        }
+
+        function formatDate(iso) {
+            if (!iso) return 'unknown';
+            const d = new Date(iso);
+            if (Number.isNaN(d.getTime())) return iso;
+            return d.toLocaleString();
+        }
+
+        function statusClass(status) {
+            const normalized = String(status || '').toLowerCase();
+            if (['pending', 'approved', 'invited', 'converted', 'rejected'].includes(normalized)) {
+                return normalized;
+            }
+            return '';
+        }
+
+        function renderStats(entries) {
+            const counts = {
+                total: entries.length,
+                pending: 0,
+                approved: 0,
+                invited: 0,
+                converted: 0,
+                rejected: 0,
+            };
+
+            for (const row of entries) {
+                const key = String(row.status || '').toLowerCase();
+                if (counts[key] !== undefined) counts[key] += 1;
+            }
+
+            document.getElementById('stat-total').textContent = counts.total;
+            document.getElementById('stat-pending').textContent = counts.pending;
+            document.getElementById('stat-approved').textContent = counts.approved;
+            document.getElementById('stat-invited').textContent = counts.invited;
+            document.getElementById('stat-converted').textContent = counts.converted;
+            document.getElementById('stat-rejected').textContent = counts.rejected;
+        }
+
+        function filterEntries() {
+            const q = String(searchInput.value || '').trim().toLowerCase();
+            if (!q) return loadedEntries;
+            return loadedEntries.filter((entry) => {
+                const blob = [
+                    entry.name,
+                    entry.email,
+                    entry.source,
+                    entry.status,
+                    entry.interest,
+                    entry.notes,
+                ].map((v) => String(v || '').toLowerCase()).join(' ');
+                return blob.includes(q);
+            });
+        }
+
+        function renderEntries() {
+            const rows = filterEntries();
+            if (!rows.length) {
+                entriesEl.innerHTML = '<div class="panel empty">No entries for this filter/search.</div>';
                 return;
             }
 
-            listEl.innerHTML = entries.map((entry) => {
+            entriesEl.innerHTML = rows.map((entry) => {
+                const id = escapeHtml(entry.customer_id || '');
                 const name = escapeHtml(entry.name || '(no name)');
                 const email = escapeHtml(entry.email || '(no email)');
                 const status = escapeHtml(entry.status || 'pending');
                 const interest = escapeHtml(entry.interest || '');
                 const notes = escapeHtml(entry.notes || '');
-                const submitted = escapeHtml(entry.last_submitted_at || entry.created_at || '');
+                const source = escapeHtml(entry.source || 'website_waitlist');
+                const submitted = escapeHtml(formatDate(entry.last_submitted_at || entry.created_at));
+                const updated = escapeHtml(formatDate(entry.updated_at || entry.last_submitted_at || entry.created_at));
+                const inviteHtml = inviteLinks[entry.customer_id]
+                    ? `<div class="invite-link">Invite link: <a href="${escapeHtml(inviteLinks[entry.customer_id])}" target="_blank" rel="noopener noreferrer">${escapeHtml(inviteLinks[entry.customer_id])}</a></div>`
+                    : '';
 
                 return `
-                    <div class="row" data-id="${escapeHtml(entry.customer_id)}" data-email="${email}">
-                        <div class="row-head">
-                            <div><strong>${name}</strong> &lt;${email}&gt;</div>
-                            <span class="pill ${status}">${status}</span>
+                    <article class="row">
+                        <div class="row-top">
+                            <div>
+                                <div class="name">${name}</div>
+                                <div class="email">${email}</div>
+                            </div>
+                            <span class="pill ${statusClass(status)}">${status}</span>
                         </div>
-                        <div class="meta">
-                            submissions: ${entry.submissions || 1} • submitted: ${submitted || 'unknown'} • source: ${escapeHtml(entry.source || 'website')}
-                        </div>
-                        ${interest ? `<div class="interest">${interest}</div>` : ''}
-                        ${notes ? `<div class="meta" style="margin-top:6px;">notes: ${notes}</div>` : ''}
+                        <div class="entry-meta">source: ${source} • submissions: ${entry.submissions || 1} • submitted: ${submitted} • updated: ${updated}</div>
+                        ${interest ? `<div class="interest"><strong>Interest:</strong> ${interest}</div>` : ''}
+                        ${notes ? `<div class="notes"><strong>Notes:</strong> ${notes}</div>` : ''}
                         <div class="actions">
-                            <button class="ok" onclick="reviewEntry('${escapeHtml(entry.customer_id)}', 'approved', false)">Approve</button>
-                            <button class="ok" onclick="reviewEntry('${escapeHtml(entry.customer_id)}', 'approved', true)">Approve + Invite</button>
-                            <button class="bad" onclick="reviewEntry('${escapeHtml(entry.customer_id)}', 'rejected', false)">Reject</button>
-                            <button class="bad" onclick="removeEntry('${escapeHtml(entry.customer_id)}')">Remove</button>
-                            <button class="secondary" onclick="promptNotes('${escapeHtml(entry.customer_id)}')">Add Note</button>
+                            <button class="btn ok" onclick="approveEntry('${id}', false)">Approve</button>
+                            <button class="btn primary" onclick="approveEntry('${id}', true)">Approve + Invite</button>
+                            <button class="btn warn" onclick="rejectEntry('${id}')">Reject</button>
+                            <button class="btn ghost" onclick="addNote('${id}')">Add Note</button>
+                            <button class="btn bad" onclick="removeEntry('${id}')">Remove</button>
                         </div>
-                        <div class="invite" id="invite-${escapeHtml(entry.customer_id)}"></div>
-                    </div>
+                        ${inviteHtml}
+                    </article>
                 `;
             }).join('');
         }
 
-        async function reviewEntry(customerId, status, sendInvite, notes = '') {
+        function setBusy(isBusy, label = 'Refresh') {
+            loadBtn.disabled = isBusy;
+            loadBtn.textContent = isBusy ? 'Loading...' : label;
+        }
+
+        async function refreshData() {
+            if (!authToken) return;
+            setBusy(true);
+            metaEl.textContent = '';
+
+            const status = statusInput.value || 'pending';
+            const limit = Math.max(1, Math.min(100, parseInt(limitInput.value || '50', 10) || 50));
+
             try {
-                const res = await fetch('/api/waitlist', {
-                    method: 'PATCH',
-                    headers: withAuthHeaders(),
-                    body: JSON.stringify({
-                        customer_id: customerId,
-                        status,
-                        send_invite: sendInvite,
-                        notes,
-                    }),
+                const [mainResult, allResult] = await Promise.all([
+                    fetchWaitlist(status, limit),
+                    fetchWaitlist('all', 100),
+                ]);
+
+                if (!mainResult.ok) {
+                    if (mainResult.status === 401) {
+                        setAuthUI('bad', 'Access denied', 'Discord admin role is required for waitlist operations.');
+                        dashboardPanel.classList.add('hidden');
+                        entriesEl.innerHTML = '';
+                        showToast('Unauthorized: admin role required', 'bad');
+                        return;
+                    }
+                    throw new Error(mainResult.error || 'Failed to load waitlist.');
+                }
+
+                loadedEntries = mainResult.data.entries || [];
+                allEntries = allResult.ok ? (allResult.data.entries || []) : loadedEntries;
+
+                renderStats(allEntries);
+                renderEntries();
+
+                const suffix = mainResult.data.next_cursor ? ' (more available)' : '';
+                metaEl.textContent = `Loaded ${loadedEntries.length} entries for ${status}.${suffix}`;
+            } catch (err) {
+                metaEl.textContent = `Failed to load waitlist: ${err.message || err}`;
+                showToast(`Load failed: ${err.message || err}`, 'bad');
+            } finally {
+                setBusy(false, 'Refresh');
+            }
+        }
+
+        async function patchEntry(payload) {
+            const res = await fetch('/api/waitlist', {
+                method: 'PATCH',
+                headers: withAuthHeaders(),
+                body: JSON.stringify(payload),
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok || !data.success) {
+                throw new Error(data.error || `HTTP ${res.status}`);
+            }
+            return data;
+        }
+
+        async function deleteEntry(payload) {
+            const res = await fetch('/api/waitlist', {
+                method: 'DELETE',
+                headers: withAuthHeaders(),
+                body: JSON.stringify(payload),
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok || !data.success) {
+                throw new Error(data.error || `HTTP ${res.status}`);
+            }
+            return data;
+        }
+
+        async function approveEntry(customerId, sendInvite) {
+            try {
+                const notes = sendInvite
+                    ? (window.prompt('Optional notes before invite:') || '').trim()
+                    : '';
+                const result = await patchEntry({
+                    customer_id: customerId,
+                    status: 'approved',
+                    send_invite: !!sendInvite,
+                    notes,
                 });
 
-                const data = await res.json().catch(() => ({}));
-                if (!res.ok || !data.success) {
-                    throw new Error(data.error || `HTTP ${res.status}`);
+                if (result.invite?.invite_url) {
+                    inviteLinks[customerId] = result.invite.invite_url;
+                    showToast('Invite created successfully.', 'ok');
+                } else {
+                    showToast('Entry approved.', 'ok');
                 }
 
-                const inviteEl = document.getElementById(`invite-${customerId}`);
-                if (data.invite?.invite_url && inviteEl) {
-                    inviteEl.innerHTML = `Invite created: <a href="${data.invite.invite_url}" target="_blank" rel="noopener noreferrer">${data.invite.invite_url}</a>`;
-                }
-
-                await loadWaitlist();
+                await refreshData();
             } catch (err) {
-                alert(`Update failed: ${err.message || err}`);
+                showToast(`Approve failed: ${err.message || err}`, 'bad');
+            }
+        }
+
+        async function rejectEntry(customerId) {
+            try {
+                const notes = (window.prompt('Reason for rejection (optional):') || '').trim();
+                await patchEntry({
+                    customer_id: customerId,
+                    status: 'rejected',
+                    send_invite: false,
+                    notes,
+                });
+                showToast('Entry rejected.', 'ok');
+                await refreshData();
+            } catch (err) {
+                showToast(`Reject failed: ${err.message || err}`, 'bad');
+            }
+        }
+
+        async function addNote(customerId) {
+            try {
+                const notes = (window.prompt('Add or replace internal notes:') || '').trim();
+                if (!notes) return;
+                await patchEntry({
+                    customer_id: customerId,
+                    status: 'pending',
+                    send_invite: false,
+                    notes,
+                });
+                showToast('Notes updated.', 'ok');
+                await refreshData();
+            } catch (err) {
+                showToast(`Note update failed: ${err.message || err}`, 'bad');
             }
         }
 
@@ -285,35 +770,119 @@
             if (!confirmed) return;
 
             try {
-                const res = await fetch('/api/waitlist', {
-                    method: 'DELETE',
-                    headers: withAuthHeaders(),
-                    body: JSON.stringify({
-                        customer_id: customerId,
-                    }),
-                });
-
-                const data = await res.json().catch(() => ({}));
-                if (!res.ok || !data.success) {
-                    throw new Error(data.error || `HTTP ${res.status}`);
-                }
-
-                await loadWaitlist();
+                await deleteEntry({ customer_id: customerId });
+                showToast('Entry removed from waitlist.', 'ok');
+                await refreshData();
             } catch (err) {
-                alert(`Remove failed: ${err.message || err}`);
+                showToast(`Remove failed: ${err.message || err}`, 'bad');
             }
         }
 
-        function promptNotes(customerId) {
-            const notes = window.prompt('Add internal notes for this waitlist entry:') || '';
-            if (!notes.trim()) return;
-            reviewEntry(customerId, 'pending', false, notes.trim());
+        window.approveEntry = approveEntry;
+        window.rejectEntry = rejectEntry;
+        window.addNote = addNote;
+        window.removeEntry = removeEntry;
+
+        function setActiveChip() {
+            document.querySelectorAll('.chip').forEach((chip) => {
+                chip.classList.toggle('active', chip.dataset.status === statusInput.value);
+            });
         }
 
-        loadBtn.addEventListener('click', loadWaitlist);
-        tokenInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') loadWaitlist();
+        function startDiscordLogin() {
+            const params = new URLSearchParams({
+                client_id: DISCORD_CLIENT_ID,
+                redirect_uri: `${window.location.origin}${window.location.pathname}`,
+                response_type: 'token',
+                scope: DISCORD_SCOPE,
+            });
+            window.location.href = `https://discord.com/api/oauth2/authorize?${params.toString()}`;
+        }
+
+        function clearSession() {
+            localStorage.removeItem(TOKEN_KEY);
+            localStorage.removeItem(USER_KEY);
+            authToken = '';
+            authUser = null;
+        }
+
+        async function initializeSession() {
+            parseTokenFromHash();
+            authToken = String(localStorage.getItem(TOKEN_KEY) || '').trim();
+            const cachedUser = localStorage.getItem(USER_KEY);
+            if (cachedUser) {
+                try { authUser = JSON.parse(cachedUser); } catch { authUser = null; }
+            }
+
+            if (!authToken) {
+                setAuthUI('warn', 'No Discord session detected', 'Sign in with Discord to access waitlist admin.');
+                dashboardPanel.classList.add('hidden');
+                logoutBtn.classList.add('hidden');
+                return;
+            }
+
+            if (!authUser) {
+                authUser = await fetchDiscordUser(authToken);
+                if (authUser) {
+                    localStorage.setItem(USER_KEY, JSON.stringify(authUser));
+                }
+            }
+
+            setAuthUI('warn', 'Verifying admin access...', authUser ? `Signed in as ${authUser.username}` : 'Checking token');
+
+            const probe = await fetchWaitlist('all', 1);
+            if (!probe.ok) {
+                clearSession();
+                dashboardPanel.classList.add('hidden');
+                entriesEl.innerHTML = '';
+                logoutBtn.classList.add('hidden');
+                if (probe.status === 401) {
+                    setAuthUI('bad', 'Access denied', 'Your Discord account does not have the configured admin role.');
+                } else {
+                    setAuthUI('bad', 'Admin check failed', probe.error || 'Unable to verify access right now.');
+                }
+                return;
+            }
+
+            loginBtn.classList.add('hidden');
+            logoutBtn.classList.remove('hidden');
+            dashboardPanel.classList.remove('hidden');
+            setAuthUI('ok', 'Admin access verified', authUser ? `Signed in as ${authUser.username}` : 'Discord session active');
+            await refreshData();
+        }
+
+        loginBtn.addEventListener('click', startDiscordLogin);
+        logoutBtn.addEventListener('click', () => {
+            clearSession();
+            setAuthUI('warn', 'Signed out', 'Sign in with Discord to access waitlist admin.');
+            dashboardPanel.classList.add('hidden');
+            entriesEl.innerHTML = '';
+            loginBtn.classList.remove('hidden');
+            logoutBtn.classList.add('hidden');
         });
+
+        loadBtn.addEventListener('click', refreshData);
+        searchInput.addEventListener('input', () => {
+            renderEntries();
+        });
+
+        statusInput.addEventListener('change', () => {
+            setActiveChip();
+            refreshData();
+        });
+
+        document.getElementById('chips').addEventListener('click', (e) => {
+            const chip = e.target.closest('.chip');
+            if (!chip) return;
+            statusInput.value = chip.dataset.status || 'pending';
+            setActiveChip();
+            refreshData();
+        });
+
+        limitInput.addEventListener('change', refreshData);
+
+        setActiveChip();
+        initializeSession();
     </script>
 </body>
 </html>

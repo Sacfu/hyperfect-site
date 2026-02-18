@@ -4,7 +4,7 @@
 //   POST /api/waitlist
 //   Body: { name, email, message, consent, source }
 //
-// Admin (Authorization: Bearer <ADMIN_SECRET>):
+// Admin (Authorization: Bearer <ADMIN_SECRET|DISCORD_OAUTH_TOKEN>):
 //   GET /api/waitlist?status=pending|approved|rejected|invited|converted|all&limit=50&cursor=cus_xxx
 //   PATCH /api/waitlist
 //   Body: { customer_id?, email?, status, notes?, send_invite? }
@@ -15,6 +15,7 @@
 // This keeps costs low while providing a queue-style review workflow.
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const { verifyDiscordAdmin } = require('./_discord-auth');
 
 const WAITLIST_STATUSES = new Set([
     'pending',
@@ -43,14 +44,35 @@ function getBearerToken(req) {
     return auth.slice(7).trim();
 }
 
-function requireAdmin(req, res) {
+async function requireAdmin(req, res) {
     const expected = String(process.env.ADMIN_SECRET || '').trim();
     const received = getBearerToken(req);
-    if (!expected || received !== expected) {
-        res.status(401).json({ success: false, error: 'Unauthorized' });
+
+    // Allow legacy ADMIN_SECRET auth path.
+    if (expected && received && received === expected) {
+        req.admin_auth = { type: 'secret' };
+        return true;
+    }
+
+    if (!received) {
+        res.status(401).json({ success: false, error: 'Unauthorized: missing bearer token' });
         return false;
     }
-    return true;
+
+    // Allow Discord OAuth token auth for users with ADMIN_ROLE_ID in DISCORD_GUILD_ID.
+    const discord = await verifyDiscordAdmin(received);
+    if (discord.ok) {
+        req.admin_auth = { type: 'discord', user: discord.user };
+        return true;
+    }
+
+    if (discord.reason === 'missing_server_config' && !expected) {
+        res.status(500).json({ success: false, error: 'Admin auth is not configured on the server' });
+        return false;
+    }
+
+    res.status(401).json({ success: false, error: 'Unauthorized: Discord admin role required' });
+    return false;
 }
 
 function cleanText(value, maxLen) {
@@ -313,7 +335,7 @@ async function handlePublicSubmit(req, res) {
 }
 
 async function handleAdminList(req, res) {
-    if (!requireAdmin(req, res)) return;
+    if (!await requireAdmin(req, res)) return;
 
     const statusFilter = cleanText(req.query.status || 'all', 32).toLowerCase();
     const normalizedStatus = statusFilter === 'all' ? 'all' : statusFilter;
@@ -369,7 +391,7 @@ async function handleAdminList(req, res) {
 }
 
 async function handleAdminUpdate(req, res) {
-    if (!requireAdmin(req, res)) return;
+    if (!await requireAdmin(req, res)) return;
 
     const body = req.body && typeof req.body === 'object' ? req.body : {};
     const customerId = cleanText(body.customer_id, 64);
@@ -439,7 +461,7 @@ async function handleAdminUpdate(req, res) {
 }
 
 async function handleAdminDelete(req, res) {
-    if (!requireAdmin(req, res)) return;
+    if (!await requireAdmin(req, res)) return;
 
     const body = req.body && typeof req.body === 'object' ? req.body : {};
     const customerId = cleanText(body.customer_id, 64);

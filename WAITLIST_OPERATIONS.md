@@ -24,6 +24,16 @@ No paid database is required for this phase.
 - `waitlist_invited_at` (admin)
 - `waitlist_converted_at` (webhook)
 
+## Auth model for admin operations
+
+All admin methods accept:
+
+- `Authorization: Bearer <ADMIN_SECRET>` (legacy/server automation)
+- `Authorization: Bearer <DISCORD_OAUTH_ACCESS_TOKEN>` where:
+  - user is in `DISCORD_GUILD_ID`
+  - user has `ADMIN_ROLE_ID`
+  - verification is performed server-side using `DISCORD_BOT_TOKEN`
+
 ## Endpoints
 
 ### Public submit
@@ -48,7 +58,7 @@ Body:
 
 Headers:
 
-`Authorization: Bearer <ADMIN_SECRET>`
+`Authorization: Bearer <ADMIN_SECRET|DISCORD_OAUTH_ACCESS_TOKEN>`
 
 ### Admin update / approve / invite
 
@@ -56,7 +66,7 @@ Headers:
 
 Headers:
 
-`Authorization: Bearer <ADMIN_SECRET>`
+`Authorization: Bearer <ADMIN_SECRET|DISCORD_OAUTH_ACCESS_TOKEN>`
 
 Body example (approve + invite):
 
@@ -75,7 +85,7 @@ Body example (approve + invite):
 
 Headers:
 
-`Authorization: Bearer <ADMIN_SECRET>`
+`Authorization: Bearer <ADMIN_SECRET|DISCORD_OAUTH_ACCESS_TOKEN>`
 
 Body example:
 
@@ -96,12 +106,16 @@ A simple internal admin page is included:
 
 - `/waitlist-admin.html`
 
-This page asks for your `ADMIN_SECRET` and calls the waitlist endpoints.
+This page now uses Discord sign-in and automatically verifies admin role access.
+No manual `ADMIN_SECRET` entry is required for normal admin usage.
 
 ## Required environment variables (Vercel)
 
 - `STRIPE_SECRET_KEY`
-- `ADMIN_SECRET`
+- `ADMIN_SECRET` (recommended fallback for CLI/admin scripts)
+- `DISCORD_BOT_TOKEN`
+- `DISCORD_GUILD_ID`
+- `ADMIN_ROLE_ID`
 - `BETA_PRICE_ID` (required for invite generation)
 - `SITE_URL` (recommended `https://www.hyperfect.dev`)
 
