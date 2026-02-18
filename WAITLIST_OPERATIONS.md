@@ -84,6 +84,13 @@ This page asks for your `ADMIN_SECRET` and calls the waitlist endpoints.
 - `BETA_PRICE_ID` (required for invite generation)
 - `SITE_URL` (recommended `https://www.hyperfect.dev`)
 
+## Optional notification variables
+
+- `WAITLIST_NOTIFY_ENABLED` (`true` by default, set `false` to disable)
+- `WAITLIST_NOTIFY_ENDPOINT` (defaults to FormSubmit: `https://formsubmit.co/ajax/Hyperfectllc@gmail.com`)
+
+When enabled, each waitlist submission sends an email-style notification payload to the notify endpoint so you can still receive immediate signup alerts.
+
 ## Deployment checklist
 
 1. Push `landing-page` changes to `Sacfu/hyperfect-site`.

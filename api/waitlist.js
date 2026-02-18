@@ -22,6 +22,13 @@ const WAITLIST_STATUSES = new Set([
     'converted',
 ]);
 
+const WAITLIST_NOTIFY_ENABLED = String(process.env.WAITLIST_NOTIFY_ENABLED || 'true')
+    .trim()
+    .toLowerCase() !== 'false';
+const WAITLIST_NOTIFY_ENDPOINT = String(
+    process.env.WAITLIST_NOTIFY_ENDPOINT || 'https://formsubmit.co/ajax/Hyperfectllc@gmail.com'
+).trim();
+
 function setCors(res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, OPTIONS');
@@ -97,6 +104,66 @@ function mapWaitlistCustomer(customer) {
         converted_at: metadata.waitlist_converted_at || null,
         license_key: metadata.license_key || '',
     };
+}
+
+async function sendWaitlistNotification({
+    name,
+    email,
+    interest,
+    source,
+    consent,
+    status,
+    alreadyJoined,
+    customerId,
+    submissions,
+}) {
+    if (!WAITLIST_NOTIFY_ENABLED || !WAITLIST_NOTIFY_ENDPOINT) return;
+
+    const joinedText = alreadyJoined ? 'Updated Existing Waitlist Entry' : 'New Waitlist Signup';
+    const messageLines = [
+        `Type: ${joinedText}`,
+        `Name: ${name || 'N/A'}`,
+        `Email: ${email || 'N/A'}`,
+        `Status: ${status || 'pending'}`,
+        `Source: ${source || 'website_waitlist'}`,
+        `Submissions: ${submissions || 1}`,
+        `Customer ID: ${customerId || 'N/A'}`,
+        `Consent: ${consent ? 'yes' : 'no'}`,
+        `Interest: ${interest || '(none provided)'}`,
+    ];
+
+    const payload = {
+        name: 'Nexus Waitlist',
+        email: 'noreply@hyperfect.dev',
+        message: messageLines.join('\n'),
+        _subject: `Nexus Waitlist: ${joinedText}`,
+        _template: 'table',
+        _captcha: 'false',
+    };
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 7000);
+
+    try {
+        const response = await fetch(WAITLIST_NOTIFY_ENDPOINT, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify(payload),
+            signal: controller.signal,
+        });
+
+        if (!response.ok) {
+            const detail = await response.text().catch(() => '');
+            console.error(`Waitlist notify failed (HTTP ${response.status}): ${detail.slice(0, 200)}`);
+        }
+    } catch (err) {
+        console.error('Waitlist notify request failed:', err?.message || String(err));
+    } finally {
+        clearTimeout(timeout);
+    }
 }
 
 async function findCustomerByEmail(email) {
@@ -184,6 +251,18 @@ async function handlePublicSubmit(req, res) {
             },
         });
 
+        await sendWaitlistNotification({
+            name,
+            email,
+            interest,
+            source,
+            consent,
+            status: getWaitlistStatus(updated.metadata) || nextStatus,
+            alreadyJoined: true,
+            customerId: updated.id,
+            submissions: submissionCount,
+        });
+
         return res.status(200).json({
             success: true,
             status: getWaitlistStatus(updated.metadata) || nextStatus,
@@ -208,6 +287,18 @@ async function handlePublicSubmit(req, res) {
             waitlist_updated_at: now,
             waitlist_created_at: now,
         },
+    });
+
+    await sendWaitlistNotification({
+        name,
+        email,
+        interest,
+        source,
+        consent,
+        status: 'pending',
+        alreadyJoined: false,
+        customerId: created.id,
+        submissions: 1,
     });
 
     return res.status(200).json({
