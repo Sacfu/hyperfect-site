@@ -3,14 +3,6 @@
     { "source": "/getting-started", "destination": "/getting-started.html" },
     { "source": "/license-dashboard", "destination": "/license-dashboard.html" },
     { "source": "/success", "destination": "/success.html" },
-    {
-      "source": "/api/updates/feed/:channel/:platform/:arch/:manifest",
-      "destination": "/api/updates-feed?channel=:channel&platform=:platform&arch=:arch&manifest=:manifest"
-    },
-    {
-      "source": "/api/updates/download/:channel/:platform/:arch/:artifact",
-      "destination": "/api/updates-download?channel=:channel&platform=:platform&arch=:arch&artifact=:artifact"
-    },
     { "source": "/api/:path*", "destination": "/api/:path*" }
   ],
   "headers": [
@@ -47,7 +39,7 @@
       ]
     },
     {
-      "source": "/api/updates/feed/(.*)",
+      "source": "/api/updates-feed",
       "headers": [
         { "key": "Access-Control-Allow-Origin", "value": "*" },
         { "key": "Access-Control-Allow-Methods", "value": "GET, OPTIONS" },
@@ -55,7 +47,7 @@
       ]
     },
     {
-      "source": "/api/updates/download/(.*)",
+      "source": "/api/updates-download",
       "headers": [
         { "key": "Access-Control-Allow-Origin", "value": "*" },
         { "key": "Access-Control-Allow-Methods", "value": "GET, OPTIONS" },

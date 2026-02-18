@@ -70,7 +70,7 @@ module.exports = async function handler(req, res) {
 
     const token = signToken(tokenPayload, secret);
 
-    const downloadUrl = `${origin}/api/updates/download/${channel}/${platform}/${arch}/${encodeURIComponent(updateConfig.fileName)}?t=${encodeURIComponent(token)}`;
+    const downloadUrl = `${origin}/api/updates-download?channel=${encodeURIComponent(channel)}&platform=${encodeURIComponent(platform)}&arch=${encodeURIComponent(arch)}&artifact=${encodeURIComponent(updateConfig.fileName)}&t=${encodeURIComponent(token)}`;
 
     const manifestYml = buildManifestYml({
       version: updateConfig.version,
