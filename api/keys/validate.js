@@ -1,16 +1,14 @@
-// Vercel Serverless Function: License key validation (legacy endpoint)
-// POST /api/validate-license
+// Vercel Serverless Function: Canonical app license validation endpoint
+// POST /api/keys/validate
 //
 // Body:
 //   {
-//     "licenseKey": "NEXUS-....",
-//     "hardware_id": "optional-machine-id",
+//     "key": "NEXUS-....",
+//     "hardware_id": "machine fingerprint",
 //     "app_version": "1.0.0"
 //   }
-//
-// This endpoint remains compatible with existing app and web flows.
 
-const { validateLicenseRecord, cleanText } = require('./_license-utils');
+const { validateLicenseRecord, cleanText } = require('../_license-utils');
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -24,19 +22,19 @@ module.exports = async function handler(req, res) {
 
   try {
     const body = req.body || {};
-    const licenseKey = cleanText(body.licenseKey || body.key || '', 80);
+    const key = cleanText(body.key || body.licenseKey || '', 80);
     const hardwareId = cleanText(body.hardware_id || body.hardwareId || '', 160);
     const appVersion = cleanText(body.app_version || body.appVersion || '', 64);
 
     const result = await validateLicenseRecord({
-      key: licenseKey,
+      key,
       hardwareId,
       appVersion,
-      bindHardware: !!hardwareId,
+      bindHardware: true,
     });
     return res.status(result.status).json(result.body);
   } catch (err) {
-    console.error('License validation error:', err?.message || String(err));
+    console.error('Key validation error:', err?.message || String(err));
     return res.status(500).json({ valid: false, error: 'Server error during validation' });
   }
 };

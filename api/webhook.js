@@ -153,6 +153,12 @@ module.exports = async function handler(req, res) {
                             license_key: licenseKey,
                             license_created: new Date().toISOString(),
                             plan: plan,
+                            license_hardware_id: '',
+                            license_hardware_bound_at: '',
+                            license_last_validation_at: '',
+                            license_last_app_version: '',
+                            license_reset_count: '0',
+                            license_last_reset_at: '',
                         },
                     });
                     customerId = customer.id;
@@ -169,6 +175,12 @@ module.exports = async function handler(req, res) {
                             license_key: licenseKey,
                             license_created: nowIso,
                             plan: plan,
+                            license_hardware_id: '',
+                            license_hardware_bound_at: '',
+                            license_last_validation_at: '',
+                            license_last_app_version: '',
+                            license_reset_count: existingMetadata.license_reset_count || '0',
+                            license_last_reset_at: existingMetadata.license_last_reset_at || '',
                             ...(fromWaitlist ? {
                                 waitlist: 'true',
                                 waitlist_status: 'converted',

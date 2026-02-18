@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nexus License Dashboard</title>
+  <style>
+    :root {
+      --bg: #05070d;
+      --card: rgba(255, 255, 255, 0.06);
+      --border: rgba(255, 255, 255, 0.14);
+      --text: #e5ecf5;
+      --muted: #9aa7b7;
+      --accent: #3b82f6;
+      --accent-hover: #2563eb;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+      --ok: #22c55e;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(circle at 12% 5%, #16223b 0%, transparent 35%), linear-gradient(160deg, #05070d, #0a1020 65%, #111a2f 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 32px 16px;
+    }
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .card {
+      background: var(--card);
+      backdrop-filter: blur(22px) saturate(120%);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 14px;
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: 30px;
+      letter-spacing: -0.02em;
+    }
+    p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width: 700px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+    label {
+      display: block;
+      margin: 0 0 6px;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    input {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 14px;
+      outline: none;
+    }
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--accent);
+      color: #fff;
+    }
+    button:hover { background: var(--accent-hover); }
+    button.alt {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    button.warn {
+      background: var(--warn);
+      color: #111827;
+    }
+    button.danger {
+      background: var(--danger);
+      color: #fff;
+    }
+    .status {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      min-height: 18px;
+    }
+    .status.ok { color: var(--ok); }
+    .status.err { color: var(--danger); }
+    .kv {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 8px;
+      font-size: 13px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .kv:last-child { border-bottom: 0; }
+    .k { color: var(--muted); }
+    .v { color: var(--text); word-break: break-word; }
+    .hidden { display: none; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid var(--border);
+    }
+    .pill.ok { color: var(--ok); }
+    .pill.warn { color: var(--warn); }
+    .top-links {
+      margin-top: 10px;
+      font-size: 13px;
+    }
+    .top-links a {
+      color: #93c5fd;
+      text-decoration: none;
+    }
+    .top-links a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>License Dashboard</h1>
+      <p>Manage your Nexus key, reset machine activation, and move to a new computer safely.</p>
+      <div class="top-links">
+        <a href="/">Back to hyperfect.dev</a>
+      </div>
+    </div>
+
+    <div class="card" id="auth-card">
+      <div class="grid">
+        <div>
+          <label for="email">Purchase Email</label>
+          <input id="email" type="email" placeholder="you@example.com" />
+        </div>
+        <div>
+          <label for="licenseKey">License Key (optional)</label>
+          <input id="licenseKey" type="text" placeholder="NEXUS-XXXX-XXXX-XXXX-XXXX" />
+        </div>
+      </div>
+      <div class="row">
+        <button id="send-code-btn">Send Verification Code</button>
+      </div>
+      <div id="auth-status" class="status"></div>
+
+      <div id="code-block" class="hidden" style="margin-top:14px;">
+        <label for="code">Email Code</label>
+        <input id="code" type="text" inputmode="numeric" placeholder="6-digit code" />
+        <div class="row">
+          <button id="verify-btn">Verify</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card hidden" id="dashboard-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:10px;">
+        <div>
+          <strong style="font-size:18px;">Your License</strong>
+          <div id="machine-pill" class="pill" style="margin-top:6px;">Machine status</div>
+        </div>
+        <div class="row" style="margin-top:0;">
+          <button class="alt" id="refresh-btn">Refresh</button>
+          <button class="danger" id="sign-out-btn">Sign out</button>
+        </div>
+      </div>
+      <div id="license-kv"></div>
+      <div class="row">
+        <button class="warn" id="reset-machine-btn">Reset Machine Activation</button>
+      </div>
+      <div id="dashboard-status" class="status"></div>
+    </div>
+  </div>
+
+  <script>
+    const API = '/api/license-portal';
+    const TOKEN_KEY = 'nexus_license_portal_token';
+
+    const authStatus = document.getElementById('auth-status');
+    const dashboardStatus = document.getElementById('dashboard-status');
+    const codeBlock = document.getElementById('code-block');
+    const authCard = document.getElementById('auth-card');
+    const dashboardCard = document.getElementById('dashboard-card');
+    const licenseKv = document.getElementById('license-kv');
+    const machinePill = document.getElementById('machine-pill');
+
+    function setStatus(el, text, kind = '') {
+      el.className = `status ${kind}`.trim();
+      el.textContent = text || '';
+    }
+
+    function getToken() {
+      return sessionStorage.getItem(TOKEN_KEY) || '';
+    }
+
+    function setToken(token) {
+      if (token) sessionStorage.setItem(TOKEN_KEY, token);
+      else sessionStorage.removeItem(TOKEN_KEY);
+    }
+
+    function formatDate(iso) {
+      if (!iso) return '—';
+      const dt = new Date(iso);
+      if (Number.isNaN(dt.getTime())) return iso;
+      return dt.toLocaleString();
+    }
+
+    async function requestCode() {
+      setStatus(authStatus, 'Sending verification code...');
+      const email = document.getElementById('email').value.trim();
+      const licenseKey = document.getElementById('licenseKey').value.trim().toUpperCase();
+      if (!email && !licenseKey) {
+        setStatus(authStatus, 'Enter your purchase email or license key.', 'err');
+        return;
+      }
+
+      try {
+        const res = await fetch(API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'request_code', email, licenseKey }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.success) {
+          throw new Error(data.error || `Request failed (${res.status})`);
+        }
+        codeBlock.classList.remove('hidden');
+        setStatus(authStatus, data.message || 'If your license was found, a code was sent.', 'ok');
+      } catch (err) {
+        setStatus(authStatus, err.message || 'Could not send code.', 'err');
+      }
+    }
+
+    async function verifyCode() {
+      setStatus(authStatus, 'Verifying code...');
+      const email = document.getElementById('email').value.trim();
+      const code = document.getElementById('code').value.trim();
+      if (!email || !code) {
+        setStatus(authStatus, 'Enter email and code.', 'err');
+        return;
+      }
+
+      try {
+        const res = await fetch(API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'verify_code', email, code }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.success || !data.token) {
+          throw new Error(data.error || 'Verification failed');
+        }
+        setToken(data.token);
+        setStatus(authStatus, 'Verification complete.', 'ok');
+        await loadDashboard();
+      } catch (err) {
+        setStatus(authStatus, err.message || 'Verification failed.', 'err');
+      }
+    }
+
+    function renderLicense(license) {
+      const rows = [
+        ['Email', license.email || '—'],
+        ['License Key', license.license_key_masked || '—'],
+        ['Plan', (license.plan || '—').toString()],
+        ['Tier', (license.tier || '—').toString()],
+        ['Machine Lock', license.machine_locked ? `Locked (${license.hardware_id_masked || 'hidden'})` : 'Not locked'],
+        ['Machine Bound At', formatDate(license.hardware_bound_at)],
+        ['Last Validation', formatDate(license.last_validation_at)],
+        ['Reset Count', String(license.reset_count || 0)],
+        ['Last Reset', formatDate(license.last_reset_at)],
+      ];
+      licenseKv.innerHTML = rows.map(([k, v]) => `
+        <div class="kv">
+          <div class="k">${k}</div>
+          <div class="v">${v || '—'}</div>
+        </div>
+      `).join('');
+
+      machinePill.className = `pill ${license.machine_locked ? 'warn' : 'ok'}`;
+      machinePill.textContent = license.machine_locked ? 'Machine Locked' : 'Ready to Activate';
+    }
+
+    async function loadDashboard() {
+      const token = getToken();
+      if (!token) return;
+      setStatus(dashboardStatus, 'Loading license data...');
+      try {
+        const res = await fetch(API, {
+          method: 'GET',
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.success || !data.license) {
+          throw new Error(data.error || 'Could not load license data');
+        }
+        renderLicense(data.license);
+        authCard.classList.add('hidden');
+        dashboardCard.classList.remove('hidden');
+        setStatus(dashboardStatus, 'Dashboard loaded.', 'ok');
+      } catch (err) {
+        setToken('');
+        authCard.classList.remove('hidden');
+        dashboardCard.classList.add('hidden');
+        setStatus(authStatus, err.message || 'Session expired. Please verify again.', 'err');
+      }
+    }
+
+    async function resetMachine() {
+      const token = getToken();
+      if (!token) return;
+      if (!confirm('Reset machine activation? This allows the key to be activated on a different computer.')) return;
+
+      setStatus(dashboardStatus, 'Resetting machine activation...');
+      try {
+        const res = await fetch(API, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            action: 'reset_machine',
+            reason: 'user_dashboard',
+          }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.success || !data.license) {
+          throw new Error(data.error || 'Reset failed');
+        }
+        renderLicense(data.license);
+        setStatus(dashboardStatus, data.message || 'Machine activation reset complete.', 'ok');
+      } catch (err) {
+        setStatus(dashboardStatus, err.message || 'Reset failed.', 'err');
+      }
+    }
+
+    document.getElementById('send-code-btn').addEventListener('click', requestCode);
+    document.getElementById('verify-btn').addEventListener('click', verifyCode);
+    document.getElementById('refresh-btn').addEventListener('click', loadDashboard);
+    document.getElementById('reset-machine-btn').addEventListener('click', resetMachine);
+    document.getElementById('sign-out-btn').addEventListener('click', () => {
+      setToken('');
+      dashboardCard.classList.add('hidden');
+      authCard.classList.remove('hidden');
+      setStatus(authStatus, 'Signed out.');
+    });
+
+    loadDashboard();
+  </script>
+</body>
+</html>
