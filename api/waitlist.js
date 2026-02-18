@@ -7,7 +7,7 @@
 // Admin (Authorization: Bearer <ADMIN_SECRET|DISCORD_OAUTH_TOKEN>):
 //   GET /api/waitlist?status=pending|approved|rejected|invited|converted|all&limit=50&cursor=cus_xxx
 //   PATCH /api/waitlist
-//   Body: { customer_id?, email?, status, notes?, send_invite? }
+//   Body: { customer_id?, email?, status, notes?, send_invite?, send_invite_email? }
 //   DELETE /api/waitlist
 //   Body: { customer_id? email? }
 //
@@ -464,6 +464,7 @@ async function handleAdminUpdate(req, res) {
     const requestedStatus = cleanText(body.status, 32).toLowerCase();
     const notes = cleanText(body.notes, 500);
     const sendInvite = !!body.send_invite;
+    const sendInviteEmail = sendInvite ? body.send_invite_email !== false : false;
 
     if (!customerId && !email) {
         return res.status(400).json({ success: false, error: 'customer_id or email is required' });
@@ -514,17 +515,29 @@ async function handleAdminUpdate(req, res) {
         }
 
         invite = inviteResult;
-        inviteEmail = await sendInviteCheckoutEmail({
-            email: normalizeEmail(customer.email),
-            name: previous.waitlist_name || customer.name || customer.email || '',
-            inviteUrl: inviteResult.invite_url,
-            expiresIn: inviteResult.expires_in,
-        });
         metadata.waitlist_status = 'invited';
         metadata.waitlist_invited_at = now;
-        metadata.waitlist_invite_email_sent_at = inviteEmail.ok ? now : '';
-        metadata.waitlist_invite_email_id = inviteEmail.ok ? cleanText(inviteEmail.id, 120) : '';
-        metadata.waitlist_invite_email_error = inviteEmail.ok ? '' : cleanText(inviteEmail.error, 240);
+
+        if (sendInviteEmail) {
+            inviteEmail = await sendInviteCheckoutEmail({
+                email: normalizeEmail(customer.email),
+                name: previous.waitlist_name || customer.name || customer.email || '',
+                inviteUrl: inviteResult.invite_url,
+                expiresIn: inviteResult.expires_in,
+            });
+            metadata.waitlist_invite_email_sent_at = inviteEmail.ok ? now : '';
+            metadata.waitlist_invite_email_id = inviteEmail.ok ? cleanText(inviteEmail.id, 120) : '';
+            metadata.waitlist_invite_email_error = inviteEmail.ok ? '' : cleanText(inviteEmail.error, 240);
+        } else {
+            inviteEmail = {
+                ok: false,
+                skipped: true,
+                reason: 'send_invite_email_false',
+            };
+            metadata.waitlist_invite_email_sent_at = '';
+            metadata.waitlist_invite_email_id = '';
+            metadata.waitlist_invite_email_error = '';
+        }
     }
 
     const updated = await stripe.customers.update(customer.id, { metadata });

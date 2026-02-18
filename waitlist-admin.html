@@ -607,7 +607,7 @@
                 const submitted = escapeHtml(formatDate(entry.last_submitted_at || entry.created_at));
                 const updated = escapeHtml(formatDate(entry.updated_at || entry.last_submitted_at || entry.created_at));
                 const inviteHtml = inviteLinks[entry.customer_id]
-                    ? `<div class="invite-link">Invite link: <a href="${escapeHtml(inviteLinks[entry.customer_id])}" target="_blank" rel="noopener noreferrer">${escapeHtml(inviteLinks[entry.customer_id])}</a></div>`
+                    ? `<div class="invite-link">Invite link: <a href="${escapeHtml(inviteLinks[entry.customer_id])}" target="_blank" rel="noopener noreferrer">${escapeHtml(inviteLinks[entry.customer_id])}</a> <button class="btn ghost" style="padding:4px 8px;font-size:0.75rem;" onclick="copyInviteLink('${id}')">Copy Link</button></div>`
                     : '';
 
                 return `
@@ -623,8 +623,9 @@
                         ${interest ? `<div class="interest"><strong>Interest:</strong> ${interest}</div>` : ''}
                         ${notes ? `<div class="notes"><strong>Notes:</strong> ${notes}</div>` : ''}
                         <div class="actions">
-                            <button class="btn ok" onclick="approveEntry('${id}', false)">Approve</button>
-                            <button class="btn primary" onclick="approveEntry('${id}', true)">Approve + Invite</button>
+                            <button class="btn ok" onclick="approveEntry('${id}', 'approve')">Approve</button>
+                            <button class="btn ghost" onclick="approveEntry('${id}', 'invite_link')">Generate Invite Link</button>
+                            <button class="btn primary" onclick="approveEntry('${id}', 'invite_email')">Approve + Invite Email</button>
                             <button class="btn warn" onclick="rejectEntry('${id}')">Reject</button>
                             <button class="btn ghost" onclick="addNote('${id}')">Add Note</button>
                             <button class="btn bad" onclick="removeEntry('${id}')">Remove</button>
@@ -707,25 +708,30 @@
             return data;
         }
 
-        async function approveEntry(customerId, sendInvite) {
+        async function approveEntry(customerId, mode) {
             try {
-                const notes = sendInvite
-                    ? (window.prompt('Optional notes before invite:') || '').trim()
+                const shouldInvite = mode === 'invite_link' || mode === 'invite_email';
+                const shouldEmail = mode === 'invite_email';
+                const notes = shouldInvite
+                    ? (window.prompt(`Optional notes before ${shouldEmail ? 'inviting + emailing' : 'generating invite link'}:`) || '').trim()
                     : '';
                 const result = await patchEntry({
                     customer_id: customerId,
                     status: 'approved',
-                    send_invite: !!sendInvite,
+                    send_invite: shouldInvite,
+                    send_invite_email: shouldEmail,
                     notes,
                 });
 
                 if (result.invite?.invite_url) {
                     inviteLinks[customerId] = result.invite.invite_url;
-                    if (result.invite_email?.ok) {
+                    if (shouldEmail && result.invite_email?.ok) {
                         showToast('Invite created and emailed.', 'ok');
-                    } else {
+                    } else if (shouldEmail && !result.invite_email?.ok) {
                         const reason = result.invite_email?.error || 'email delivery did not complete';
                         showToast(`Invite created, but email failed: ${reason}`, 'bad');
+                    } else {
+                        showToast('Invite link generated (no email sent).', 'ok');
                     }
                 } else {
                     showToast('Entry approved.', 'ok');
@@ -735,6 +741,26 @@
             } catch (err) {
                 showToast(`Approve failed: ${err.message || err}`, 'bad');
             }
+        }
+
+        async function copyInviteLink(customerId) {
+            const url = inviteLinks[customerId];
+            if (!url) {
+                showToast('No invite link available to copy.', 'bad');
+                return;
+            }
+
+            try {
+                if (navigator.clipboard?.writeText) {
+                    await navigator.clipboard.writeText(url);
+                    showToast('Invite link copied to clipboard.', 'ok');
+                    return;
+                }
+            } catch {
+                // Fallback below.
+            }
+
+            window.prompt('Copy invite link:', url);
         }
 
         async function rejectEntry(customerId) {
@@ -784,6 +810,7 @@
         }
 
         window.approveEntry = approveEntry;
+        window.copyInviteLink = copyInviteLink;
         window.rejectEntry = rejectEntry;
         window.addNote = addNote;
         window.removeEntry = removeEntry;

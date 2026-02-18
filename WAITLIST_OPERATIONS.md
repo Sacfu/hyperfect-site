@@ -39,6 +39,7 @@ All admin methods accept:
 ### Status actions semantics
 
 - `Approve`: marks entry as approved for internal review queueing only (no invite email is sent).
+- `Generate Invite Link`: creates a Stripe checkout invite link without sending an email.
 - `Approve + Invite`: generates a Stripe checkout invite link, stores invite metadata, and sends that checkout link to the user by email (via Resend).
 
 ### Public submit
@@ -80,7 +81,19 @@ Body example (approve + invite):
   "customer_id": "cus_123",
   "status": "approved",
   "send_invite": true,
+  "send_invite_email": true,
   "notes": "Great fit for beta."
+}
+```
+
+Body example (generate link only):
+
+```json
+{
+  "customer_id": "cus_123",
+  "status": "approved",
+  "send_invite": true,
+  "send_invite_email": false
 }
 ```
 
