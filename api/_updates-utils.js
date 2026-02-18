@@ -115,7 +115,7 @@ function getFileNameFromUrl(url) {
   }
 }
 
-function getUpdateConfig({ channel, platform, arch }) {
+function getEnvUpdateConfig({ channel, platform, arch }) {
   const normalizedChannel = normalizeChannel(channel);
   const normalizedPlatform = normalizePlatform(platform);
   const normalizedArch = normalizeArch(arch);
@@ -141,6 +141,7 @@ function getUpdateConfig({ channel, platform, arch }) {
   if (!fileName) return null;
 
   return {
+    source: 'env',
     channel: normalizedChannel,
     platform: normalizedPlatform,
     arch: normalizedArch,
@@ -152,6 +153,259 @@ function getUpdateConfig({ channel, platform, arch }) {
     releaseNotes,
     fileName,
   };
+}
+
+function getGitHubRepoConfig() {
+  return {
+    owner: cleanText(process.env.UPDATE_GH_OWNER || 'Sacfu', 100),
+    repo: cleanText(process.env.UPDATE_GH_REPO || 'nexus', 100),
+    token: cleanText(process.env.UPDATE_GH_TOKEN || process.env.GITHUB_RELEASE_TOKEN || '', 500),
+  };
+}
+
+function getUpdatesSourceMode() {
+  const mode = cleanText(process.env.UPDATE_SOURCE || 'auto', 16).toLowerCase();
+  if (mode === 'env' || mode === 'github') return mode;
+  return 'auto';
+}
+
+async function githubRequest(path, { token = '', accept = 'application/vnd.github+json', redirect = 'follow' } = {}) {
+  const headers = {
+    Accept: accept,
+    'User-Agent': 'Hyperfect-Nexus-Updater',
+    'X-GitHub-Api-Version': '2022-11-28',
+  };
+  if (token) headers.Authorization = `Bearer ${token}`;
+
+  const response = await fetch(`https://api.github.com${path}`, {
+    method: 'GET',
+    headers,
+    redirect,
+  });
+
+  return response;
+}
+
+async function githubJson(path, { token = '' } = {}) {
+  const response = await githubRequest(path, { token, accept: 'application/vnd.github+json' });
+  if (!response.ok) {
+    const detail = await response.text().catch(() => '');
+    throw new Error(`GitHub API ${response.status}: ${detail.slice(0, 180)}`);
+  }
+  return response.json();
+}
+
+function pickReleaseForChannel(releases, channel) {
+  const visible = (Array.isArray(releases) ? releases : []).filter((release) => release && !release.draft);
+  if (visible.length === 0) return null;
+
+  if (channel === 'beta') {
+    return visible.find((release) => !!release.prerelease) || visible[0];
+  }
+
+  return visible.find((release) => !release.prerelease) || visible[0];
+}
+
+function firstAssetByNames(assets, candidateNames) {
+  const byName = new Map((assets || []).map((asset) => [String(asset.name || '').toLowerCase(), asset]));
+  for (const candidate of candidateNames) {
+    const found = byName.get(String(candidate).toLowerCase());
+    if (found) return found;
+  }
+  return null;
+}
+
+function pickManifestAsset(assets, { channel, platform, arch }) {
+  const candidates = [];
+
+  if (platform === 'mac') {
+    if (arch === 'arm64') {
+      candidates.push('latest-mac-arm64.yml', 'latest-mac-beta.yml', 'latest-mac.yml');
+    } else {
+      candidates.push('latest-mac.yml', 'latest-mac-x64.yml', 'latest-mac-beta.yml');
+    }
+  } else if (platform === 'win') {
+    if (channel === 'beta') {
+      candidates.push('latest-beta.yml');
+    }
+    candidates.push('latest.yml');
+  } else if (platform === 'linux') {
+    candidates.push('latest-linux.yml', `latest-linux-${arch}.yml`, 'latest.yml');
+  }
+
+  const direct = firstAssetByNames(assets, candidates);
+  if (direct) return direct;
+
+  const regex =
+    platform === 'mac'
+      ? /latest.*mac.*\.yml$/i
+      : platform === 'linux'
+        ? /latest.*linux.*\.yml$/i
+        : /^latest(?!.*(mac|linux)).*\.yml$/i;
+
+  return (assets || []).find((asset) => regex.test(String(asset.name || '')));
+}
+
+function parseManifestYml(ymlText) {
+  const text = String(ymlText || '');
+  if (!text) return null;
+
+  const versionMatch = text.match(/^\s*version:\s*"?([^\n"]+)"?\s*$/m);
+  const releaseDateMatch = text.match(/^\s*releaseDate:\s*"?([^\n"]+)"?\s*$/m);
+  const pathMatch = text.match(/^\s*path:\s*"?([^\n"]+)"?\s*$/m);
+  const notesMatch = text.match(/^\s*releaseNotes:\s*"?([^\n"]+)"?\s*$/m);
+
+  const fileBlockMatch = text.match(/-\s*url:\s*"?([^\n"]+)"?\s*\n\s*sha512:\s*"?([^\n"]+)"?\s*\n\s*size:\s*(\d+)/m);
+  const shaMatches = [...text.matchAll(/^\s*sha512:\s*"?([^\n"]+)"?\s*$/gm)];
+
+  const version = cleanText(versionMatch?.[1] || '', 80);
+  const releaseDate = cleanText(releaseDateMatch?.[1] || '', 80) || new Date().toISOString();
+  const fileUrl = cleanText(fileBlockMatch?.[1] || pathMatch?.[1] || '', 400);
+  const sha512 = cleanText(fileBlockMatch?.[2] || (shaMatches.length > 0 ? shaMatches[shaMatches.length - 1][1] : ''), 3000);
+  const size = parseNumeric(fileBlockMatch?.[3] || '0', 0);
+  const releaseNotes = cleanText(notesMatch?.[1] || '', 2000);
+  const fileName = getFileNameFromUrl(fileUrl);
+
+  if (!version || !fileUrl || !sha512 || !size || !fileName) {
+    return null;
+  }
+
+  return {
+    version,
+    releaseDate,
+    fileUrl,
+    sha512,
+    size,
+    releaseNotes,
+    fileName,
+  };
+}
+
+function findAssetByName(assets, fileName) {
+  const normalized = String(fileName || '').toLowerCase();
+  if (!normalized) return null;
+
+  const direct = (assets || []).find((asset) => String(asset.name || '').toLowerCase() === normalized);
+  if (direct) return direct;
+
+  const decoded = decodeURIComponent(normalized);
+  return (assets || []).find((asset) => String(asset.name || '').toLowerCase() === decoded);
+}
+
+async function getGitHubUpdateConfig({ channel, platform, arch }) {
+  const normalizedChannel = normalizeChannel(channel);
+  const normalizedPlatform = normalizePlatform(platform);
+  const normalizedArch = normalizeArch(arch);
+
+  if (!normalizedPlatform || !normalizedArch) {
+    return null;
+  }
+
+  const gh = getGitHubRepoConfig();
+  if (!gh.owner || !gh.repo) return null;
+
+  try {
+    const releases = await githubJson(`/repos/${gh.owner}/${gh.repo}/releases?per_page=20`, { token: gh.token });
+    const release = pickReleaseForChannel(releases, normalizedChannel);
+    if (!release) return null;
+
+    const manifestAsset = pickManifestAsset(release.assets || [], {
+      channel: normalizedChannel,
+      platform: normalizedPlatform,
+      arch: normalizedArch,
+    });
+    if (!manifestAsset || !manifestAsset.url) return null;
+
+    const manifestResponse = await githubRequest(
+      `/repos/${gh.owner}/${gh.repo}/releases/assets/${manifestAsset.id}`,
+      {
+        token: gh.token,
+        accept: 'application/octet-stream',
+      }
+    );
+
+    if (!manifestResponse.ok) {
+      const detail = await manifestResponse.text().catch(() => '');
+      throw new Error(`Manifest asset fetch failed (${manifestResponse.status}): ${detail.slice(0, 180)}`);
+    }
+
+    const manifestText = await manifestResponse.text();
+    const parsed = parseManifestYml(manifestText);
+    if (!parsed) return null;
+
+    const binaryAsset = findAssetByName(release.assets || [], parsed.fileName);
+    if (!binaryAsset) {
+      throw new Error(`Release asset not found: ${parsed.fileName}`);
+    }
+
+    return {
+      source: 'github',
+      channel: normalizedChannel,
+      platform: normalizedPlatform,
+      arch: normalizedArch,
+      version: parsed.version,
+      releaseDate: parsed.releaseDate,
+      releaseNotes: parsed.releaseNotes || cleanText(release.body || '', 2000),
+      sha512: parsed.sha512,
+      size: parsed.size,
+      fileName: parsed.fileName,
+      owner: gh.owner,
+      repo: gh.repo,
+      releaseTag: cleanText(release.tag_name || '', 120),
+      binaryAssetId: binaryAsset.id,
+      binaryAssetName: cleanText(binaryAsset.name || parsed.fileName, 200),
+    };
+  } catch (err) {
+    console.error('GitHub updater config lookup failed:', err?.message || String(err));
+    return null;
+  }
+}
+
+async function getUpdateConfig({ channel, platform, arch }) {
+  const mode = getUpdatesSourceMode();
+
+  if (mode === 'env' || mode === 'auto') {
+    const envConfig = getEnvUpdateConfig({ channel, platform, arch });
+    if (envConfig) return envConfig;
+    if (mode === 'env') return null;
+  }
+
+  return getGitHubUpdateConfig({ channel, platform, arch });
+}
+
+async function getGitHubAssetRedirect({ owner, repo, assetId }) {
+  const gh = getGitHubRepoConfig();
+  const resolvedOwner = cleanText(owner || gh.owner, 100);
+  const resolvedRepo = cleanText(repo || gh.repo, 100);
+  const resolvedAssetId = parseNumeric(assetId, 0);
+
+  if (!resolvedOwner || !resolvedRepo || !resolvedAssetId) {
+    throw new Error('Invalid GitHub asset lookup request');
+  }
+
+  const response = await githubRequest(
+    `/repos/${resolvedOwner}/${resolvedRepo}/releases/assets/${resolvedAssetId}`,
+    {
+      token: gh.token,
+      accept: 'application/octet-stream',
+      redirect: 'manual',
+    }
+  );
+
+  if ([301, 302, 303, 307, 308].includes(response.status)) {
+    const location = response.headers.get('location');
+    if (!location) {
+      throw new Error('GitHub asset redirect missing location header');
+    }
+    return { redirectUrl: location };
+  }
+
+  if (!response.ok) {
+    const detail = await response.text().catch(() => '');
+    throw new Error(`GitHub asset fetch failed (${response.status}): ${detail.slice(0, 180)}`);
+  }
+
+  return { streamResponse: response };
 }
 
 function yamlEscape(value) {
@@ -234,6 +488,7 @@ module.exports = {
   verifyToken,
   getRequestOrigin,
   getUpdateConfig,
+  getGitHubAssetRedirect,
   buildManifestYml,
   setUpdaterCors,
   requireValidUpdaterLicense,

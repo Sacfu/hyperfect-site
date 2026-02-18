@@ -10,6 +10,7 @@ const {
   getUpdateSecret,
   verifyToken,
   getUpdateConfig,
+  getGitHubAssetRedirect,
   setUpdaterCors,
   requireValidUpdaterLicense,
   cleanText,
@@ -51,12 +52,40 @@ module.exports = async function handler(req, res) {
       return res.status(401).json({ error: 'Download token scope mismatch' });
     }
 
-    const updateConfig = getUpdateConfig({ channel, platform, arch });
-    if (!updateConfig || updateConfig.fileName !== artifact) {
+    res.setHeader('Cache-Control', 'private, no-store');
+
+    if (tokenPayload.source === 'github') {
+      const assetId = Number.parseInt(String(tokenPayload.assetId || '0'), 10);
+      if (!Number.isFinite(assetId) || assetId <= 0) {
+        return res.status(400).json({ error: 'Invalid GitHub asset token payload' });
+      }
+
+      const redirectTarget = await getGitHubAssetRedirect({
+        owner: tokenPayload.owner,
+        repo: tokenPayload.repo,
+        assetId,
+      });
+
+      if (redirectTarget.redirectUrl) {
+        return res.redirect(302, redirectTarget.redirectUrl);
+      }
+
+      const response = redirectTarget.streamResponse;
+      const buffer = Buffer.from(await response.arrayBuffer());
+      const contentType = response.headers.get('content-type') || 'application/octet-stream';
+      const disposition = response.headers.get('content-disposition') || `attachment; filename=\"${artifact}\"`;
+
+      res.setHeader('Content-Type', contentType);
+      res.setHeader('Content-Disposition', disposition);
+      res.setHeader('Content-Length', String(buffer.length));
+      return res.status(200).send(buffer);
+    }
+
+    const updateConfig = await getUpdateConfig({ channel, platform, arch });
+    if (!updateConfig || updateConfig.fileName !== artifact || !updateConfig.fileUrl) {
       return res.status(404).json({ error: 'Update artifact not configured' });
     }
 
-    res.setHeader('Cache-Control', 'private, no-store');
     return res.redirect(302, updateConfig.fileUrl);
   } catch (err) {
     console.error('updates-download error:', err?.message || String(err));

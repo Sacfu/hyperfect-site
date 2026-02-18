@@ -41,7 +41,7 @@ module.exports = async function handler(req, res) {
       return res.status(404).json({ error: 'Manifest not found' });
     }
 
-    const updateConfig = getUpdateConfig({ channel, platform, arch });
+    const updateConfig = await getUpdateConfig({ channel, platform, arch });
     if (!updateConfig) {
       return res.status(404).json({
         error: `No update configured for ${channel}/${platform}/${arch}`,
@@ -51,16 +51,24 @@ module.exports = async function handler(req, res) {
     const secret = getUpdateSecret();
     const origin = getRequestOrigin(req);
     const ttlMs = 10 * 60 * 1000;
-    const token = signToken(
-      {
-        channel,
-        platform,
-        arch,
-        artifact: updateConfig.fileName,
-        exp: Date.now() + ttlMs,
-      },
-      secret
-    );
+    const tokenPayload = {
+      source: updateConfig.source || 'env',
+      channel,
+      platform,
+      arch,
+      artifact: updateConfig.fileName,
+      exp: Date.now() + ttlMs,
+    };
+
+    if (updateConfig.source === 'github') {
+      tokenPayload.owner = updateConfig.owner;
+      tokenPayload.repo = updateConfig.repo;
+      tokenPayload.assetId = updateConfig.binaryAssetId;
+      tokenPayload.assetName = updateConfig.binaryAssetName || updateConfig.fileName;
+      tokenPayload.releaseTag = updateConfig.releaseTag || '';
+    }
+
+    const token = signToken(tokenPayload, secret);
 
     const downloadUrl = `${origin}/api/updates/download/${channel}/${platform}/${arch}/${encodeURIComponent(updateConfig.fileName)}?t=${encodeURIComponent(token)}`;
 
