@@ -115,12 +115,13 @@ function getFileNameFromUrl(url) {
   }
 }
 
-function getEnvUpdateConfig({ channel, platform, arch }) {
+function getEnvUpdateConfig({ channel, platform, arch, debug = null }) {
   const normalizedChannel = normalizeChannel(channel);
   const normalizedPlatform = normalizePlatform(platform);
   const normalizedArch = normalizeArch(arch);
 
   if (!normalizedPlatform || !normalizedArch) {
+    if (debug) debug.env = { matched: false, reason: 'invalid-platform-or-arch' };
     return null;
   }
 
@@ -133,14 +134,27 @@ function getEnvUpdateConfig({ channel, platform, arch }) {
   const fileNameEnv = getArtifactEnv(normalizedChannel, normalizedPlatform, normalizedArch, 'FILE_NAME');
 
   if (!version || !fileUrl || !sha512 || !size) {
+    if (debug) {
+      debug.env = {
+        matched: false,
+        reason: 'missing-required-env-metadata',
+        hasVersion: !!version,
+        hasFileUrl: !!fileUrl,
+        hasSha512: !!sha512,
+        hasSize: !!size,
+      };
+    }
     return null;
   }
 
   const releaseDate = releaseDateRaw || new Date().toISOString();
   const fileName = fileNameEnv || getFileNameFromUrl(fileUrl);
-  if (!fileName) return null;
+  if (!fileName) {
+    if (debug) debug.env = { matched: false, reason: 'missing-file-name' };
+    return null;
+  }
 
-  return {
+  const config = {
     source: 'env',
     channel: normalizedChannel,
     platform: normalizedPlatform,
@@ -153,6 +167,17 @@ function getEnvUpdateConfig({ channel, platform, arch }) {
     releaseNotes,
     fileName,
   };
+
+  if (debug) {
+    debug.env = {
+      matched: true,
+      source: 'env',
+      version: config.version,
+      fileName: config.fileName,
+    };
+  }
+
+  return config;
 }
 
 function getGitHubRepoConfig() {
@@ -417,7 +442,7 @@ function findAssetByName(assets, fileName) {
   return (assets || []).find((asset) => String(asset.name || '').toLowerCase() === decoded);
 }
 
-async function getGitHubUpdateConfig({ channel, platform, arch }) {
+async function getGitHubUpdateConfig({ channel, platform, arch, debug = null }) {
   const normalizedChannel = normalizeChannel(channel);
   const normalizedPlatform = normalizePlatform(platform);
   const normalizedArch = normalizeArch(arch);
@@ -430,17 +455,40 @@ async function getGitHubUpdateConfig({ channel, platform, arch }) {
   if (!gh.owner || !gh.repo) return null;
 
   try {
-    const releases = await githubJson(`/repos/${gh.owner}/${gh.repo}/releases?per_page=20`, { token: gh.token });
+    const releases = await githubJson(`/repos/${gh.owner}/${gh.repo}/releases?per_page=50`, { token: gh.token });
     const releaseCandidates = listReleasesForChannel(releases, normalizedChannel);
     if (releaseCandidates.length === 0) return null;
 
+    if (debug) {
+      debug.github = {
+        owner: gh.owner,
+        repo: gh.repo,
+        tokenConfigured: !!gh.token,
+        releasesFetched: Array.isArray(releases) ? releases.length : 0,
+        channelCandidates: releaseCandidates.length,
+        candidates: [],
+      };
+    }
+
     let bestConfig = null;
     for (const release of releaseCandidates) {
+      const releaseDebug = debug ? {
+        tag: cleanText(release.tag_name || '', 120),
+        prerelease: !!release.prerelease,
+        draft: !!release.draft,
+        publishedAt: cleanText(release.published_at || '', 80),
+        manifestAssets: 0,
+        manifestMatches: [],
+      } : null;
+
       const candidates = listManifestAssets(release.assets || [], {
         channel: normalizedChannel,
         platform: normalizedPlatform,
         arch: normalizedArch,
       });
+      if (releaseDebug) {
+        releaseDebug.manifestAssets = candidates.length;
+      }
       if (candidates.length === 0) continue;
 
       for (const manifestAsset of candidates) {
@@ -455,18 +503,52 @@ async function getGitHubUpdateConfig({ channel, platform, arch }) {
         if (!manifestResponse.ok) {
           const detail = await manifestResponse.text().catch(() => '');
           console.error(`Manifest asset fetch failed (${manifestResponse.status}): ${detail.slice(0, 180)}`);
+          if (releaseDebug) {
+            releaseDebug.manifestMatches.push({
+              manifest: cleanText(manifestAsset.name || '', 160),
+              ok: false,
+              reason: `manifest-fetch-${manifestResponse.status}`,
+            });
+          }
           continue;
         }
 
         const manifestText = await manifestResponse.text();
         const parsed = parseManifestYml(manifestText);
-        if (!parsed) continue;
+        if (!parsed) {
+          if (releaseDebug) {
+            releaseDebug.manifestMatches.push({
+              manifest: cleanText(manifestAsset.name || '', 160),
+              ok: false,
+              reason: 'manifest-parse-failed',
+            });
+          }
+          continue;
+        }
         if (!isArtifactCompatible(parsed.fileName, normalizedPlatform, normalizedArch)) {
+          if (releaseDebug) {
+            releaseDebug.manifestMatches.push({
+              manifest: cleanText(manifestAsset.name || '', 160),
+              ok: false,
+              reason: 'artifact-incompatible',
+              fileName: parsed.fileName,
+              version: parsed.version,
+            });
+          }
           continue;
         }
 
         const binaryAsset = findAssetByName(release.assets || [], parsed.fileName);
         if (!binaryAsset) {
+          if (releaseDebug) {
+            releaseDebug.manifestMatches.push({
+              manifest: cleanText(manifestAsset.name || '', 160),
+              ok: false,
+              reason: 'binary-asset-not-found',
+              fileName: parsed.fileName,
+              version: parsed.version,
+            });
+          }
           continue;
         }
 
@@ -487,6 +569,15 @@ async function getGitHubUpdateConfig({ channel, platform, arch }) {
           binaryAssetId: binaryAsset.id,
           binaryAssetName: cleanText(binaryAsset.name || parsed.fileName, 200),
         };
+
+        if (releaseDebug) {
+          releaseDebug.manifestMatches.push({
+            manifest: cleanText(manifestAsset.name || '', 160),
+            ok: true,
+            version: candidateConfig.version,
+            fileName: candidateConfig.fileName,
+          });
+        }
 
         if (!bestConfig) {
           bestConfig = candidateConfig;
@@ -509,32 +600,59 @@ async function getGitHubUpdateConfig({ channel, platform, arch }) {
           bestConfig = candidateConfig;
         }
       }
+
+      if (debug && releaseDebug) {
+        debug.github.candidates.push(releaseDebug);
+      }
     }
 
+    if (debug) {
+      debug.github.selected = bestConfig
+        ? {
+            version: bestConfig.version,
+            releaseTag: bestConfig.releaseTag,
+            fileName: bestConfig.fileName,
+          }
+        : null;
+    }
     return bestConfig;
   } catch (err) {
     console.error('GitHub updater config lookup failed:', err?.message || String(err));
+    if (debug) {
+      debug.github = {
+        ...(debug.github || {}),
+        error: err?.message || String(err),
+      };
+    }
     return null;
   }
 }
 
-async function getUpdateConfig({ channel, platform, arch }) {
+async function getUpdateConfig({ channel, platform, arch, debug = null }) {
   const mode = getUpdatesSourceMode();
+  if (debug) {
+    debug.mode = mode;
+    debug.request = {
+      channel: normalizeChannel(channel),
+      platform: normalizePlatform(platform),
+      arch: normalizeArch(arch),
+    };
+  }
 
   if (mode === 'env') {
-    const envConfig = getEnvUpdateConfig({ channel, platform, arch });
+    const envConfig = getEnvUpdateConfig({ channel, platform, arch, debug });
     if (envConfig) return envConfig;
     return null;
   }
 
   if (mode === 'github' || mode === 'auto') {
-    const githubConfig = await getGitHubUpdateConfig({ channel, platform, arch });
+    const githubConfig = await getGitHubUpdateConfig({ channel, platform, arch, debug });
     if (githubConfig) return githubConfig;
     if (mode === 'github') return null;
   }
 
   // Auto-mode fallback when GitHub metadata is unavailable.
-  return getEnvUpdateConfig({ channel, platform, arch });
+  return getEnvUpdateConfig({ channel, platform, arch, debug });
 }
 
 async function getGitHubAssetRedirect({ owner, repo, assetId }) {

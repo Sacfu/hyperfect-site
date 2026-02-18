@@ -47,6 +47,8 @@ async function handleUpdaterFeed(req, res) {
   const platform = normalizePlatform(req.query.platform);
   const arch = normalizeArch(req.query.arch);
   const manifest = cleanText(req.query.manifest || '', 64).toLowerCase();
+  const debugRequested = cleanText(req.query.debug || '', 8) === '1';
+  const debug = debugRequested ? {} : null;
 
   if (!platform || !arch) {
     return res.status(400).json({ error: 'Invalid updater platform/arch request' });
@@ -56,10 +58,32 @@ async function handleUpdaterFeed(req, res) {
     return res.status(404).json({ error: 'Manifest not found' });
   }
 
-  const updateConfig = await getUpdateConfig({ channel, platform, arch });
+  const updateConfig = await getUpdateConfig({ channel, platform, arch, debug });
   if (!updateConfig) {
+    if (debugRequested) {
+      return res.status(404).json({
+        error: `No update configured for ${channel}/${platform}/${arch}`,
+        debug,
+      });
+    }
     return res.status(404).json({
       error: `No update configured for ${channel}/${platform}/${arch}`,
+    });
+  }
+
+  if (debugRequested) {
+    return res.status(200).json({
+      update: {
+        source: updateConfig.source || 'unknown',
+        channel,
+        platform,
+        arch,
+        version: updateConfig.version,
+        releaseDate: updateConfig.releaseDate,
+        fileName: updateConfig.fileName,
+        releaseTag: updateConfig.releaseTag || null,
+      },
+      debug,
     });
   }
 
