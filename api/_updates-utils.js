@@ -304,9 +304,16 @@ function isArtifactCompatible(fileName, platform, arch) {
   const name = String(fileName || '').toLowerCase();
   if (!name) return false;
 
-  if (platform === 'mac' && !name.includes('mac')) return false;
-  if (platform === 'linux' && !name.includes('linux')) return false;
-  if (platform === 'win' && (name.includes('mac') || name.includes('linux'))) return false;
+  const isMacLike = name.includes('mac') || name.includes('darwin') || name.endsWith('.dmg');
+  const isLinuxLike = name.includes('linux') || name.endsWith('.appimage') || name.endsWith('.deb');
+  const isWinLike = name.includes('win') || name.includes('windows') || name.endsWith('.exe') || name.includes('nsis');
+
+  if (platform === 'mac' && !isMacLike) return false;
+  if (platform === 'linux' && !isLinuxLike) return false;
+  if (platform === 'win') {
+    if (!isWinLike) return false;
+    if (isMacLike || isLinuxLike) return false;
+  }
 
   const hasArm = name.includes('arm64') || name.includes('aarch64');
   const hasX64 = name.includes('x64') || name.includes('amd64');
@@ -323,6 +330,44 @@ function isArtifactCompatible(fileName, platform, arch) {
   }
 
   return true;
+}
+
+function parseLooseSemver(version) {
+  const raw = cleanText(version || '', 80);
+  if (!raw) return null;
+
+  const [core, prerelease = ''] = raw.split('-', 2);
+  const segments = core
+    .split('.')
+    .map((part) => Number.parseInt(part, 10))
+    .filter((value) => Number.isFinite(value));
+
+  if (segments.length === 0) return null;
+  while (segments.length < 3) segments.push(0);
+
+  return { raw, core: segments.slice(0, 3), prerelease };
+}
+
+function compareLooseSemver(a, b) {
+  const pa = parseLooseSemver(a);
+  const pb = parseLooseSemver(b);
+
+  if (!pa && !pb) return 0;
+  if (!pa) return -1;
+  if (!pb) return 1;
+
+  for (let idx = 0; idx < 3; idx += 1) {
+    if (pa.core[idx] > pb.core[idx]) return 1;
+    if (pa.core[idx] < pb.core[idx]) return -1;
+  }
+
+  if (!pa.prerelease && pb.prerelease) return 1;
+  if (pa.prerelease && !pb.prerelease) return -1;
+  if (pa.prerelease && pb.prerelease) {
+    return pa.prerelease.localeCompare(pb.prerelease);
+  }
+
+  return 0;
 }
 
 function parseManifestYml(ymlText) {
@@ -389,6 +434,7 @@ async function getGitHubUpdateConfig({ channel, platform, arch }) {
     const releaseCandidates = listReleasesForChannel(releases, normalizedChannel);
     if (releaseCandidates.length === 0) return null;
 
+    let bestConfig = null;
     for (const release of releaseCandidates) {
       const candidates = listManifestAssets(release.assets || [], {
         channel: normalizedChannel,
@@ -424,7 +470,7 @@ async function getGitHubUpdateConfig({ channel, platform, arch }) {
           continue;
         }
 
-        return {
+        const candidateConfig = {
           source: 'github',
           channel: normalizedChannel,
           platform: normalizedPlatform,
@@ -441,10 +487,31 @@ async function getGitHubUpdateConfig({ channel, platform, arch }) {
           binaryAssetId: binaryAsset.id,
           binaryAssetName: cleanText(binaryAsset.name || parsed.fileName, 200),
         };
+
+        if (!bestConfig) {
+          bestConfig = candidateConfig;
+          continue;
+        }
+
+        const cmp = compareLooseSemver(candidateConfig.version, bestConfig.version);
+        if (cmp > 0) {
+          bestConfig = candidateConfig;
+          continue;
+        }
+        if (cmp < 0) {
+          continue;
+        }
+
+        // Same parsed version: prefer the most recently published release.
+        const candidatePublishedAt = Date.parse(String(release.published_at || ''));
+        const bestPublishedAt = Date.parse(String(bestConfig.releaseDate || ''));
+        if (Number.isFinite(candidatePublishedAt) && Number.isFinite(bestPublishedAt) && candidatePublishedAt > bestPublishedAt) {
+          bestConfig = candidateConfig;
+        }
       }
     }
 
-    return null;
+    return bestConfig;
   } catch (err) {
     console.error('GitHub updater config lookup failed:', err?.message || String(err));
     return null;
