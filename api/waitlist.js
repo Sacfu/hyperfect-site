@@ -194,7 +194,8 @@ async function createInviteForCustomer(email, name, customerId) {
         customer_email: email,
         success_url: `${siteUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${siteUrl}/?checkout=cancelled`,
-        expires_at: Math.floor(Date.now() / 1000) + (72 * 60 * 60), // 72 hours
+        // Stripe Checkout currently caps expires_at to ~24 hours from now.
+        expires_at: Math.floor(Date.now() / 1000) + (24 * 60 * 60),
         metadata: {
             source: 'waitlist_approval',
             invite_for: name || email,
@@ -206,7 +207,7 @@ async function createInviteForCustomer(email, name, customerId) {
         ok: true,
         invite_url: session.url,
         session_id: session.id,
-        expires_in: '72 hours',
+        expires_in: '24 hours',
     };
 }
 
@@ -452,7 +453,11 @@ module.exports = async function handler(req, res) {
         if (req.method === 'PATCH') return await handleAdminUpdate(req, res);
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     } catch (err) {
-        console.error('Waitlist API error:', err.message);
-        return res.status(500).json({ success: false, error: 'Waitlist request failed' });
+        console.error('Waitlist API error:', err?.stack || err?.message || String(err));
+        const detail = cleanText(err?.message || 'Unknown error', 220);
+        if (req.method === 'POST') {
+            return res.status(500).json({ success: false, error: 'Waitlist request failed' });
+        }
+        return res.status(500).json({ success: false, error: detail || 'Waitlist request failed' });
     }
 };

@@ -80,6 +80,30 @@ module.exports = async function handler(req, res) {
             ],
         },
         {
+            name: 'waitlist-add',
+            description: 'Add or update a waitlist entry',
+            options: [
+                {
+                    name: 'email',
+                    description: 'Waitlist email',
+                    type: 3, // STRING
+                    required: true,
+                },
+                {
+                    name: 'name',
+                    description: 'Optional name for the entry',
+                    type: 3, // STRING
+                    required: false,
+                },
+                {
+                    name: 'notes',
+                    description: 'Optional notes/interest',
+                    type: 3, // STRING
+                    required: false,
+                },
+            ],
+        },
+        {
             name: 'waitlist-approve',
             description: 'Approve a waitlist entry',
             options: [
@@ -117,7 +141,7 @@ module.exports = async function handler(req, res) {
         },
         {
             name: 'waitlist-invite',
-            description: 'Approve and generate invite link for a waitlist entry',
+            description: 'Add if needed, approve, and generate invite link',
             options: [
                 {
                     name: 'email',
@@ -128,6 +152,12 @@ module.exports = async function handler(req, res) {
                 {
                     name: 'notes',
                     description: 'Optional review notes',
+                    type: 3, // STRING
+                    required: false,
+                },
+                {
+                    name: 'name',
+                    description: 'Optional name when creating missing entries',
                     type: 3, // STRING
                     required: false,
                 },

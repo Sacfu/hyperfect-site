@@ -11,9 +11,10 @@
 //   /invite <email> [name] — Generate a beta checkout link for a tester
 //   /waitlist-list [status] [limit] — List waitlist entries
 //   /waitlist-status <email> — Show a single waitlist entry
+//   /waitlist-add <email> [name] [notes] — Add/update a waitlist entry
 //   /waitlist-approve <email> [notes] — Approve a waitlist entry
 //   /waitlist-reject <email> <reason> — Reject a waitlist entry
-//   /waitlist-invite <email> [notes] — Approve + generate invite link
+//   /waitlist-invite <email> [notes] [name] — Add if missing, approve, and generate invite link
 //
 // Environment Variables:
 //   DISCORD_PUBLIC_KEY — from Discord Developer Portal (for signature verification)
@@ -219,6 +220,60 @@ async function updateWaitlistByEmail(email, nextStatus, notes, commandMeta = {})
     return { ok: true, customer: updated, entry: mapWaitlistCustomer(updated) };
 }
 
+async function ensureWaitlistCustomer(email, name = '', notes = '', source = 'discord_waitlist_add') {
+    const normalized = normalizeEmail(email);
+    if (!normalized) return { ok: false, error: 'Email is required.' };
+
+    const cleanName = cleanText(name, 120);
+    const cleanNotes = cleanText(notes, 500);
+    const cleanSource = cleanText(source, 64) || 'discord_waitlist_add';
+    const now = new Date().toISOString();
+
+    const existing = await findCustomerByEmail(normalized);
+    if (existing && !existing.deleted) {
+        const previous = existing.metadata || {};
+        const currentStatus = getWaitlistStatus(previous) || 'pending';
+        const nextStatus = currentStatus === 'rejected' ? 'pending' : currentStatus;
+        const submissionCount = (parseInt(previous.waitlist_submission_count || '0', 10) || 0) + 1;
+
+        const updated = await stripe.customers.update(existing.id, {
+            name: cleanName || existing.name || undefined,
+            metadata: {
+                ...previous,
+                waitlist: 'true',
+                waitlist_status: nextStatus,
+                waitlist_name: cleanName || previous.waitlist_name || existing.name || '',
+                waitlist_source: previous.waitlist_source || cleanSource,
+                waitlist_interest: previous.waitlist_interest || cleanNotes,
+                waitlist_submission_count: String(submissionCount),
+                waitlist_last_submitted_at: now,
+                waitlist_updated_at: now,
+                waitlist_created_at: previous.waitlist_created_at || now,
+                waitlist_review_notes: cleanNotes || previous.waitlist_review_notes || '',
+            },
+        });
+        return { ok: true, created: false, customer: updated, entry: mapWaitlistCustomer(updated) };
+    }
+
+    const created = await stripe.customers.create({
+        email: normalized,
+        name: cleanName || undefined,
+        metadata: {
+            waitlist: 'true',
+            waitlist_status: 'pending',
+            waitlist_name: cleanName,
+            waitlist_source: cleanSource,
+            waitlist_interest: cleanNotes,
+            waitlist_submission_count: '1',
+            waitlist_last_submitted_at: now,
+            waitlist_updated_at: now,
+            waitlist_created_at: now,
+            waitlist_review_notes: cleanNotes,
+        },
+    });
+    return { ok: true, created: true, customer: created, entry: mapWaitlistCustomer(created) };
+}
+
 module.exports = async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
@@ -323,6 +378,25 @@ module.exports = async function handler(req, res) {
             }
         }
 
+        if (name === 'waitlist-add') {
+            const email = normalizeEmail(getOptionValue(options, 'email'));
+            const waitlistName = cleanText(getOptionValue(options, 'name', ''), 120);
+            const notes = cleanText(getOptionValue(options, 'notes', ''), 500);
+            if (!email) return res.status(200).json(ephemeral('Email is required.'));
+            try {
+                const seeded = await ensureWaitlistCustomer(email, waitlistName, notes, 'discord_waitlist_add');
+                if (!seeded.ok) return res.status(200).json(ephemeral(seeded.error || 'Could not add waitlist entry.'));
+                const entry = seeded.entry || {};
+                return res.status(200).json(
+                    ephemeral(
+                        `${seeded.created ? 'Added' : 'Updated'} waitlist entry for ${email}.\nStatus: **${entry.status || 'pending'}**`
+                    )
+                );
+            } catch (err) {
+                return res.status(200).json(ephemeral(`Error adding waitlist entry: ${err.message}`));
+            }
+        }
+
         if (name === 'waitlist-approve') {
             const email = normalizeEmail(getOptionValue(options, 'email'));
             const notes = cleanText(getOptionValue(options, 'notes', ''), 500);
@@ -356,9 +430,13 @@ module.exports = async function handler(req, res) {
 
         if (name === 'waitlist-invite') {
             const email = normalizeEmail(getOptionValue(options, 'email'));
+            const waitlistName = cleanText(getOptionValue(options, 'name', ''), 120);
             const notes = cleanText(getOptionValue(options, 'notes', ''), 500);
             if (!email) return res.status(200).json(ephemeral('Email is required.'));
             try {
+                const seeded = await ensureWaitlistCustomer(email, waitlistName, notes, 'discord_waitlist_invite');
+                if (!seeded.ok) return res.status(200).json(ephemeral(seeded.error || 'Could not prepare waitlist entry.'));
+
                 const approved = await updateWaitlistByEmail(email, 'approved', notes, { reviewedBy: actor });
                 if (!approved.ok) return res.status(200).json(ephemeral(approved.error));
 
@@ -368,7 +446,7 @@ module.exports = async function handler(req, res) {
                     waitlist_customer_id: entry.customer_id || '',
                     invited_by: actor,
                     command: 'waitlist-invite',
-                }, 72);
+                }, 24);
 
                 const previous = approved.customer.metadata || {};
                 const now = new Date().toISOString();
@@ -383,7 +461,7 @@ module.exports = async function handler(req, res) {
                 });
 
                 return res.status(200).json(
-                    ephemeral(`Approved + invited ${email}.\nInvite link (expires in 72h):\n${session.url}`)
+                    ephemeral(`Approved + invited ${email}.\nInvite link (expires in 24h):\n${session.url}`)
                 );
             } catch (err) {
                 return res.status(200).json(ephemeral(`Error inviting entry: ${err.message}`));
