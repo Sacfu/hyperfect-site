@@ -52,33 +52,41 @@ async function sendLicenseEmail(email, licenseKey, plan) {
             to: email,
             subject: 'Your Nexus License Key',
             html: `
-                <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 560px; margin: 0 auto; padding: 40px 20px;">
-                    <div style="text-align: center; margin-bottom: 32px;">
-                        <h1 style="font-size: 24px; color: #fafafa; margin: 0;">Welcome to Nexus</h1>
-                        <p style="color: #a1a1aa; font-size: 14px; margin-top: 8px;">Thanks for your purchase! Here's your license key.</p>
-                    </div>
+                <div style="background-color: #0f0f1a; padding: 0; margin: 0; width: 100%;">
+                    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 560px; margin: 0 auto; padding: 40px 20px;">
 
-                    <div style="background: #1a1a2e; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px; text-align: center; margin: 24px 0;">
-                        <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #71717a; margin-bottom: 12px;">Your License Key</div>
-                        <div style="font-family: 'SF Mono', 'Fira Code', Consolas, monospace; font-size: 20px; font-weight: 700; color: #ffffff; letter-spacing: 2px; padding: 12px; background: rgba(37,99,235,0.08); border-radius: 8px;">
-                            ${licenseKey}
+                        <div style="text-align: center; margin-bottom: 32px;">
+                            <h1 style="font-size: 26px; color: #ffffff; margin: 0; font-weight: 700;">Welcome to Nexus</h1>
+                            <p style="color: #d4d4d8; font-size: 15px; margin-top: 10px;">Thanks for your purchase! Here's your license key.</p>
                         </div>
-                        <div style="font-size: 12px; color: #71717a; margin-top: 12px;">Plan: ${plan === 'subscription' ? 'Subscription' : 'Lifetime'}</div>
-                    </div>
 
-                    <div style="background: rgba(37,99,235,0.06); border: 1px solid rgba(37,99,235,0.15); border-radius: 8px; padding: 16px; margin: 24px 0;">
-                        <h3 style="font-size: 14px; color: #fafafa; margin: 0 0 8px 0;">Getting Started</h3>
-                        <ol style="color: #a1a1aa; font-size: 13px; line-height: 1.8; margin: 0; padding-left: 16px;">
-                            <li>Download Nexus from our Discord server</li>
-                            <li>Open the app and enter your license key</li>
-                            <li>Upload your resume and configure your job preferences</li>
-                            <li>Create your first search and let Nexus work</li>
-                        </ol>
-                    </div>
+                        <div style="background-color: #1a1a2e; border: 1px solid #2a2a40; border-radius: 12px; padding: 24px; text-align: center; margin: 24px 0;">
+                            <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #a1a1aa; margin-bottom: 12px;">Your License Key</div>
+                            <div style="font-family: 'SF Mono', 'Fira Code', Consolas, monospace; font-size: 20px; font-weight: 700; color: #ffffff; letter-spacing: 2px; padding: 14px; background-color: #1e2a4a; border-radius: 8px;">
+                                ${licenseKey}
+                            </div>
+                            <div style="font-size: 13px; color: #a1a1aa; margin-top: 12px;">Plan: ${plan === 'subscription' ? 'Subscription' : 'Beta Access'}</div>
+                        </div>
 
-                    <div style="text-align: center; margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.06);">
-                        <p style="color: #71717a; font-size: 12px; margin: 0;">Questions? Reply to this email or reach us at <a href="mailto:Hyperfectllc@gmail.com" style="color: #2563eb;">Hyperfectllc@gmail.com</a></p>
-                        <p style="color: #52525b; font-size: 11px; margin-top: 8px;">&copy; 2026 Hyperfect LLC &bull; <a href="https://hyperfect.dev" style="color: #52525b;">hyperfect.dev</a></p>
+                        <div style="background-color: #141428; border: 1px solid #2a2a40; border-radius: 8px; padding: 20px; margin: 24px 0;">
+                            <h3 style="font-size: 15px; color: #ffffff; margin: 0 0 12px 0; font-weight: 600;">Getting Started</h3>
+                            <ol style="color: #d4d4d8; font-size: 14px; line-height: 2; margin: 0; padding-left: 18px;">
+                                <li>Join our Discord server to download Nexus</li>
+                                <li>Open the app and enter your license key</li>
+                                <li>Upload your resume and configure your job preferences</li>
+                                <li>Create your first task and let Nexus work</li>
+                            </ol>
+                        </div>
+
+                        <div style="text-align: center; margin: 28px 0;">
+                            <a href="https://discord.gg/Ynvcw6Dts4" style="display: inline-block; background-color: #5865F2; color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 600; padding: 14px 32px; border-radius: 8px;">Join the Discord Server</a>
+                        </div>
+
+                        <div style="text-align: center; margin-top: 32px; padding-top: 24px; border-top: 1px solid #2a2a40;">
+                            <p style="color: #a1a1aa; font-size: 12px; margin: 0;">Questions? Reach us at <a href="mailto:Hyperfectllc@gmail.com" style="color: #3b82f6;">Hyperfectllc@gmail.com</a></p>
+                            <p style="color: #71717a; font-size: 11px; margin-top: 8px;">&copy; 2026 Hyperfect LLC &bull; <a href="https://hyperfect.dev" style="color: #71717a;">hyperfect.dev</a></p>
+                        </div>
+
                     </div>
                 </div>
             `,
