@@ -1034,11 +1034,13 @@
 
         /* More realistic app chrome/dashboard styling for hero mockup */
         .mockup-window {
-            background: linear-gradient(160deg, #080d16 0%, #0d1420 65%, #111926 100%);
+            background:
+                radial-gradient(circle at 48% 0%, rgba(63, 90, 132, 0.22), transparent 34%),
+                linear-gradient(160deg, #060a12 0%, #0b121d 66%, #0f1723 100%);
         }
 
         .mockup-body {
-            min-height: 640px;
+            min-height: 520px;
         }
 
         .mockup-sidebar {
@@ -1161,44 +1163,39 @@
         }
 
         .mockup-main {
-            padding: 1.1rem 1.2rem 1.25rem;
-            gap: 0.85rem;
-            background: linear-gradient(180deg, rgba(9, 13, 20, 0.74), rgba(9, 13, 20, 0.9));
+            padding: 0.88rem 0.95rem 0.96rem;
+            gap: 0.64rem;
+            background: linear-gradient(180deg, rgba(8, 12, 19, 0.7), rgba(8, 12, 19, 0.9));
         }
 
         .mockup-hero-panel {
             border: 1px solid rgba(142, 164, 195, 0.22);
-            border-radius: 16px;
-            padding: 1.1rem 1.2rem;
-            background: linear-gradient(100deg, rgba(25, 34, 50, 0.72), rgba(15, 21, 33, 0.68));
+            border-radius: 14px;
+            padding: 0.74rem 0.84rem;
+            background: linear-gradient(102deg, rgba(21, 30, 45, 0.68), rgba(13, 19, 30, 0.64));
             display: flex;
             justify-content: space-between;
-            gap: 1rem;
+            align-items: center;
+            gap: 0.72rem;
         }
 
         .mockup-hero-title {
-            font-size: 1.9rem;
+            font-size: 1.2rem;
             font-weight: 700;
             letter-spacing: -0.01em;
             color: #ecf2ff;
             line-height: 1.1;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.18rem;
         }
 
-        .mockup-hero-quote {
-            font-size: 0.84rem;
-            color: #bbc8dd;
-            font-style: italic;
-        }
-
-        .mockup-hero-author {
+        .mockup-hero-subline {
             font-size: 0.74rem;
-            color: #8e9cb3;
-            margin-top: 0.2rem;
+            color: #a5b4cc;
+            letter-spacing: 0.02em;
         }
 
         .mockup-hero-time {
-            font-size: 0.76rem;
+            font-size: 0.66rem;
             text-align: right;
             color: #9eaac0;
             line-height: 1.4;
@@ -1207,26 +1204,26 @@
 
         .stats-grid {
             grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 0.78rem;
+            gap: 0.58rem;
         }
 
         .stat-card {
             background: linear-gradient(150deg, rgba(20, 28, 43, 0.64), rgba(9, 13, 22, 0.6));
             border: 1px solid rgba(132, 156, 191, 0.24);
-            border-radius: 18px;
-            padding: 0.9rem 0.95rem 0.82rem;
+            border-radius: 14px;
+            padding: 0.58rem 0.62rem 0.56rem;
         }
 
         .stat-icon {
-            width: 34px;
-            height: 34px;
+            width: 26px;
+            height: 26px;
             border-radius: 999px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.9rem;
+            font-size: 0.68rem;
             font-weight: 700;
-            margin-bottom: 0.55rem;
+            margin-bottom: 0.36rem;
         }
 
         .stat-icon.icon-good {
@@ -1245,43 +1242,43 @@
         }
 
         .stat-value {
-            font-size: 2rem;
+            font-size: 1.32rem;
             line-height: 1;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.16rem;
             color: #f3f7ff;
         }
 
         .stat-label {
             text-transform: none;
             letter-spacing: 0;
-            font-size: 0.82rem;
+            font-size: 0.69rem;
             color: #96a4bb;
             margin-bottom: 0;
         }
 
         .dashboard-layout {
             grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-            gap: 0.82rem;
+            gap: 0.58rem;
             align-items: start;
         }
 
         .mockup-panel {
-            border-radius: 16px;
-            padding: 0.95rem;
+            border-radius: 13px;
+            padding: 0.66rem;
             background: linear-gradient(160deg, rgba(17, 24, 38, 0.72), rgba(9, 13, 22, 0.62));
             border: 1px solid rgba(128, 149, 181, 0.22);
         }
 
         .mockup-panel-title {
-            font-size: 0.98rem;
+            font-size: 0.78rem;
             letter-spacing: 0.06em;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.48rem;
         }
 
         .connection-list {
             display: flex;
             flex-direction: column;
-            gap: 0.6rem;
+            gap: 0.4rem;
         }
 
         .connection-item {
@@ -1289,26 +1286,26 @@
             align-items: center;
             justify-content: space-between;
             gap: 0.6rem;
-            border-radius: 12px;
+            border-radius: 10px;
             border: 1px solid rgba(121, 143, 176, 0.2);
             background: rgba(7, 11, 19, 0.54);
-            padding: 0.62rem 0.72rem;
+            padding: 0.44rem 0.5rem;
         }
 
         .connection-left {
             display: flex;
-            gap: 0.62rem;
+            gap: 0.46rem;
             align-items: center;
         }
 
         .connection-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 14px;
+            width: 28px;
+            height: 28px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
+            font-size: 0.74rem;
             color: #d5def0;
             border: 1px solid rgba(146, 163, 190, 0.24);
             background: linear-gradient(135deg, rgba(56, 68, 88, 0.78), rgba(38, 48, 65, 0.82));
@@ -1320,7 +1317,7 @@
         }
 
         .connection-name {
-            font-size: 0.95rem;
+            font-size: 0.76rem;
             font-weight: 600;
             color: #edf3ff;
             line-height: 1.2;
@@ -1328,7 +1325,7 @@
 
         .connection-status {
             margin-top: 0.1rem;
-            font-size: 0.78rem;
+            font-size: 0.63rem;
         }
 
         .connection-status.status-bad {
@@ -1342,9 +1339,9 @@
         .connection-action {
             border: 1px solid rgba(128, 149, 180, 0.36);
             border-radius: 999px;
-            font-size: 0.74rem;
+            font-size: 0.62rem;
             color: #aebfd8;
-            padding: 0.32rem 0.7rem;
+            padding: 0.2rem 0.48rem;
             font-weight: 600;
             white-space: nowrap;
         }
@@ -1355,34 +1352,34 @@
         }
 
         .session-summary {
-            margin-top: 0.72rem;
+            margin-top: 0.44rem;
             border-top: 1px solid rgba(130, 151, 182, 0.2);
-            padding-top: 0.68rem;
+            padding-top: 0.42rem;
             display: flex;
             flex-direction: column;
-            gap: 0.4rem;
+            gap: 0.26rem;
         }
 
         .session-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-radius: 10px;
-            padding: 0.43rem 0.58rem;
+            border-radius: 8px;
+            padding: 0.28rem 0.36rem;
             background: rgba(12, 19, 31, 0.68);
             color: #9eadc4;
-            font-size: 0.78rem;
+            font-size: 0.62rem;
         }
 
         .session-row strong {
             color: #ebf2ff;
-            font-size: 0.8rem;
+            font-size: 0.64rem;
         }
 
         .empty-tasks-preview {
             border-radius: 12px;
             border: 1px solid rgba(126, 146, 177, 0.2);
-            min-height: 286px;
+            min-height: 218px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -1393,20 +1390,20 @@
         .empty-tasks-title {
             text-transform: uppercase;
             letter-spacing: 0.08em;
-            font-size: 0.8rem;
+            font-size: 0.66rem;
             color: #9aa9bf;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.16rem;
         }
 
         .empty-tasks-subtitle {
             color: #c2d1e6;
-            font-size: 0.95rem;
-            margin-bottom: 0.2rem;
+            font-size: 0.8rem;
+            margin-bottom: 0.14rem;
         }
 
         .empty-tasks-hint {
             color: #8a98b0;
-            font-size: 0.8rem;
+            font-size: 0.66rem;
         }
 
         @media (max-width: 1024px) {
@@ -1418,24 +1415,141 @@
         @media (max-width: 768px) {
             .mockup-body {
                 grid-template-columns: 1fr;
+                min-height: 0;
             }
             .mockup-sidebar {
                 display: none;
             }
             .mockup-tabs {
-                display: flex;
+                display: none;
+            }
+            .mockup-window {
+                max-height: 430px;
             }
             .mockup-main {
-                padding: 1rem;
+                padding: 0.54rem;
+                gap: 0.42rem;
+                max-height: 380px;
+                overflow: hidden;
             }
             .mockup-hero-panel {
-                flex-direction: column;
+                padding: 0.52rem 0.58rem;
+                gap: 0.4rem;
+            }
+            .mockup-hero-title {
+                font-size: 0.92rem;
+                margin-bottom: 0.08rem;
+            }
+            .mockup-hero-subline {
+                font-size: 0.56rem;
+            }
+            .mockup-hero-time {
+                font-size: 0.52rem;
             }
             .stats-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: 0.32rem;
+            }
+            .stat-card {
+                border-radius: 10px;
+                padding: 0.34rem 0.34rem 0.3rem;
+            }
+            .stat-icon {
+                width: 16px;
+                height: 16px;
+                font-size: 0.44rem;
+                margin-bottom: 0.18rem;
+            }
+            .stat-value {
+                font-size: 0.78rem;
+                margin-bottom: 0.06rem;
+            }
+            .stat-label {
+                font-size: 0.48rem;
+                line-height: 1.15;
             }
             .dashboard-layout {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr 1fr;
+                gap: 0.34rem;
+            }
+            .mockup-panel {
+                border-radius: 9px;
+                padding: 0.36rem;
+            }
+            .mockup-panel-title {
+                font-size: 0.56rem;
+                margin-bottom: 0.24rem;
+                letter-spacing: 0.03em;
+            }
+            .connection-list {
+                gap: 0.2rem;
+            }
+            .connection-item {
+                border-radius: 7px;
+                padding: 0.2rem 0.24rem;
+                gap: 0.2rem;
+            }
+            .connection-left {
+                gap: 0.22rem;
+                min-width: 0;
+            }
+            .connection-icon {
+                width: 16px;
+                height: 16px;
+                border-radius: 5px;
+                font-size: 0.44rem;
+            }
+            .connection-name {
+                font-size: 0.52rem;
+                max-width: 62px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .connection-status {
+                font-size: 0.46rem;
+                margin-top: 0;
+            }
+            .connection-action {
+                font-size: 0.44rem;
+                padding: 0.1rem 0.2rem;
+            }
+            .session-summary {
+                margin-top: 0.2rem;
+                padding-top: 0.18rem;
+                gap: 0.12rem;
+            }
+            .session-row {
+                border-radius: 5px;
+                padding: 0.12rem 0.16rem;
+                font-size: 0.46rem;
+            }
+            .session-row strong {
+                font-size: 0.48rem;
+            }
+            .empty-tasks-preview {
+                border-radius: 8px;
+                min-height: 98px;
+            }
+            .empty-tasks-title {
+                font-size: 0.45rem;
+                margin-bottom: 0.05rem;
+            }
+            .empty-tasks-subtitle {
+                font-size: 0.5rem;
+                margin-bottom: 0.05rem;
+            }
+            .empty-tasks-hint {
+                font-size: 0.43rem;
+                line-height: 1.2;
+                max-width: 70px;
+                text-align: center;
+            }
+            .mockup-content:not(#dashboard-view) {
+                display: none !important;
+            }
+            #dashboard-view {
+                display: block !important;
             }
             .kv-grid {
                 grid-template-columns: 1fr;
@@ -2112,7 +2226,7 @@
             }
 
             .mockup-main {
-                padding: 1.5rem;
+                padding: 0.5rem;
             }
         }
 
@@ -2697,8 +2811,7 @@
                                     <div class="mockup-hero-panel">
                                         <div>
                                             <div class="mockup-hero-title">Good morning</div>
-                                            <div class="mockup-hero-quote">"The best way to predict the future is to create it."</div>
-                                            <div class="mockup-hero-author">- Abraham Lincoln</div>
+                                            <div class="mockup-hero-subline">Session overview</div>
                                         </div>
                                         <div class="mockup-hero-time">Wed, Feb 18<br>12:53 AM</div>
                                     </div>
