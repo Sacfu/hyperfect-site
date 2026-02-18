@@ -1144,6 +1144,8 @@
             border: 1px solid var(--glass-border);
             border-radius: 12px;
             padding: 1rem;
+            display: flex;
+            flex-direction: column;
         }
 
         .demo-title {
@@ -1157,6 +1159,7 @@
             font-size: 0.88rem;
             color: var(--text-secondary);
             margin-bottom: 0.75rem;
+            min-height: 2.9em;
         }
 
         .demo-media-wrap {
@@ -1166,6 +1169,7 @@
             border: 1px solid var(--glass-border);
             background: rgba(0, 0, 0, 0.32);
             min-height: 170px;
+            margin-top: auto;
         }
 
         .demo-gif {
@@ -2286,7 +2290,7 @@
                                         <div class="kv-grid">
                                             <div class="kv-item">
                                                 <div class="kv-label">Resume</div>
-                                                <div class="kv-value">SaqibAziz_PowerPlatform.pdf</div>
+                                                <div class="kv-value">Senior_Software_Developer.pdf</div>
                                             </div>
                                             <div class="kv-item">
                                                 <div class="kv-label">Phone</div>
@@ -2388,6 +2392,69 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================
+         DEMO GALLERY
+         ======================================== -->
+    <section class="demo-gallery" id="demo-gallery">
+        <div class="container">
+            <h2 class="section-title fade-in">See Nexus In Action</h2>
+            <p class="section-subtitle fade-in">Short product clips from real task runs. Swap in your own capture files to keep this section fresh.</p>
+
+            <div class="demo-grid">
+                <article class="demo-card fade-in">
+                    <h3 class="demo-title">Create and Launch a Task</h3>
+                    <p class="demo-description">From task settings to run start in one flow.</p>
+                    <div class="demo-media-wrap">
+                        <img
+                            class="demo-gif"
+                            src="assets/demos/create-task.gif"
+                            alt="Creating and launching a task in Nexus"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                        >
+                        <div class="demo-placeholder" style="display:none;">
+                            <strong>Add demo GIF:</strong>
+                            <span>assets/demos/create-task.gif</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="demo-card fade-in">
+                    <h3 class="demo-title">Live Apply + Logs</h3>
+                    <p class="demo-description">Watch job scoring, question answering, and progression in real time.</p>
+                    <div class="demo-media-wrap">
+                        <img
+                            class="demo-gif"
+                            src="assets/demos/live-apply.gif"
+                            alt="Live application workflow and logs in Nexus"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                        >
+                        <div class="demo-placeholder" style="display:none;">
+                            <strong>Add demo GIF:</strong>
+                            <span>assets/demos/live-apply.gif</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="demo-card fade-in">
+                    <h3 class="demo-title">Task Review + Controls</h3>
+                    <p class="demo-description">Inspect task details, tweak settings, and relaunch quickly.</p>
+                    <div class="demo-media-wrap">
+                        <img
+                            class="demo-gif"
+                            src="assets/demos/task-review.gif"
+                            alt="Reviewing and editing task settings in Nexus"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                        >
+                        <div class="demo-placeholder" style="display:none;">
+                            <strong>Add demo GIF:</strong>
+                            <span>assets/demos/task-review.gif</span>
+                        </div>
+                    </div>
+                </article>
             </div>
         </div>
     </section>
@@ -2496,69 +2563,6 @@
                     <h3 class="step-title">Let Nexus Work</h3>
                     <p class="step-description">Sit back while Nexus applies and tracks everything in real-time.</p>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========================================
-         DEMO GALLERY
-         ======================================== -->
-    <section class="demo-gallery" id="demo-gallery">
-        <div class="container">
-            <h2 class="section-title fade-in">See Nexus In Action</h2>
-            <p class="section-subtitle fade-in">Short product clips from real task runs. Swap in your own capture files to keep this section fresh.</p>
-
-            <div class="demo-grid">
-                <article class="demo-card fade-in">
-                    <h3 class="demo-title">Create and Launch a Task</h3>
-                    <p class="demo-description">From task settings to run start in one flow.</p>
-                    <div class="demo-media-wrap">
-                        <img
-                            class="demo-gif"
-                            src="assets/demos/create-task.gif"
-                            alt="Creating and launching a task in Nexus"
-                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                        >
-                        <div class="demo-placeholder" style="display:none;">
-                            <strong>Add demo GIF:</strong>
-                            <span>assets/demos/create-task.gif</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="demo-card fade-in">
-                    <h3 class="demo-title">Live Apply + Logs</h3>
-                    <p class="demo-description">Watch job scoring, question answering, and progression in real time.</p>
-                    <div class="demo-media-wrap">
-                        <img
-                            class="demo-gif"
-                            src="assets/demos/live-apply.gif"
-                            alt="Live application workflow and logs in Nexus"
-                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                        >
-                        <div class="demo-placeholder" style="display:none;">
-                            <strong>Add demo GIF:</strong>
-                            <span>assets/demos/live-apply.gif</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="demo-card fade-in">
-                    <h3 class="demo-title">Task Review + Controls</h3>
-                    <p class="demo-description">Inspect task details, tweak settings, and relaunch quickly.</p>
-                    <div class="demo-media-wrap">
-                        <img
-                            class="demo-gif"
-                            src="assets/demos/task-review.gif"
-                            alt="Reviewing and editing task settings in Nexus"
-                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                        >
-                        <div class="demo-placeholder" style="display:none;">
-                            <strong>Add demo GIF:</strong>
-                            <span>assets/demos/task-review.gif</span>
-                        </div>
-                    </div>
-                </article>
             </div>
         </div>
     </section>
