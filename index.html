@@ -40,6 +40,8 @@
             --text-tertiary: #7988a4;
             --accent: #59a4ff;
             --accent-strong: #2f78d6;
+            --cta-bg: #2a67bd;
+            --cta-bg-hover: #1f539d;
             --accent-rgb: 89, 164, 255;
             --accent-alt: #62d9c2;
             --accent-alt-rgb: 98, 217, 194;
@@ -57,6 +59,8 @@
             --text-tertiary: #6a7890;
             --accent: #2f6cb6;
             --accent-strong: #23538c;
+            --cta-bg: #245690;
+            --cta-bg-hover: #1d4372;
             --accent-rgb: 47, 108, 182;
             --accent-alt: #2f9987;
             --accent-alt-rgb: 47, 153, 135;
@@ -204,7 +208,7 @@
         }
 
         .cta-button {
-            background: var(--accent);
+            background: linear-gradient(135deg, var(--cta-bg), var(--accent-strong));
             color: white;
             border: none;
             padding: 0.7rem 1.75rem;
@@ -217,6 +221,7 @@
 
         .cta-button:hover {
             transform: translateY(-2px);
+            background: linear-gradient(135deg, var(--cta-bg-hover), var(--cta-bg));
             box-shadow: 0 10px 28px rgba(var(--accent-rgb), 0.34);
         }
 
@@ -404,12 +409,13 @@
         }
 
         .btn-primary {
-            background: var(--accent);
+            background: linear-gradient(135deg, var(--cta-bg), var(--accent-strong));
             color: white;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
+            background: linear-gradient(135deg, var(--cta-bg-hover), var(--cta-bg));
             box-shadow: 0 14px 34px rgba(var(--accent-rgb), 0.34);
         }
 
@@ -1026,6 +1032,389 @@
             border-bottom-color: var(--accent);
         }
 
+        /* More realistic app chrome/dashboard styling for hero mockup */
+        .mockup-window {
+            background: linear-gradient(160deg, #080d16 0%, #0d1420 65%, #111926 100%);
+        }
+
+        .mockup-body {
+            min-height: 640px;
+        }
+
+        .mockup-sidebar {
+            padding: 14px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: linear-gradient(180deg, rgba(8, 11, 18, 0.92), rgba(10, 14, 22, 0.88));
+        }
+
+        .mockup-sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 44px 8px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .mockup-brand-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            overflow: hidden;
+            background: linear-gradient(145deg, #d0d7e3, #a5b1c2);
+            box-shadow: 0 8px 18px rgba(17, 25, 40, 0.35);
+        }
+
+        .mockup-brand-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .mockup-brand-name {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #edf3ff;
+            line-height: 1.1;
+        }
+
+        .mockup-brand-subtitle {
+            font-size: 0.62rem;
+            letter-spacing: 1.15px;
+            color: #93a0b5;
+            margin-top: 2px;
+        }
+
+        .mockup-sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            flex: 1;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.68rem 0.9rem;
+            margin-bottom: 0;
+            border-radius: 11px;
+        }
+
+        .sidebar-item-icon {
+            width: 18px;
+            text-align: center;
+            opacity: 0.88;
+            font-size: 0.84rem;
+        }
+
+        .sidebar-item.active {
+            color: #eaf2ff;
+            border: 1px solid rgba(150, 171, 206, 0.28);
+            background: linear-gradient(130deg, rgba(52, 74, 106, 0.34), rgba(22, 30, 44, 0.28));
+        }
+
+        .mockup-sidebar-bottom {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: auto;
+        }
+
+        .mockup-sidebar-chip,
+        .mockup-sidebar-license {
+            border-radius: 11px;
+            padding: 10px 12px;
+            border: 1px solid rgba(151, 171, 202, 0.2);
+            background: rgba(255, 255, 255, 0.03);
+            font-size: 0.74rem;
+            color: #b8c5da;
+        }
+
+        .mockup-sidebar-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mockup-chip-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: #f87171;
+            box-shadow: 0 0 10px rgba(248, 113, 113, 0.75);
+        }
+
+        .mockup-sidebar-license {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .mockup-sidebar-license strong {
+            color: #f2f6ff;
+            font-size: 0.73rem;
+            letter-spacing: 0.2px;
+        }
+
+        .mockup-main {
+            padding: 1.1rem 1.2rem 1.25rem;
+            gap: 0.85rem;
+            background: linear-gradient(180deg, rgba(9, 13, 20, 0.74), rgba(9, 13, 20, 0.9));
+        }
+
+        .mockup-hero-panel {
+            border: 1px solid rgba(142, 164, 195, 0.22);
+            border-radius: 16px;
+            padding: 1.1rem 1.2rem;
+            background: linear-gradient(100deg, rgba(25, 34, 50, 0.72), rgba(15, 21, 33, 0.68));
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .mockup-hero-title {
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            color: #ecf2ff;
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        .mockup-hero-quote {
+            font-size: 0.84rem;
+            color: #bbc8dd;
+            font-style: italic;
+        }
+
+        .mockup-hero-author {
+            font-size: 0.74rem;
+            color: #8e9cb3;
+            margin-top: 0.2rem;
+        }
+
+        .mockup-hero-time {
+            font-size: 0.76rem;
+            text-align: right;
+            color: #9eaac0;
+            line-height: 1.4;
+            white-space: nowrap;
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 0.78rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(150deg, rgba(20, 28, 43, 0.64), rgba(9, 13, 22, 0.6));
+            border: 1px solid rgba(132, 156, 191, 0.24);
+            border-radius: 18px;
+            padding: 0.9rem 0.95rem 0.82rem;
+        }
+
+        .stat-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 0.55rem;
+        }
+
+        .stat-icon.icon-good {
+            background: rgba(16, 185, 129, 0.16);
+            color: #34d399;
+        }
+
+        .stat-icon.icon-neutral {
+            background: rgba(148, 163, 184, 0.18);
+            color: #c6d2e8;
+        }
+
+        .stat-icon.icon-warn {
+            background: rgba(245, 158, 11, 0.18);
+            color: #fbbf24;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            line-height: 1;
+            margin-bottom: 0.25rem;
+            color: #f3f7ff;
+        }
+
+        .stat-label {
+            text-transform: none;
+            letter-spacing: 0;
+            font-size: 0.82rem;
+            color: #96a4bb;
+            margin-bottom: 0;
+        }
+
+        .dashboard-layout {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 0.82rem;
+            align-items: start;
+        }
+
+        .mockup-panel {
+            border-radius: 16px;
+            padding: 0.95rem;
+            background: linear-gradient(160deg, rgba(17, 24, 38, 0.72), rgba(9, 13, 22, 0.62));
+            border: 1px solid rgba(128, 149, 181, 0.22);
+        }
+
+        .mockup-panel-title {
+            font-size: 0.98rem;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.75rem;
+        }
+
+        .connection-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .connection-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.6rem;
+            border-radius: 12px;
+            border: 1px solid rgba(121, 143, 176, 0.2);
+            background: rgba(7, 11, 19, 0.54);
+            padding: 0.62rem 0.72rem;
+        }
+
+        .connection-left {
+            display: flex;
+            gap: 0.62rem;
+            align-items: center;
+        }
+
+        .connection-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: #d5def0;
+            border: 1px solid rgba(146, 163, 190, 0.24);
+            background: linear-gradient(135deg, rgba(56, 68, 88, 0.78), rgba(38, 48, 65, 0.82));
+        }
+
+        .connection-icon.blue {
+            color: #d9ebff;
+            background: linear-gradient(135deg, rgba(33, 120, 217, 0.78), rgba(20, 78, 146, 0.84));
+        }
+
+        .connection-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #edf3ff;
+            line-height: 1.2;
+        }
+
+        .connection-status {
+            margin-top: 0.1rem;
+            font-size: 0.78rem;
+        }
+
+        .connection-status.status-bad {
+            color: #f87171;
+        }
+
+        .connection-status.status-warn {
+            color: #fbbf24;
+        }
+
+        .connection-action {
+            border: 1px solid rgba(128, 149, 180, 0.36);
+            border-radius: 999px;
+            font-size: 0.74rem;
+            color: #aebfd8;
+            padding: 0.32rem 0.7rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .connection-action.primary {
+            color: #d6e9ff;
+            border-color: rgba(63, 131, 222, 0.62);
+        }
+
+        .session-summary {
+            margin-top: 0.72rem;
+            border-top: 1px solid rgba(130, 151, 182, 0.2);
+            padding-top: 0.68rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .session-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 10px;
+            padding: 0.43rem 0.58rem;
+            background: rgba(12, 19, 31, 0.68);
+            color: #9eadc4;
+            font-size: 0.78rem;
+        }
+
+        .session-row strong {
+            color: #ebf2ff;
+            font-size: 0.8rem;
+        }
+
+        .empty-tasks-preview {
+            border-radius: 12px;
+            border: 1px solid rgba(126, 146, 177, 0.2);
+            min-height: 286px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(8, 12, 20, 0.56);
+        }
+
+        .empty-tasks-title {
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-size: 0.8rem;
+            color: #9aa9bf;
+            margin-bottom: 0.25rem;
+        }
+
+        .empty-tasks-subtitle {
+            color: #c2d1e6;
+            font-size: 0.95rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .empty-tasks-hint {
+            color: #8a98b0;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
         @media (max-width: 768px) {
             .mockup-body {
                 grid-template-columns: 1fr;
@@ -1035,6 +1424,12 @@
             }
             .mockup-tabs {
                 display: flex;
+            }
+            .mockup-main {
+                padding: 1rem;
+            }
+            .mockup-hero-panel {
+                flex-direction: column;
             }
             .stats-grid {
                 grid-template-columns: 1fr;
@@ -1194,7 +1589,7 @@
 
         .demo-grid {
             display: grid;
-            grid-template-columns: repeat(12, minmax(0, 1fr));
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: 1rem;
             margin-top: 1.4rem;
         }
@@ -1206,12 +1601,12 @@
             padding: 1rem;
             display: flex;
             flex-direction: column;
-            grid-column: span 4;
+            grid-column: span 1;
             transition: transform 0.3s, border-color 0.3s, background 0.3s;
         }
 
         .demo-card.primary {
-            grid-column: span 6;
+            grid-column: span 2;
             background: linear-gradient(
                 160deg,
                 rgba(var(--accent-rgb), 0.13),
@@ -1273,14 +1668,14 @@
         @media (max-width: 1024px) {
             .demo-card,
             .demo-card.primary {
-                grid-column: span 6;
+                grid-column: span 2;
             }
         }
 
         @media (max-width: 768px) {
             .demo-card,
             .demo-card.primary {
-                grid-column: span 12;
+                grid-column: span 4;
             }
         }
 
@@ -1409,7 +1804,7 @@
         .form-submit {
             width: 100%;
             padding: 1rem;
-            background: var(--accent);
+            background: linear-gradient(135deg, var(--cta-bg), var(--accent-strong));
             color: white;
             border: none;
             border-radius: 8px;
@@ -1421,6 +1816,7 @@
 
         .form-submit:hover {
             transform: translateY(-2px);
+            background: linear-gradient(135deg, var(--cta-bg-hover), var(--cta-bg));
             box-shadow: 0 12px 32px rgba(var(--accent-rgb), 0.35);
         }
 
@@ -1778,7 +2174,7 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.95rem 2rem;
-            background: var(--accent);
+            background: linear-gradient(135deg, var(--cta-bg), var(--accent-strong));
             color: white;
             border: none;
             border-radius: 8px;
@@ -1792,6 +2188,7 @@
 
         .btn-download:hover {
             transform: translateY(-2px);
+            background: linear-gradient(135deg, var(--cta-bg-hover), var(--cta-bg));
             box-shadow: 0 12px 32px rgba(var(--accent-rgb), 0.35);
         }
 
@@ -2244,15 +2641,6 @@
                             <div class="traffic-light green"></div>
                         </div>
 
-                        <!-- Mockup Toolbar -->
-                        <div class="mockup-toolbar">
-                            <button class="toolbar-btn btn-start" onclick="mockupAction('start')">&#9654; New Task</button>
-                            <button class="toolbar-btn btn-stop" onclick="mockupAction('stop')">&#9632; Stop All</button>
-                            <button class="toolbar-btn btn-pause" onclick="mockupAction('pause')">&#10074;&#10074; Pause</button>
-                            <div class="toolbar-spacer"></div>
-                            <div class="toolbar-status"><div class="status-dot"></div> 3 tasks running</div>
-                        </div>
-
                         <!-- Mobile Tabs (visible on small screens only) -->
                         <div class="mockup-tabs">
                             <button class="mockup-tab active" data-view="dashboard" onclick="switchMockupView('dashboard', this)">Dashboard</button>
@@ -2265,76 +2653,126 @@
                         <!-- Mockup Body -->
                         <div class="mockup-body">
                             <div class="mockup-sidebar">
-                                <div class="sidebar-item active" data-view="dashboard" onclick="switchMockupView('dashboard', this)">Dashboard</div>
-                                <div class="sidebar-item" data-view="tasks" onclick="switchMockupView('tasks', this)">Tasks</div>
-                                <div class="sidebar-item" data-view="profiles" onclick="switchMockupView('profiles', this)">Profiles</div>
-                                <div class="sidebar-item" data-view="accounts" onclick="switchMockupView('accounts', this)">Accounts</div>
-                                <div class="sidebar-item" data-view="settings" onclick="switchMockupView('settings', this)">Settings</div>
+                                <div class="mockup-sidebar-brand">
+                                    <div class="mockup-brand-icon">
+                                        <img src="icon.svg" alt="Nexus icon">
+                                    </div>
+                                    <div>
+                                        <div class="mockup-brand-name">Nexus</div>
+                                        <div class="mockup-brand-subtitle">JOB AUTOMATION</div>
+                                    </div>
+                                </div>
+                                <div class="mockup-sidebar-nav">
+                                    <div class="sidebar-item active" data-view="dashboard" onclick="switchMockupView('dashboard', this)">
+                                        <span class="sidebar-item-icon">&#9638;</span><span>Dashboard</span>
+                                    </div>
+                                    <div class="sidebar-item" data-view="tasks" onclick="switchMockupView('tasks', this)">
+                                        <span class="sidebar-item-icon">&#9776;</span><span>Tasks</span>
+                                    </div>
+                                    <div class="sidebar-item" data-view="profiles" onclick="switchMockupView('profiles', this)">
+                                        <span class="sidebar-item-icon">&#9636;</span><span>Resumes</span>
+                                    </div>
+                                    <div class="sidebar-item" data-view="accounts" onclick="switchMockupView('accounts', this)">
+                                        <span class="sidebar-item-icon">&#9675;</span><span>Accounts</span>
+                                    </div>
+                                    <div class="sidebar-item" data-view="settings" onclick="switchMockupView('settings', this)">
+                                        <span class="sidebar-item-icon">&#9881;</span><span>Settings</span>
+                                    </div>
+                                </div>
+                                <div class="mockup-sidebar-bottom">
+                                    <div class="mockup-sidebar-chip">
+                                        <span class="mockup-chip-dot"></span>
+                                        API Disconnected
+                                    </div>
+                                    <div class="mockup-sidebar-license">
+                                        <span>License</span>
+                                        <strong>Unlimited</strong>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="mockup-main">
                                 <!-- Dashboard View -->
                                 <div id="dashboard-view" class="mockup-content active">
-                                    <div class="mockup-panel">
-                                        <div class="mockup-panel-title">Session Health</div>
-                                        <div class="status-strip">
-                                            <span class="status-pill connected">LinkedIn Connected</span>
-                                            <span class="status-pill connected">Indeed Connected</span>
-                                            <span class="status-pill connected">LLM Connected</span>
-                                            <span class="status-pill warning">Discord Webhook Pending</span>
+                                    <div class="mockup-hero-panel">
+                                        <div>
+                                            <div class="mockup-hero-title">Good morning</div>
+                                            <div class="mockup-hero-quote">"The best way to predict the future is to create it."</div>
+                                            <div class="mockup-hero-author">- Abraham Lincoln</div>
                                         </div>
+                                        <div class="mockup-hero-time">Wed, Feb 18<br>12:53 AM</div>
                                     </div>
                                     <div class="stats-grid">
                                         <div class="stat-card">
-                                            <div class="stat-label">Applied</div>
-                                            <div class="stat-value">38</div>
+                                            <div class="stat-icon icon-good">&#10003;</div>
+                                            <div class="stat-value">0</div>
+                                            <div class="stat-label">Applications</div>
                                         </div>
                                         <div class="stat-card">
-                                            <div class="stat-label">Skipped</div>
-                                            <div class="stat-value">14</div>
+                                            <div class="stat-icon icon-neutral">&#9638;</div>
+                                            <div class="stat-value">0</div>
+                                            <div class="stat-label">Total Tasks</div>
                                         </div>
                                         <div class="stat-card">
-                                            <div class="stat-label">Failed</div>
-                                            <div class="stat-value">2</div>
+                                            <div class="stat-icon icon-neutral">&#9646;</div>
+                                            <div class="stat-value">0%</div>
+                                            <div class="stat-label">Success Rate</div>
                                         </div>
                                         <div class="stat-card">
-                                            <div class="stat-label">Queue</div>
-                                            <div class="stat-value">6</div>
+                                            <div class="stat-icon icon-warn">&#8594;</div>
+                                            <div class="stat-value">0</div>
+                                            <div class="stat-label">Jobs Skipped</div>
                                         </div>
                                     </div>
 
                                     <div class="dashboard-layout">
                                         <div class="mockup-panel">
-                                            <div class="mockup-panel-title">Active Tasks</div>
-                                            <div class="task-mini">
-                                                <div>
-                                                    <div class="task-mini-title">Power Platform — LinkedIn + Indeed</div>
-                                                    <div class="task-mini-meta">Location: New Jersey • Easy Apply only</div>
+                                            <div class="mockup-panel-title">Connections</div>
+                                            <div class="connection-list">
+                                                <div class="connection-item">
+                                                    <div class="connection-left">
+                                                        <div class="connection-icon">AI</div>
+                                                        <div>
+                                                            <div class="connection-name">LM Studio</div>
+                                                            <div class="connection-status status-bad">Not Connected</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="connection-action">Refresh</div>
                                                 </div>
-                                                <span class="score-chip">8.2/10</span>
+                                                <div class="connection-item">
+                                                    <div class="connection-left">
+                                                        <div class="connection-icon blue">in</div>
+                                                        <div>
+                                                            <div class="connection-name">LinkedIn</div>
+                                                            <div class="connection-status status-warn">Not Logged In</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="connection-action primary">Login</div>
+                                                </div>
+                                                <div class="connection-item">
+                                                    <div class="connection-left">
+                                                        <div class="connection-icon blue">I</div>
+                                                        <div>
+                                                            <div class="connection-name">Indeed</div>
+                                                            <div class="connection-status status-warn">Not Logged In</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="connection-action primary">Login</div>
+                                                </div>
                                             </div>
-                                            <div class="task-mini">
-                                                <div>
-                                                    <div class="task-mini-title">Greenhouse Test URLs</div>
-                                                    <div class="task-mini-meta">Custom links • External form automation</div>
-                                                </div>
-                                                <span class="score-chip">7.6/10</span>
-                                            </div>
-                                            <div class="task-mini">
-                                                <div>
-                                                    <div class="task-mini-title">Indeed Recommended Feed</div>
-                                                    <div class="task-mini-meta">No keyword mode • Resume: PowerPlatform.pdf</div>
-                                                </div>
-                                                <span class="score-chip">7.9/10</span>
+                                            <div class="session-summary">
+                                                <div class="session-row"><span>Total Tasks</span><strong>0</strong></div>
+                                                <div class="session-row"><span>Completed</span><strong>0</strong></div>
+                                                <div class="session-row"><span>Failed</span><strong>0</strong></div>
+                                                <div class="session-row"><span>Resumes</span><strong>0</strong></div>
                                             </div>
                                         </div>
                                         <div class="mockup-panel">
-                                            <div class="mockup-panel-title">Live Task Logs</div>
-                                            <div class="log-list">
-                                                <div class="log-line">22:41:09 [Task 419acd2d] Resume file set on frame[0] input[type=file]</div>
-                                                <div class="log-line">22:41:18 [Task 419acd2d] Question solved via LLM: "Authorized to work?" => Yes</div>
-                                                <div class="log-line">22:41:32 [Task 419acd2d] Application submitted: Power Platform Architect</div>
-                                                <div class="log-line">22:41:48 [Task 419acd2d] External domain not automated yet: careers.ey.com (logged + webhook)</div>
+                                            <div class="mockup-panel-title">All Tasks</div>
+                                            <div class="empty-tasks-preview">
+                                                <div class="empty-tasks-title">No tasks</div>
+                                                <div class="empty-tasks-subtitle">No tasks yet</div>
+                                                <div class="empty-tasks-hint">Go to Tasks page to create one</div>
                                             </div>
                                         </div>
                                     </div>
