@@ -606,6 +606,9 @@
                 const source = escapeHtml(entry.source || 'website_waitlist');
                 const submitted = escapeHtml(formatDate(entry.last_submitted_at || entry.created_at));
                 const updated = escapeHtml(formatDate(entry.updated_at || entry.last_submitted_at || entry.created_at));
+                const inviteEmailSentAt = escapeHtml(formatDate(entry.invite_email_sent_at || ''));
+                const inviteEmailId = escapeHtml(entry.invite_email_id || '');
+                const inviteEmailError = escapeHtml(entry.invite_email_error || '');
                 const inviteHtml = inviteLinks[entry.customer_id]
                     ? `<div class="invite-link">Invite link: <a href="${escapeHtml(inviteLinks[entry.customer_id])}" target="_blank" rel="noopener noreferrer">${escapeHtml(inviteLinks[entry.customer_id])}</a> <button class="btn ghost" style="padding:4px 8px;font-size:0.75rem;" onclick="copyInviteLink('${id}')">Copy Link</button></div>`
                     : '';
@@ -620,6 +623,12 @@
                             <span class="pill ${statusClass(status)}">${status}</span>
                         </div>
                         <div class="entry-meta">source: ${source} • submissions: ${entry.submissions || 1} • submitted: ${submitted} • updated: ${updated}</div>
+                        ${inviteEmailSentAt !== 'unknown' && inviteEmailSentAt
+                            ? `<div class="entry-meta">invite email sent: ${inviteEmailSentAt}${inviteEmailId ? ` • id: ${inviteEmailId}` : ''}</div>`
+                            : ''}
+                        ${inviteEmailError
+                            ? `<div class="entry-meta" style="color:#fca5a5;">invite email error: ${inviteEmailError}</div>`
+                            : ''}
                         ${interest ? `<div class="interest"><strong>Interest:</strong> ${interest}</div>` : ''}
                         ${notes ? `<div class="notes"><strong>Notes:</strong> ${notes}</div>` : ''}
                         <div class="actions">

@@ -128,6 +128,9 @@ function mapWaitlistCustomer(customer) {
         updated_at: metadata.waitlist_updated_at || null,
         last_submitted_at: metadata.waitlist_last_submitted_at || null,
         invited_at: metadata.waitlist_invited_at || null,
+        invite_email_sent_at: metadata.waitlist_invite_email_sent_at || null,
+        invite_email_id: metadata.waitlist_invite_email_id || '',
+        invite_email_error: metadata.waitlist_invite_email_error || '',
         converted_at: metadata.waitlist_converted_at || null,
         license_key: metadata.license_key || '',
     };
