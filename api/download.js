@@ -89,7 +89,8 @@ async function handleUpdaterFeed(req, res) {
 
   const secret = getUpdateSecret();
   const origin = getRequestOrigin(req);
-  const ttlMs = 10 * 60 * 1000;
+  // Keep token alive long enough for slow/retried updater downloads.
+  const ttlMs = 2 * 60 * 60 * 1000;
 
   const tokenPayload = {
     source: updateConfig.source || 'env',
@@ -128,11 +129,6 @@ async function handleUpdaterFeed(req, res) {
 
 async function handleUpdaterFile(req, res) {
   setUpdaterCors(res);
-
-  const auth = await requireValidUpdaterLicense(req);
-  if (!auth.ok) {
-    return res.status(auth.status).json(auth.body);
-  }
 
   const channel = normalizeChannel(req.query.channel);
   const platform = normalizePlatform(req.query.platform);
