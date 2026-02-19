@@ -81,6 +81,32 @@ function decodeArtifactParam(value) {
   }
 }
 
+/**
+ * Infer platform and arch from manifest filename when query params are absent.
+ * electron-updater uses a clean directory-style feed URL (no query params) to
+ * prevent its `newUrlFromBase()` from stripping signed tokens on download URLs.
+ * The manifest name (e.g. "beta-mac-arm64.yml", "beta-mac.yml", "latest.yml")
+ * encodes platform and sometimes arch.
+ */
+function inferPlatformFromManifest(manifestName) {
+  const name = String(manifestName || '').toLowerCase();
+  if (name.includes('mac') || name.includes('darwin')) return 'mac';
+  if (name.includes('linux')) return 'linux';
+  // Windows manifests: latest.yml, beta.yml (no platform suffix)
+  if (name.includes('win')) return 'win';
+  // Fallback: windows uses no platform suffix in manifest names
+  if (name && !name.includes('mac') && !name.includes('linux')) return 'win';
+  return '';
+}
+
+function inferArchFromManifest(manifestName) {
+  const name = String(manifestName || '').toLowerCase();
+  if (name.includes('arm64') || name.includes('aarch64')) return 'arm64';
+  if (name.includes('x64') || name.includes('amd64')) return 'x64';
+  // No arch in name — default to arm64 for mac (most common), x64 for others
+  return '';
+}
+
 async function handleUpdaterFeed(req, res) {
   setUpdaterCors(res);
 
@@ -90,8 +116,28 @@ async function handleUpdaterFeed(req, res) {
   }
 
   const channel = normalizeChannel(req.query.channel);
-  const platform = normalizePlatform(req.query.platform);
-  const arch = normalizeArch(req.query.arch);
+  const manifestRaw = cleanText(
+    (Array.isArray(req.query.manifest) ? req.query.manifest[0] : req.query.manifest) || '',
+    200
+  );
+
+  // Platform/arch: prefer explicit query params, fall back to manifest name inference.
+  // With the clean feed URL approach, query params are typically absent and we
+  // rely on the manifest name (e.g. "beta-mac.yml" → mac, "latest.yml" → win).
+  let platform = normalizePlatform(req.query.platform);
+  let arch = normalizeArch(req.query.arch);
+
+  if (!platform && manifestRaw) {
+    platform = normalizePlatform(inferPlatformFromManifest(manifestRaw));
+  }
+  if (!arch && manifestRaw) {
+    arch = normalizeArch(inferArchFromManifest(manifestRaw));
+  }
+  // Last-resort default if manifest name didn't help
+  if (!arch) {
+    arch = platform === 'mac' ? 'arm64' : 'x64';
+  }
+
   const manifest = selectManifestHint(req.query.manifest, arch);
   const debugRequested = cleanText(req.query.debug || '', 8) === '1';
   const debug = debugRequested ? {} : null;

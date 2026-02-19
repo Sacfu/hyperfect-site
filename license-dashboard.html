@@ -53,11 +53,12 @@
     }
 
     .topbar-inner {
-      min-height: 66px;
+      min-height: 56px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 16px;
+      justify-content: flex-start;
+      gap: 12px;
+      padding: 8px 0;
     }
 
     .brand {
@@ -75,19 +76,24 @@
     .top-actions {
       display: flex;
       align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
+      gap: 8px;
+      flex-wrap: nowrap;
       justify-content: flex-end;
+      flex-shrink: 0;
+      margin-left: auto;
     }
 
     .top-nav {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 0 0 10px;
+      gap: 6px;
+      padding: 0 4px;
+      flex: 1 1 auto;
+      min-width: 0;
       overflow-x: auto;
       scrollbar-width: none;
       -ms-overflow-style: none;
+      justify-content: center;
     }
 
     .top-nav::-webkit-scrollbar {
@@ -98,13 +104,14 @@
       flex: 0 0 auto;
       color: var(--text-secondary);
       text-decoration: none;
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       font-weight: 600;
       border: 1px solid var(--border);
       background: rgba(255, 255, 255, 0.03);
       border-radius: 999px;
-      padding: 7px 12px;
+      padding: 5px 10px;
       white-space: nowrap;
+      line-height: 1.2;
     }
 
     .top-nav a:hover {
@@ -360,10 +367,22 @@
       .kv { grid-template-columns: 1fr; gap: 3px; }
       .topbar-inner {
         min-height: auto;
-        padding: 12px 0 10px;
-        align-items: flex-start;
+        padding: 10px 0 8px;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
       }
-      .top-actions { gap: 8px; justify-content: flex-start; }
+      .top-actions {
+        gap: 8px;
+        justify-content: flex-end;
+        margin-left: auto;
+      }
+      .top-nav {
+        order: 3;
+        width: 100%;
+        justify-content: flex-start;
+        padding: 2px 0 0;
+      }
     }
   </style>
 </head>
@@ -372,19 +391,19 @@
     <div class="container">
       <div class="topbar-inner">
         <a class="brand" href="/"><span>Nexus</span> by Hyperfect</a>
+        <nav class="top-nav" aria-label="Site Sections">
+          <a href="/#demo-gallery">Demos</a>
+          <a href="/#how-it-works">How It Works</a>
+          <a href="/#features">Features</a>
+          <a href="/getting-started">Setup Guide</a>
+          <a href="/license-dashboard" class="active">Manage License</a>
+          <a href="/#faq">FAQ</a>
+          <a href="/#contact">Contact</a>
+        </nav>
         <div class="top-actions">
           <a class="btn" href="/">Back to Site</a>
         </div>
       </div>
-      <nav class="top-nav" aria-label="Site Sections">
-        <a href="/#demo-gallery">Demos</a>
-        <a href="/#how-it-works">How It Works</a>
-        <a href="/#features">Features</a>
-        <a href="/getting-started">Setup Guide</a>
-        <a href="/license-dashboard" class="active">Manage License</a>
-        <a href="/#faq">FAQ</a>
-        <a href="/#contact">Contact</a>
-      </nav>
     </div>
   </header>
 

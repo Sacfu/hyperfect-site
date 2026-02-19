@@ -20,6 +20,13 @@ function normalizeArch(value) {
   return ALLOWED_ARCHES.has(arch) ? arch : '';
 }
 
+function normalizeManifestName(value) {
+  const raw = cleanText(value || '', 200).toLowerCase();
+  if (!raw) return '';
+  const base = raw.split('/').filter(Boolean).pop() || raw;
+  return base.endsWith('.yml') ? base : '';
+}
+
 function parseNumeric(value, fallback = 0) {
   const parsed = Number.parseInt(String(value || ''), 10);
   if (!Number.isFinite(parsed) || parsed < 0) return fallback;
@@ -260,11 +267,12 @@ function firstAssetByNames(assets, candidateNames) {
   return null;
 }
 
-function listManifestAssets(assets, { channel, platform, arch }) {
+function listManifestAssets(assets, { channel, platform, arch, requestedManifest = '' }) {
   const source = Array.isArray(assets) ? assets : [];
   const manifests = source.filter((asset) => /\.yml$/i.test(String(asset?.name || '')));
   const ordered = [];
   const seen = new Set();
+  const requested = normalizeManifestName(requestedManifest);
 
   function pushAsset(asset) {
     if (!asset) return;
@@ -287,6 +295,43 @@ function listManifestAssets(assets, { channel, platform, arch }) {
         pushAsset(asset);
       }
     }
+  }
+
+  function pushRequestedAliases() {
+    if (!requested) return false;
+
+    const aliases = [requested];
+    if (platform === 'mac') {
+      if (requested === 'beta-mac.yml') {
+        if (arch === 'arm64') aliases.push('beta-mac-arm64.yml', 'latest-mac-arm64.yml', 'latest-mac.yml');
+        else aliases.push('beta-mac-x64.yml', 'latest-mac-x64.yml', 'latest-mac.yml');
+      } else if (requested === 'latest-mac.yml') {
+        if (arch === 'arm64') aliases.push('latest-mac-arm64.yml', 'beta-mac-arm64.yml', 'beta-mac.yml');
+        else aliases.push('latest-mac-x64.yml', 'beta-mac-x64.yml', 'beta-mac.yml');
+      } else if (requested === 'latest-mac-beta.yml') {
+        if (arch === 'arm64') aliases.push('latest-mac-arm64-beta.yml', 'beta-mac-arm64.yml', 'beta-mac.yml');
+        else aliases.push('latest-mac-x64-beta.yml', 'beta-mac-x64.yml', 'beta-mac.yml');
+      }
+    } else if (platform === 'linux') {
+      if (requested === 'latest-linux.yml') aliases.push(`latest-linux-${arch}.yml`, `beta-linux-${arch}.yml`);
+      if (requested === 'beta-linux.yml') aliases.push(`beta-linux-${arch}.yml`, `latest-linux-${arch}.yml`);
+    } else if (platform === 'win') {
+      if (requested === 'beta.yml') aliases.push('latest.yml');
+      if (requested === 'latest.yml' && channel === 'beta') aliases.push('beta.yml');
+    }
+
+    for (const name of aliases) {
+      pushAsset(firstAssetByNames(manifests, [name]));
+    }
+
+    return ordered.length > 0;
+  }
+
+  // If a specific manifest is requested (e.g. beta-mac.yml), pin to that mapping.
+  // This prevents cross-arch or fallback manifest drift that can cause checksum mismatches.
+  if (requested) {
+    pushRequestedAliases();
+    return ordered;
   }
 
   if (platform === 'mac') {
@@ -442,10 +487,11 @@ function findAssetByName(assets, fileName) {
   return (assets || []).find((asset) => String(asset.name || '').toLowerCase() === decoded);
 }
 
-async function getGitHubUpdateConfig({ channel, platform, arch, debug = null }) {
+async function getGitHubUpdateConfig({ channel, platform, arch, requestedManifest = '', debug = null }) {
   const normalizedChannel = normalizeChannel(channel);
   const normalizedPlatform = normalizePlatform(platform);
   const normalizedArch = normalizeArch(arch);
+  const normalizedManifest = normalizeManifestName(requestedManifest);
 
   if (!normalizedPlatform || !normalizedArch) {
     return null;
@@ -485,6 +531,7 @@ async function getGitHubUpdateConfig({ channel, platform, arch, debug = null }) 
         channel: normalizedChannel,
         platform: normalizedPlatform,
         arch: normalizedArch,
+        requestedManifest: normalizedManifest,
       });
       if (releaseDebug) {
         releaseDebug.manifestAssets = candidates.length;
@@ -628,7 +675,8 @@ async function getGitHubUpdateConfig({ channel, platform, arch, debug = null }) 
   }
 }
 
-async function getUpdateConfig({ channel, platform, arch, debug = null }) {
+async function getUpdateConfig({ channel, platform, arch, requestedManifest = '', debug = null }) {
+  const normalizedManifest = normalizeManifestName(requestedManifest);
   const mode = getUpdatesSourceMode();
   if (debug) {
     debug.mode = mode;
@@ -636,6 +684,7 @@ async function getUpdateConfig({ channel, platform, arch, debug = null }) {
       channel: normalizeChannel(channel),
       platform: normalizePlatform(platform),
       arch: normalizeArch(arch),
+      requestedManifest: normalizedManifest || null,
     };
   }
 
@@ -646,7 +695,13 @@ async function getUpdateConfig({ channel, platform, arch, debug = null }) {
   }
 
   if (mode === 'github' || mode === 'auto') {
-    const githubConfig = await getGitHubUpdateConfig({ channel, platform, arch, debug });
+    const githubConfig = await getGitHubUpdateConfig({
+      channel,
+      platform,
+      arch,
+      requestedManifest: normalizedManifest,
+      debug,
+    });
     if (githubConfig) return githubConfig;
     if (mode === 'github') return null;
   }
@@ -765,6 +820,7 @@ module.exports = {
   normalizeChannel,
   normalizePlatform,
   normalizeArch,
+  normalizeManifestName,
   getUpdateSecret,
   signToken,
   verifyToken,

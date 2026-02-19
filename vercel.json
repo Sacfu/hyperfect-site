@@ -3,7 +3,7 @@
     { "source": "/getting-started", "destination": "/getting-started.html" },
     { "source": "/license-dashboard", "destination": "/license-dashboard.html" },
     { "source": "/success", "destination": "/success.html" },
-    { "source": "/api/download/:manifest", "destination": "/api/download?mode=feed" },
+    { "source": "/api/download/:manifest", "destination": "/api/download?mode=feed&manifest=:manifest" },
     { "source": "/api/update/:artifact", "destination": "/api/download?mode=file&artifact=:artifact" },
     { "source": "/api/:path*", "destination": "/api/:path*" }
   ],
