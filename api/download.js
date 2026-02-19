@@ -111,7 +111,9 @@ async function handleUpdaterFeed(req, res) {
 
   const token = signToken(tokenPayload, secret);
 
-  const downloadUrl = `${origin}/api/download?mode=file&channel=${encodeURIComponent(channel)}&platform=${encodeURIComponent(platform)}&arch=${encodeURIComponent(arch)}&artifact=${encodeURIComponent(updateConfig.fileName)}&t=${encodeURIComponent(token)}`;
+  // Use a pathname that ends with the real artifact filename so electron-updater
+  // derives a safe temp/cache file name from URL.pathname (instead of full query URL).
+  const downloadUrl = `${origin}/api/update/${encodeURIComponent(updateConfig.fileName)}?channel=${encodeURIComponent(channel)}&platform=${encodeURIComponent(platform)}&arch=${encodeURIComponent(arch)}&t=${encodeURIComponent(token)}`;
 
   const manifestYml = buildManifestYml({
     version: updateConfig.version,

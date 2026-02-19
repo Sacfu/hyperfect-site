@@ -4,6 +4,7 @@
     { "source": "/license-dashboard", "destination": "/license-dashboard.html" },
     { "source": "/success", "destination": "/success.html" },
     { "source": "/api/download/:manifest", "destination": "/api/download?mode=feed" },
+    { "source": "/api/update/:artifact", "destination": "/api/download?mode=file&artifact=:artifact" },
     { "source": "/api/:path*", "destination": "/api/:path*" }
   ],
   "headers": [
@@ -49,6 +50,14 @@
     },
     {
       "source": "/api/download/:path*",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization, X-Nexus-License-Key, X-Nexus-Hardware-Id, X-Nexus-App-Version" }
+      ]
+    },
+    {
+      "source": "/api/update/:path*",
       "headers": [
         { "key": "Access-Control-Allow-Origin", "value": "*" },
         { "key": "Access-Control-Allow-Methods", "value": "GET, POST, OPTIONS" },
