@@ -27,6 +27,15 @@ const {
   cleanText,
 } = require('./_updates-utils');
 
+const normalizeManifest = typeof normalizeManifestName === 'function'
+  ? normalizeManifestName
+  : (value) => {
+      const raw = cleanText(value || '', 200).toLowerCase();
+      if (!raw) return '';
+      const base = raw.split('/').filter(Boolean).pop() || raw;
+      return base.endsWith('.yml') ? base : '';
+    };
+
 function setDownloadCors(res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -38,7 +47,7 @@ function setDownloadCors(res) {
 
 function selectManifestHint(value, arch) {
   const candidates = (Array.isArray(value) ? value : [value])
-    .map((entry) => normalizeManifestName(entry))
+    .map((entry) => normalizeManifest(entry))
     .filter(Boolean);
 
   if (candidates.length === 0) return '';
@@ -309,8 +318,9 @@ async function handleUpdaterFile(req, res) {
 
 module.exports = async function handler(req, res) {
   setDownloadCors(res);
+  try {
 
-  if (req.method === 'OPTIONS') return res.status(200).end();
+    if (req.method === 'OPTIONS') return res.status(200).end();
 
   const mode = cleanText(req.query?.mode || '', 16).toLowerCase();
   const artifactHint = cleanText(decodeArtifactParam(req.query?.artifact), 200);
@@ -415,5 +425,9 @@ module.exports = async function handler(req, res) {
   } catch (err) {
     console.error('Download gate error:', err);
     return res.status(500).json({ error: 'Internal server error' });
+  }
+  } catch (err) {
+    console.error('Download handler fatal error:', err?.message || String(err));
+    return res.status(500).json({ error: 'Updater gateway failed' });
   }
 };
