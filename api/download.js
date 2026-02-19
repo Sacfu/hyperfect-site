@@ -14,6 +14,7 @@ const {
   normalizeChannel,
   normalizePlatform,
   normalizeArch,
+  normalizeManifestName,
   getUpdateSecret,
   signToken,
   verifyToken,
@@ -35,6 +36,42 @@ function setDownloadCors(res) {
   );
 }
 
+function selectManifestHint(value, arch) {
+  const candidates = (Array.isArray(value) ? value : [value])
+    .map((entry) => normalizeManifestName(entry))
+    .filter(Boolean);
+
+  if (candidates.length === 0) return '';
+
+  const archMarker = arch === 'arm64' ? 'arm64' : (arch === 'x64' ? 'x64' : '');
+  if (archMarker) {
+    const archSpecific = candidates.find((name) => name.includes(archMarker));
+    if (archSpecific) return archSpecific;
+  }
+
+  const preferredAliases = [
+    'beta-mac.yml',
+    'latest-mac.yml',
+    'latest-mac-beta.yml',
+    'beta.yml',
+    'latest.yml',
+  ];
+  const aliasMatch = preferredAliases.find((alias) => candidates.includes(alias));
+  if (aliasMatch) return aliasMatch;
+
+  return candidates[candidates.length - 1];
+}
+
+function decodeArtifactParam(value) {
+  const raw = String(value || '');
+  if (!raw) return '';
+  try {
+    return decodeURIComponent(raw);
+  } catch (_) {
+    return raw;
+  }
+}
+
 async function handleUpdaterFeed(req, res) {
   setUpdaterCors(res);
 
@@ -46,7 +83,7 @@ async function handleUpdaterFeed(req, res) {
   const channel = normalizeChannel(req.query.channel);
   const platform = normalizePlatform(req.query.platform);
   const arch = normalizeArch(req.query.arch);
-  const manifest = cleanText(req.query.manifest || '', 64).toLowerCase();
+  const manifest = selectManifestHint(req.query.manifest, arch);
   const debugRequested = cleanText(req.query.debug || '', 8) === '1';
   const debug = debugRequested ? {} : null;
 
@@ -54,11 +91,13 @@ async function handleUpdaterFeed(req, res) {
     return res.status(400).json({ error: 'Invalid updater platform/arch request' });
   }
 
-  if (manifest && !manifest.endsWith('.yml')) {
-    return res.status(404).json({ error: 'Manifest not found' });
-  }
-
-  const updateConfig = await getUpdateConfig({ channel, platform, arch, debug });
+  const updateConfig = await getUpdateConfig({
+    channel,
+    platform,
+    arch,
+    requestedManifest: manifest,
+    debug,
+  });
   if (!updateConfig) {
     if (debugRequested) {
       return res.status(404).json({
@@ -126,6 +165,9 @@ async function handleUpdaterFeed(req, res) {
 
   res.setHeader('Content-Type', 'text/yaml; charset=utf-8');
   res.setHeader('Cache-Control', 'private, no-store');
+  if (req.method === 'HEAD') {
+    return res.status(200).end();
+  }
   return res.status(200).send(manifestYml);
 }
 
@@ -135,11 +177,68 @@ async function handleUpdaterFile(req, res) {
   const channel = normalizeChannel(req.query.channel);
   const platform = normalizePlatform(req.query.platform);
   const arch = normalizeArch(req.query.arch);
-  const artifact = cleanText(decodeURIComponent(req.query.artifact || ''), 200);
+  const artifact = cleanText(decodeArtifactParam(req.query.artifact), 200);
   const token = cleanText(req.query.t || '', 800);
+  const manifestHint = selectManifestHint(req.query?.manifest, arch);
 
-  if (!platform || !arch || !artifact || !token) {
+  if (!platform || !arch || !artifact) {
     return res.status(400).json({ error: 'Invalid download request' });
+  }
+
+  // Fallback path for older/malformed updater URLs that do not preserve
+  // signed token query params. We still require a valid licensed machine
+  // via updater auth headers.
+  if (!token) {
+    const auth = await requireValidUpdaterLicense(req);
+    if (!auth.ok) {
+      return res.status(auth.status).json(auth.body);
+    }
+
+    const updateConfig = await getUpdateConfig({
+      channel,
+      platform,
+      arch,
+      requestedManifest: manifestHint,
+    });
+    if (!updateConfig || updateConfig.fileName !== artifact) {
+      return res.status(404).json({ error: 'Update artifact not configured' });
+    }
+
+    if (updateConfig.source === 'github') {
+      const redirectTarget = await getGitHubAssetRedirect({
+        owner: updateConfig.owner,
+        repo: updateConfig.repo,
+        assetId: updateConfig.binaryAssetId,
+      });
+
+      if (redirectTarget.redirectUrl) {
+        return res.redirect(302, redirectTarget.redirectUrl);
+      }
+
+      const response = redirectTarget.streamResponse;
+      const contentType = response.headers.get('content-type') || 'application/octet-stream';
+      const disposition = response.headers.get('content-disposition') || `attachment; filename=\"${artifact}\"`;
+      const contentLength = response.headers.get('content-length') || '';
+
+      res.setHeader('Content-Type', contentType);
+      res.setHeader('Content-Disposition', disposition);
+      if (contentLength) {
+        res.setHeader('Content-Length', contentLength);
+      }
+      if (req.method === 'HEAD') {
+        return res.status(200).end();
+      }
+      const buffer = Buffer.from(await response.arrayBuffer());
+      if (!contentLength) {
+        res.setHeader('Content-Length', String(buffer.length));
+      }
+      return res.status(200).send(buffer);
+    }
+
+    if (!updateConfig.fileUrl) {
+      return res.status(404).json({ error: 'Update artifact URL not configured' });
+    }
+    return res.redirect(302, updateConfig.fileUrl);
   }
 
   const secret = getUpdateSecret();
@@ -176,17 +275,31 @@ async function handleUpdaterFile(req, res) {
     }
 
     const response = redirectTarget.streamResponse;
-    const buffer = Buffer.from(await response.arrayBuffer());
     const contentType = response.headers.get('content-type') || 'application/octet-stream';
     const disposition = response.headers.get('content-disposition') || `attachment; filename=\"${artifact}\"`;
+    const contentLength = response.headers.get('content-length') || '';
 
     res.setHeader('Content-Type', contentType);
     res.setHeader('Content-Disposition', disposition);
-    res.setHeader('Content-Length', String(buffer.length));
+    if (contentLength) {
+      res.setHeader('Content-Length', contentLength);
+    }
+    if (req.method === 'HEAD') {
+      return res.status(200).end();
+    }
+    const buffer = Buffer.from(await response.arrayBuffer());
+    if (!contentLength) {
+      res.setHeader('Content-Length', String(buffer.length));
+    }
     return res.status(200).send(buffer);
   }
 
-  const updateConfig = await getUpdateConfig({ channel, platform, arch });
+  const updateConfig = await getUpdateConfig({
+    channel,
+    platform,
+    arch,
+    requestedManifest: manifestHint,
+  });
   if (!updateConfig || updateConfig.fileName !== artifact || !updateConfig.fileUrl) {
     return res.status(404).json({ error: 'Update artifact not configured' });
   }
@@ -200,14 +313,21 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   const mode = cleanText(req.query?.mode || '', 16).toLowerCase();
-  const manifestHint = cleanText(req.query?.manifest || '', 128).toLowerCase();
-  const shouldHandleFeed = req.method === 'GET' && (
+  const artifactHint = cleanText(decodeArtifactParam(req.query?.artifact), 200);
+  const manifestHint = selectManifestHint(req.query?.manifest, normalizeArch(req.query?.arch));
+  const hasArtifactHint = artifactHint.length > 0;
+  const hasTokenHint = String(req.query?.t || '').trim().length > 0;
+
+  const shouldHandleFile = (req.method === 'GET' || req.method === 'HEAD') && (
+    mode === 'file' ||
+    hasArtifactHint ||
+    hasTokenHint
+  );
+  const shouldHandleFeed = (req.method === 'GET' || req.method === 'HEAD') && (
+    !shouldHandleFile && (
     mode === 'feed' ||
     (!!manifestHint && manifestHint.endsWith('.yml'))
-  );
-  const shouldHandleFile = req.method === 'GET' && (
-    mode === 'file' ||
-    (String(req.query?.artifact || '').trim().length > 0 && String(req.query?.t || '').trim().length > 0)
+    )
   );
 
   if (shouldHandleFeed) {
