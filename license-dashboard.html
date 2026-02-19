@@ -3,127 +3,252 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nexus License Dashboard</title>
+  <title>Nexus License Dashboard | Hyperfect</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #05070d;
-      --card: rgba(255, 255, 255, 0.06);
-      --border: rgba(255, 255, 255, 0.14);
-      --text: #e5ecf5;
-      --muted: #9aa7b7;
+      --bg-primary: #0b1627;
+      --bg-secondary: #101f34;
+      --bg-card: rgba(255, 255, 255, 0.04);
+      --text-primary: #f8fbff;
+      --text-secondary: #a8b6c9;
+      --text-muted: #7b8aa1;
       --accent: #3b82f6;
-      --accent-hover: #2563eb;
-      --warn: #f59e0b;
+      --accent-strong: #2563eb;
+      --border: rgba(255, 255, 255, 0.10);
+      --success: #22c55e;
+      --warning: #f59e0b;
       --danger: #ef4444;
-      --ok: #22c55e;
+      --discord: #5865f2;
     }
 
-    * { box-sizing: border-box; }
-    body {
+    * {
+      box-sizing: border-box;
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: radial-gradient(circle at 12% 5%, #16223b 0%, transparent 35%), linear-gradient(160deg, #05070d, #0a1020 65%, #111a2f 100%);
-      color: var(--text);
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at 10% 4%, #15233b 0%, transparent 36%), linear-gradient(160deg, #0b1627, #091425 64%, #0f1b30 100%);
+      color: var(--text-primary);
+      line-height: 1.55;
       min-height: 100vh;
-      padding: 32px 16px;
     }
-    .wrap {
-      max-width: 760px;
+
+    .container {
+      max-width: 1120px;
       margin: 0 auto;
+      padding: 0 20px;
     }
-    .card {
-      background: var(--card);
-      backdrop-filter: blur(22px) saturate(120%);
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(14px);
+      background: rgba(8, 14, 25, 0.74);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .topbar-inner {
+      min-height: 66px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.01em;
+    }
+
+    .brand span {
+      color: var(--accent);
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 22px;
-      margin-bottom: 14px;
+      color: var(--text-primary);
+      background: transparent;
+      border-radius: 10px;
+      padding: 9px 14px;
+      font-size: 0.88rem;
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 120ms ease, border-color 120ms ease;
     }
+
+    .btn:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .btn.primary:hover {
+      background: var(--accent-strong);
+      border-color: var(--accent-strong);
+    }
+
+    .btn.discord {
+      background: var(--discord);
+      border-color: var(--discord);
+      color: #fff;
+    }
+
+    .btn.discord:hover {
+      filter: brightness(0.93);
+    }
+
+    .btn.warn {
+      background: var(--warning);
+      border-color: var(--warning);
+      color: #1f2937;
+    }
+
+    .btn.danger {
+      background: transparent;
+      border-color: rgba(239, 68, 68, 0.5);
+      color: #fecaca;
+    }
+
+    .btn.danger:hover {
+      background: rgba(239, 68, 68, 0.15);
+    }
+
+    .hero {
+      padding: 38px 0 14px;
+    }
+
+    .eyebrow {
+      color: #93c5fd;
+      text-transform: uppercase;
+      letter-spacing: 0.11em;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
     h1 {
-      margin: 0 0 10px;
-      font-size: 30px;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      line-height: 1.15;
+      margin-bottom: 12px;
       letter-spacing: -0.02em;
     }
-    p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.5;
+
+    .hero p {
+      color: var(--text-secondary);
+      max-width: 800px;
+      font-size: 1rem;
     }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 16px;
+      margin: 20px 0 56px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      backdrop-filter: blur(16px) saturate(120%);
+    }
+
+    .card h2 {
+      font-size: 1.12rem;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .card p {
+      color: var(--text-secondary);
+      font-size: 0.93rem;
+      margin-bottom: 12px;
+    }
+
     .grid {
       display: grid;
-      gap: 12px;
-      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-    @media (max-width: 700px) {
-      .grid { grid-template-columns: 1fr; }
+
+    .stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
+
     label {
       display: block;
       margin: 0 0 6px;
       font-size: 12px;
-      color: var(--muted);
+      color: var(--text-muted);
       font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
+
     input {
       width: 100%;
       border: 1px solid var(--border);
       background: rgba(255, 255, 255, 0.04);
-      color: var(--text);
+      color: var(--text-primary);
       border-radius: 10px;
       padding: 12px;
       font-size: 14px;
       outline: none;
     }
+
+    input:focus {
+      border-color: rgba(59, 130, 246, 0.7);
+      box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.25);
+    }
+
     .row {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
-      margin-top: 14px;
+      margin-top: 12px;
+      align-items: center;
     }
-    button {
-      border: 0;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      background: var(--accent);
-      color: #fff;
-    }
-    button:hover { background: var(--accent-hover); }
-    button.alt {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--border);
-      color: var(--text);
-    }
-    button.warn {
-      background: var(--warn);
-      color: #111827;
-    }
-    button.danger {
-      background: var(--danger);
-      color: #fff;
-    }
+
     .status {
       margin-top: 10px;
       font-size: 13px;
-      color: var(--muted);
+      color: var(--text-secondary);
       min-height: 18px;
     }
-    .status.ok { color: var(--ok); }
+
+    .status.ok { color: var(--success); }
     .status.err { color: var(--danger); }
-    .kv {
-      display: grid;
-      grid-template-columns: 180px 1fr;
-      gap: 8px;
-      font-size: 13px;
-      padding: 8px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+    .status.warn { color: var(--warning); }
+
+    .hint {
+      margin-top: 10px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
     }
-    .kv:last-child { border-bottom: 0; }
-    .k { color: var(--muted); }
-    .v { color: var(--text); word-break: break-word; }
-    .hidden { display: none; }
+
     .pill {
       display: inline-flex;
       align-items: center;
@@ -133,82 +258,161 @@
       font-size: 12px;
       font-weight: 700;
       border: 1px solid var(--border);
+      color: var(--text-secondary);
     }
-    .pill.ok { color: var(--ok); }
-    .pill.warn { color: var(--warn); }
-    .top-links {
-      margin-top: 10px;
+
+    .pill.ok {
+      color: var(--success);
+      border-color: rgba(34, 197, 94, 0.45);
+      background: rgba(34, 197, 94, 0.08);
+    }
+
+    .pill.warn {
+      color: var(--warning);
+      border-color: rgba(245, 158, 11, 0.45);
+      background: rgba(245, 158, 11, 0.08);
+    }
+
+    .kv {
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr);
+      gap: 8px;
       font-size: 13px;
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
     }
-    .top-links a {
-      color: #93c5fd;
-      text-decoration: none;
+
+    .kv:last-child {
+      border-bottom: 0;
     }
-    .top-links a:hover { text-decoration: underline; }
+
+    .k {
+      color: var(--text-muted);
+    }
+
+    .v {
+      color: var(--text-primary);
+      word-break: break-word;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .dashboard-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 980px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .container { padding: 0 14px; }
+      .grid { grid-template-columns: 1fr; }
+      .kv { grid-template-columns: 1fr; gap: 3px; }
+      .top-actions { flex-wrap: wrap; justify-content: flex-end; }
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <h1>License Dashboard</h1>
-      <p>Manage your Nexus key, reset machine activation, and move to a new computer safely.</p>
-      <div class="top-links">
-        <a href="/">Back to hyperfect.dev</a>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="/"><span>Nexus</span> by Hyperfect</a>
+      <div class="top-actions">
+        <a class="btn" href="/getting-started">Setup Guide</a>
+        <a class="btn" href="/">Back to Site</a>
       </div>
     </div>
+  </header>
 
-    <div class="card" id="auth-card">
-      <div class="grid">
-        <div>
-          <label for="email">Purchase Email</label>
-          <input id="email" type="email" placeholder="you@example.com" />
-        </div>
-        <div>
-          <label for="licenseKey">License Key (optional)</label>
-          <input id="licenseKey" type="text" placeholder="NEXUS-XXXX-XXXX-XXXX-XXXX" />
-        </div>
-      </div>
-      <div class="row">
-        <button id="send-code-btn">Send Verification Code</button>
-      </div>
-      <div id="auth-status" class="status"></div>
+  <main class="container">
+    <section class="hero">
+      <div class="eyebrow">License Center</div>
+      <h1>Manage Your Nexus License</h1>
+      <p>Sign in with Discord (recommended) or verify by email code. Reset machine activation any time if you need to move Nexus to another computer.</p>
+    </section>
 
-      <div id="code-block" class="hidden" style="margin-top:14px;">
-        <label for="code">Email Code</label>
-        <input id="code" type="text" inputmode="numeric" placeholder="6-digit code" />
+    <section class="layout" id="auth-layout">
+      <article class="card">
+        <h2>Sign In with Discord</h2>
+        <p>Use the same Discord account from our server. If this is your first time, run <code>/license-bind</code> in Discord to link your key.</p>
         <div class="row">
-          <button id="verify-btn">Verify</button>
+          <button class="btn discord" id="discord-login-btn">Sign In with Discord</button>
+          <button class="btn" id="discord-retry-btn">Retry Discord Login</button>
         </div>
-      </div>
-    </div>
+        <div class="status" id="discord-status"></div>
+        <div class="hint">Discord sign-in verifies server membership and linked license ownership.</div>
+      </article>
 
-    <div class="card hidden" id="dashboard-card">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:10px;">
+      <article class="card" id="auth-card">
+        <h2>Email Verification</h2>
+        <p>Use your purchase email (or key) to receive a one-time access code.</p>
+        <div class="stack">
+          <div>
+            <label for="email">Purchase Email</label>
+            <input id="email" type="email" placeholder="you@example.com" />
+          </div>
+          <div>
+            <label for="licenseKey">License Key (optional)</label>
+            <input id="licenseKey" type="text" placeholder="NEXUS-XXXX-XXXX-XXXX-XXXX" />
+          </div>
+        </div>
+        <div class="row">
+          <button class="btn primary" id="send-code-btn">Send Verification Code</button>
+        </div>
+        <div id="auth-status" class="status"></div>
+
+        <div id="code-block" class="hidden" style="margin-top:14px;">
+          <label for="code">Email Code</label>
+          <input id="code" type="text" inputmode="numeric" placeholder="6-digit code" />
+          <div class="row">
+            <button class="btn primary" id="verify-btn">Verify</button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="card hidden" id="dashboard-card" style="margin-bottom:56px;">
+      <div class="dashboard-head">
         <div>
-          <strong style="font-size:18px;">Your License</strong>
-          <div id="machine-pill" class="pill" style="margin-top:6px;">Machine status</div>
+          <h2 style="margin-bottom:6px;">Your License</h2>
+          <div id="machine-pill" class="pill">Machine status</div>
         </div>
         <div class="row" style="margin-top:0;">
-          <button class="alt" id="refresh-btn">Refresh</button>
-          <button class="danger" id="sign-out-btn">Sign out</button>
+          <button class="btn" id="refresh-btn">Refresh</button>
+          <button class="btn danger" id="sign-out-btn">Sign Out</button>
         </div>
       </div>
+
       <div id="license-kv"></div>
+
       <div class="row">
-        <button class="warn" id="reset-machine-btn">Reset Machine Activation</button>
+        <button class="btn warn" id="reset-machine-btn">Reset Machine Activation</button>
       </div>
       <div id="dashboard-status" class="status"></div>
-    </div>
-  </div>
+    </section>
+  </main>
 
   <script>
     const API = '/api/license-portal';
+    const DISCORD_CLIENT_ID = '1472604757687275723';
+    const DISCORD_SCOPE = 'identify';
     const TOKEN_KEY = 'nexus_license_portal_token';
+    const DISCORD_TOKEN_KEY = 'nexus_license_portal_discord_token';
 
     const authStatus = document.getElementById('auth-status');
+    const discordStatus = document.getElementById('discord-status');
     const dashboardStatus = document.getElementById('dashboard-status');
     const codeBlock = document.getElementById('code-block');
-    const authCard = document.getElementById('auth-card');
+    const authLayout = document.getElementById('auth-layout');
     const dashboardCard = document.getElementById('dashboard-card');
     const licenseKv = document.getElementById('license-kv');
     const machinePill = document.getElementById('machine-pill');
@@ -218,13 +422,32 @@
       el.textContent = text || '';
     }
 
-    function getToken() {
+    function getPortalToken() {
       return sessionStorage.getItem(TOKEN_KEY) || '';
     }
 
-    function setToken(token) {
+    function setPortalToken(token) {
       if (token) sessionStorage.setItem(TOKEN_KEY, token);
       else sessionStorage.removeItem(TOKEN_KEY);
+    }
+
+    function getDiscordToken() {
+      return localStorage.getItem(DISCORD_TOKEN_KEY) || '';
+    }
+
+    function setDiscordToken(token) {
+      if (token) localStorage.setItem(DISCORD_TOKEN_KEY, token);
+      else localStorage.removeItem(DISCORD_TOKEN_KEY);
+    }
+
+    function parseDiscordTokenFromHash() {
+      const hash = new URLSearchParams(window.location.hash.slice(1));
+      const token = hash.get('access_token');
+      if (!token) return '';
+      setDiscordToken(token);
+      const cleanUrl = `${window.location.origin}${window.location.pathname}`;
+      window.history.replaceState({}, document.title, cleanUrl);
+      return token;
     }
 
     function formatDate(iso) {
@@ -232,6 +455,29 @@
       const dt = new Date(iso);
       if (Number.isNaN(dt.getTime())) return iso;
       return dt.toLocaleString();
+    }
+
+    function renderLicense(license) {
+      const rows = [
+        ['Email', license.email || '—'],
+        ['License Key', license.license_key_masked || '—'],
+        ['Plan', (license.plan || '—').toString()],
+        ['Tier', (license.tier || '—').toString()],
+        ['Machine Lock', license.machine_locked ? `Locked (${license.hardware_id_masked || 'hidden'})` : 'Not locked'],
+        ['Machine Bound At', formatDate(license.hardware_bound_at)],
+        ['Last Validation', formatDate(license.last_validation_at)],
+        ['Reset Count', String(license.reset_count || 0)],
+        ['Last Reset', formatDate(license.last_reset_at)],
+      ];
+      licenseKv.innerHTML = rows.map(([k, v]) => `
+        <div class="kv">
+          <div class="k">${k}</div>
+          <div class="v">${v || '—'}</div>
+        </div>
+      `).join('');
+
+      machinePill.className = `pill ${license.machine_locked ? 'warn' : 'ok'}`;
+      machinePill.textContent = license.machine_locked ? 'Machine Locked' : 'Ready to Activate';
     }
 
     async function requestCode() {
@@ -279,7 +525,7 @@
         if (!res.ok || !data.success || !data.token) {
           throw new Error(data.error || 'Verification failed');
         }
-        setToken(data.token);
+        setPortalToken(data.token);
         setStatus(authStatus, 'Verification complete.', 'ok');
         await loadDashboard();
       } catch (err) {
@@ -287,32 +533,48 @@
       }
     }
 
-    function renderLicense(license) {
-      const rows = [
-        ['Email', license.email || '—'],
-        ['License Key', license.license_key_masked || '—'],
-        ['Plan', (license.plan || '—').toString()],
-        ['Tier', (license.tier || '—').toString()],
-        ['Machine Lock', license.machine_locked ? `Locked (${license.hardware_id_masked || 'hidden'})` : 'Not locked'],
-        ['Machine Bound At', formatDate(license.hardware_bound_at)],
-        ['Last Validation', formatDate(license.last_validation_at)],
-        ['Reset Count', String(license.reset_count || 0)],
-        ['Last Reset', formatDate(license.last_reset_at)],
-      ];
-      licenseKv.innerHTML = rows.map(([k, v]) => `
-        <div class="kv">
-          <div class="k">${k}</div>
-          <div class="v">${v || '—'}</div>
-        </div>
-      `).join('');
+    function startDiscordLogin() {
+      const params = new URLSearchParams({
+        client_id: DISCORD_CLIENT_ID,
+        redirect_uri: `${window.location.origin}${window.location.pathname}`,
+        response_type: 'token',
+        scope: DISCORD_SCOPE,
+      });
+      window.location.href = `https://discord.com/api/oauth2/authorize?${params.toString()}`;
+    }
 
-      machinePill.className = `pill ${license.machine_locked ? 'warn' : 'ok'}`;
-      machinePill.textContent = license.machine_locked ? 'Machine Locked' : 'Ready to Activate';
+    async function authenticateWithDiscord(token) {
+      if (!token) {
+        setStatus(discordStatus, 'No Discord session found. Sign in first.', 'warn');
+        return false;
+      }
+
+      setStatus(discordStatus, 'Verifying Discord account...');
+      try {
+        const res = await fetch(API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'discord_auth', discordToken: token }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.success || !data.token) {
+          throw new Error(data.error || 'Discord sign-in failed');
+        }
+        setPortalToken(data.token);
+        setStatus(discordStatus, 'Discord sign-in complete.', 'ok');
+        await loadDashboard();
+        return true;
+      } catch (err) {
+        const msg = err?.message || 'Discord sign-in failed';
+        setStatus(discordStatus, msg, 'err');
+        return false;
+      }
     }
 
     async function loadDashboard() {
-      const token = getToken();
+      const token = getPortalToken();
       if (!token) return;
+
       setStatus(dashboardStatus, 'Loading license data...');
       try {
         const res = await fetch(API, {
@@ -324,19 +586,19 @@
           throw new Error(data.error || 'Could not load license data');
         }
         renderLicense(data.license);
-        authCard.classList.add('hidden');
+        authLayout.classList.add('hidden');
         dashboardCard.classList.remove('hidden');
         setStatus(dashboardStatus, 'Dashboard loaded.', 'ok');
       } catch (err) {
-        setToken('');
-        authCard.classList.remove('hidden');
+        setPortalToken('');
+        authLayout.classList.remove('hidden');
         dashboardCard.classList.add('hidden');
         setStatus(authStatus, err.message || 'Session expired. Please verify again.', 'err');
       }
     }
 
     async function resetMachine() {
-      const token = getToken();
+      const token = getPortalToken();
       if (!token) return;
       if (!confirm('Reset machine activation? This allows the key to be activated on a different computer.')) return;
 
@@ -364,18 +626,43 @@
       }
     }
 
+    function signOut() {
+      setPortalToken('');
+      setDiscordToken('');
+      authLayout.classList.remove('hidden');
+      dashboardCard.classList.add('hidden');
+      codeBlock.classList.add('hidden');
+      setStatus(authStatus, 'Signed out.');
+      setStatus(discordStatus, '');
+    }
+
     document.getElementById('send-code-btn').addEventListener('click', requestCode);
     document.getElementById('verify-btn').addEventListener('click', verifyCode);
     document.getElementById('refresh-btn').addEventListener('click', loadDashboard);
     document.getElementById('reset-machine-btn').addEventListener('click', resetMachine);
-    document.getElementById('sign-out-btn').addEventListener('click', () => {
-      setToken('');
-      dashboardCard.classList.add('hidden');
-      authCard.classList.remove('hidden');
-      setStatus(authStatus, 'Signed out.');
+    document.getElementById('sign-out-btn').addEventListener('click', signOut);
+    document.getElementById('discord-login-btn').addEventListener('click', startDiscordLogin);
+    document.getElementById('discord-retry-btn').addEventListener('click', async () => {
+      const token = getDiscordToken();
+      if (!token) {
+        setStatus(discordStatus, 'No Discord token found. Use Sign In with Discord.', 'warn');
+        return;
+      }
+      await authenticateWithDiscord(token);
     });
 
-    loadDashboard();
+    (async function init() {
+      parseDiscordTokenFromHash();
+      await loadDashboard();
+      if (getPortalToken()) return;
+
+      const discordToken = getDiscordToken();
+      if (discordToken) {
+        await authenticateWithDiscord(discordToken);
+      } else {
+        setStatus(discordStatus, 'Sign in with Discord to access linked licenses instantly.', 'warn');
+      }
+    })();
   </script>
 </body>
 </html>

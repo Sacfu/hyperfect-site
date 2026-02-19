@@ -90,6 +90,23 @@ async function findCustomerByEmail(rawEmail) {
   return null;
 }
 
+async function findCustomerByDiscordUserId(rawDiscordUserId) {
+  const discordUserId = cleanText(rawDiscordUserId, 64);
+  if (!discordUserId) return null;
+
+  let found = null;
+  await listCustomersPaged(async (customer) => {
+    const metadata = customer?.metadata || {};
+    const linkedId = cleanText(metadata.license_discord_user_id || metadata.discord_user_id || '', 64);
+    if (linkedId && linkedId === discordUserId) {
+      found = customer;
+      return true;
+    }
+    return false;
+  });
+  return found;
+}
+
 async function hasActiveSubscription(customerId) {
   if (!customerId) return false;
   const subscriptions = await stripe.subscriptions.list({
@@ -240,6 +257,7 @@ module.exports = {
   normalizeHardwareId,
   findCustomerByLicenseKey,
   findCustomerByEmail,
+  findCustomerByDiscordUserId,
   getLicenseSummary,
   validateLicenseRecord,
 };

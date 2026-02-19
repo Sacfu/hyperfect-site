@@ -18,9 +18,11 @@ const {
   normalizeLicenseKey,
   findCustomerByEmail,
   findCustomerByLicenseKey,
+  findCustomerByDiscordUserId,
   getLicenseSummary,
   MACHINE_RESET_URL,
 } = require('./_license-utils');
+const { verifyDiscordMember } = require('./_discord-auth');
 
 const CODE_TTL_MINUTES = 10;
 const SESSION_TTL_HOURS = 24;
@@ -152,6 +154,14 @@ async function loadCustomerForCodeRequest({ email, licenseKey }) {
   if (byKey && byEmail && byKey.id !== byEmail.id) return null;
 
   return byKey || byEmail || null;
+}
+
+function formatDiscordHandle(user) {
+  const username = cleanText(user?.username || '', 120);
+  const discriminator = cleanText(user?.discriminator || '', 10);
+  if (!username) return '';
+  if (discriminator && discriminator !== '0') return `${username}#${discriminator}`;
+  return username;
 }
 
 module.exports = async function handler(req, res) {
@@ -287,6 +297,91 @@ module.exports = async function handler(req, res) {
         token,
         license: {
           ...getLicenseSummary(customer),
+          manage_url: MACHINE_RESET_URL,
+        },
+      });
+    }
+
+    if (action === 'discord_auth') {
+      const discordToken = cleanText(req.body?.discordToken || req.body?.discord_token || '', 4096);
+      if (!discordToken) {
+        return res.status(400).json({ success: false, error: 'Discord token is required' });
+      }
+
+      const discord = await verifyDiscordMember(discordToken);
+      if (!discord.ok) {
+        const reason = cleanText(discord.reason, 64);
+        if (reason === 'missing_server_config') {
+          return res.status(500).json({ success: false, error: 'Discord login is not configured on the server' });
+        }
+        if (reason === 'not_in_server') {
+          return res.status(403).json({ success: false, error: 'Join the Nexus Discord server before signing in' });
+        }
+        return res.status(401).json({ success: false, error: 'Discord authentication failed' });
+      }
+
+      const discordUser = discord.user || {};
+      const discordUserId = cleanText(discordUser.id, 64);
+      if (!discordUserId) {
+        return res.status(401).json({ success: false, error: 'Discord user could not be verified' });
+      }
+
+      let customer = await findCustomerByDiscordUserId(discordUserId);
+      if (!customer || customer.deleted) {
+        return res.status(404).json({
+          success: false,
+          error: 'No license is linked to this Discord account yet. Run /license-bind in Discord first.',
+        });
+      }
+
+      const metadata = customer.metadata || {};
+      if (!(metadata.license_key || '').trim()) {
+        return res.status(404).json({
+          success: false,
+          error: 'No active license key was found for the linked Discord account.',
+        });
+      }
+
+      const linkedId = cleanText(metadata.license_discord_user_id || '', 64);
+      if (linkedId && linkedId !== discordUserId) {
+        return res.status(409).json({
+          success: false,
+          error: 'This license is linked to a different Discord account.',
+        });
+      }
+
+      const nowIso = new Date().toISOString();
+      const updated = await stripe.customers.update(customer.id, {
+        metadata: {
+          ...metadata,
+          license_discord_user_id: discordUserId,
+          license_discord_username: formatDiscordHandle(discordUser),
+          license_discord_global_name: cleanText(discordUser.global_name || '', 120),
+          license_discord_last_login_at: nowIso,
+          license_discord_linked_at: metadata.license_discord_linked_at || nowIso,
+        },
+      });
+
+      const token = signToken(
+        {
+          cid: updated.id,
+          email: normalizeEmail(updated.email || ''),
+          exp: Date.now() + SESSION_TTL_HOURS * 60 * 60 * 1000,
+        },
+        secret
+      );
+
+      return res.status(200).json({
+        success: true,
+        token,
+        auth: 'discord',
+        discord: {
+          id: discordUserId,
+          username: cleanText(discordUser.username, 120),
+          global_name: cleanText(discordUser.global_name, 120),
+        },
+        license: {
+          ...getLicenseSummary(updated),
           manage_url: MACHINE_RESET_URL,
         },
       });

@@ -23,29 +23,48 @@ module.exports = async function handler(req, res) {
     const commands = [
         {
             name: 'invite',
-            description: 'Generate a beta checkout link for a tester',
+            description: 'Admin: generate a beta checkout link',
             options: [
                 {
                     name: 'email',
-                    description: "The tester's email address",
+                    description: 'Tester email address',
                     type: 3, // STRING
                     required: true,
                 },
                 {
                     name: 'name',
-                    description: "The tester's name (optional)",
+                    description: 'Optional tester name',
                     type: 3, // STRING
                     required: false,
                 },
             ],
         },
         {
-            name: 'waitlist-list',
-            description: 'List waitlist entries by status',
+            name: 'waitlist',
+            description: 'Admin: review and invite waitlist entries',
             options: [
                 {
+                    name: 'action',
+                    description: 'What to do',
+                    type: 3, // STRING
+                    required: true,
+                    choices: [
+                        { name: 'list', value: 'list' },
+                        { name: 'status', value: 'status' },
+                        { name: 'approve', value: 'approve' },
+                        { name: 'reject', value: 'reject' },
+                        { name: 'invite', value: 'invite' },
+                    ],
+                },
+                {
+                    name: 'email',
+                    description: 'Email (required for status/approve/reject/invite)',
+                    type: 3, // STRING
+                    required: false,
+                },
+                {
                     name: 'status',
-                    description: 'Filter status',
+                    description: 'Status filter (used with list)',
                     type: 3, // STRING
                     required: false,
                     choices: [
@@ -59,105 +78,39 @@ module.exports = async function handler(req, res) {
                 },
                 {
                     name: 'limit',
-                    description: 'How many entries to return (1-25)',
+                    description: 'List size (1-25, used with list)',
                     type: 4, // INTEGER
                     required: false,
                     min_value: 1,
                     max_value: 25,
                 },
-            ],
-        },
-        {
-            name: 'waitlist-status',
-            description: 'Get one waitlist entry by email',
-            options: [
-                {
-                    name: 'email',
-                    description: 'Waitlist email',
-                    type: 3, // STRING
-                    required: true,
-                },
-            ],
-        },
-        {
-            name: 'waitlist-add',
-            description: 'Add or update a waitlist entry',
-            options: [
-                {
-                    name: 'email',
-                    description: 'Waitlist email',
-                    type: 3, // STRING
-                    required: true,
-                },
                 {
                     name: 'name',
-                    description: 'Optional name for the entry',
+                    description: 'Optional name (used for invite when creating missing entry)',
                     type: 3, // STRING
                     required: false,
                 },
                 {
                     name: 'notes',
-                    description: 'Optional notes/interest',
+                    description: 'Notes (required for reject action)',
                     type: 3, // STRING
                     required: false,
                 },
             ],
         },
         {
-            name: 'waitlist-approve',
-            description: 'Approve a waitlist entry',
+            name: 'license-bind',
+            description: 'Link your Discord account to your Nexus license',
             options: [
                 {
-                    name: 'email',
-                    description: 'Waitlist email',
+                    name: 'license_key',
+                    description: 'Your Nexus license key',
                     type: 3, // STRING
                     required: true,
                 },
-                {
-                    name: 'notes',
-                    description: 'Optional internal notes',
-                    type: 3, // STRING
-                    required: false,
-                },
-            ],
-        },
-        {
-            name: 'waitlist-reject',
-            description: 'Reject a waitlist entry',
-            options: [
                 {
                     name: 'email',
-                    description: 'Waitlist email',
-                    type: 3, // STRING
-                    required: true,
-                },
-                {
-                    name: 'reason',
-                    description: 'Reason for rejection',
-                    type: 3, // STRING
-                    required: true,
-                },
-            ],
-        },
-        {
-            name: 'waitlist-invite',
-            description: 'Add if needed, approve, and generate invite link',
-            options: [
-                {
-                    name: 'email',
-                    description: 'Waitlist email',
-                    type: 3, // STRING
-                    required: true,
-                },
-                {
-                    name: 'notes',
-                    description: 'Optional review notes',
-                    type: 3, // STRING
-                    required: false,
-                },
-                {
-                    name: 'name',
-                    description: 'Optional name when creating missing entries',
+                    description: 'Optional purchase email for extra verification',
                     type: 3, // STRING
                     required: false,
                 },
@@ -167,6 +120,7 @@ module.exports = async function handler(req, res) {
 
     const clientId = process.env.DISCORD_CLIENT_ID || '1472604757687275723';
     const guildId = process.env.DISCORD_GUILD_ID;
+    const registerGlobal = String(process.env.DISCORD_REGISTER_GLOBAL || '').trim().toLowerCase() === 'true';
     const authHeaders = {
         'Authorization': `Bot ${process.env.DISCORD_BOT_TOKEN}`,
         'Content-Type': 'application/json',
@@ -178,21 +132,6 @@ module.exports = async function handler(req, res) {
 
     try {
         const registerResults = {};
-
-        const globalResponse = await fetch(
-            `https://discord.com/api/v10/applications/${clientId}/commands`,
-            {
-                method: 'PUT',
-                headers: authHeaders,
-                body: JSON.stringify(commands),
-            }
-        );
-        const globalData = await globalResponse.json();
-        if (!globalResponse.ok) {
-            return res.status(globalResponse.status).json({ error: globalData });
-        }
-        registerResults.global = globalData.map(c => ({ name: c.name, id: c.id }));
-
         if (guildId) {
             const guildResponse = await fetch(
                 `https://discord.com/api/v10/applications/${clientId}/guilds/${guildId}/commands`,
@@ -204,18 +143,65 @@ module.exports = async function handler(req, res) {
             );
             const guildData = await guildResponse.json();
             if (!guildResponse.ok) {
-                registerResults.guild_error = guildData;
-            } else {
-                registerResults.guild = guildData.map(c => ({ name: c.name, id: c.id }));
+                return res.status(guildResponse.status).json({ error: guildData });
             }
+            registerResults.guild = guildData.map(c => ({ name: c.name, id: c.id }));
+
+            if (registerGlobal) {
+                const globalResponse = await fetch(
+                    `https://discord.com/api/v10/applications/${clientId}/commands`,
+                    {
+                        method: 'PUT',
+                        headers: authHeaders,
+                        body: JSON.stringify(commands),
+                    }
+                );
+                const globalData = await globalResponse.json();
+                if (!globalResponse.ok) {
+                    registerResults.global_error = globalData;
+                } else {
+                    registerResults.global = globalData.map(c => ({ name: c.name, id: c.id }));
+                }
+            } else {
+                // Prevent duplicate commands in guilds by clearing global command set.
+                const clearGlobalResponse = await fetch(
+                    `https://discord.com/api/v10/applications/${clientId}/commands`,
+                    {
+                        method: 'PUT',
+                        headers: authHeaders,
+                        body: JSON.stringify([]),
+                    }
+                );
+                const clearGlobalData = await clearGlobalResponse.json().catch(() => ({}));
+                registerResults.global_cleared = clearGlobalResponse.ok;
+                if (!clearGlobalResponse.ok) {
+                    registerResults.global_clear_error = clearGlobalData;
+                }
+            }
+        } else {
+            const globalResponse = await fetch(
+                `https://discord.com/api/v10/applications/${clientId}/commands`,
+                {
+                    method: 'PUT',
+                    headers: authHeaders,
+                    body: JSON.stringify(commands),
+                }
+            );
+            const globalData = await globalResponse.json();
+            if (!globalResponse.ok) {
+                return res.status(globalResponse.status).json({ error: globalData });
+            }
+            registerResults.global = globalData.map(c => ({ name: c.name, id: c.id }));
         }
 
         return res.status(200).json({
             success: true,
             commands: registerResults,
             message: guildId
-                ? 'Slash commands registered globally and for guild scope (guild appears almost instantly).'
-                : 'Slash commands registered globally. They may take up to 1 hour to appear.',
+                ? (registerGlobal
+                    ? 'Commands registered for guild and global scope.'
+                    : 'Commands registered for guild scope and global commands cleared to avoid duplicates.')
+                : 'Commands registered globally. They may take up to 1 hour to appear.',
         });
     } catch (err) {
         return res.status(500).json({ error: err.message });

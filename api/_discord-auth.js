@@ -15,9 +15,36 @@ async function verifyDiscordAdmin(accessToken) {
 
     const guildId = cleanText(process.env.DISCORD_GUILD_ID, 64);
     const botToken = cleanText(process.env.DISCORD_BOT_TOKEN, 256);
-    const adminRoleId = cleanText(process.env.ADMIN_ROLE_ID, 64);
+    if (!guildId || !botToken) {
+        return { ok: false, reason: 'missing_server_config' };
+    }
 
-    if (!guildId || !botToken || !adminRoleId) {
+    const base = await verifyDiscordMember(token);
+    if (!base.ok) return base;
+
+    const adminRoleId = cleanText(process.env.ADMIN_ROLE_ID, 64);
+    if (!adminRoleId) {
+        return { ok: false, reason: 'missing_server_config' };
+    }
+
+    const roles = Array.isArray(base.roles) ? base.roles : [];
+    if (!roles.includes(adminRoleId)) {
+        return { ok: false, reason: 'not_admin_role', user: base.user, roles };
+    }
+
+    return base;
+}
+
+async function verifyDiscordMember(accessToken) {
+    const token = cleanText(accessToken, 2048);
+    if (!token) {
+        return { ok: false, reason: 'missing_access_token' };
+    }
+
+    const guildId = cleanText(process.env.DISCORD_GUILD_ID, 64);
+    const botToken = cleanText(process.env.DISCORD_BOT_TOKEN, 256);
+
+    if (!guildId || !botToken) {
         return { ok: false, reason: 'missing_server_config' };
     }
 
@@ -45,9 +72,6 @@ async function verifyDiscordAdmin(accessToken) {
 
     const member = await memberRes.json().catch(() => null);
     const roles = Array.isArray(member?.roles) ? member.roles : [];
-    if (!roles.includes(adminRoleId)) {
-        return { ok: false, reason: 'not_admin_role', user, roles };
-    }
 
     return {
         ok: true,
@@ -63,5 +87,6 @@ async function verifyDiscordAdmin(accessToken) {
 }
 
 module.exports = {
+    verifyDiscordMember,
     verifyDiscordAdmin,
 };

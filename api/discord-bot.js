@@ -8,13 +8,9 @@
 //   4. Register slash commands using the /api/discord-register endpoint
 //
 // Slash Commands:
-//   /invite <email> [name] — Generate a beta checkout link for a tester
-//   /waitlist-list [status] [limit] — List waitlist entries
-//   /waitlist-status <email> — Show a single waitlist entry
-//   /waitlist-add <email> [name] [notes] — Add/update a waitlist entry
-//   /waitlist-approve <email> [notes] — Approve a waitlist entry
-//   /waitlist-reject <email> <reason> — Reject a waitlist entry
-//   /waitlist-invite <email> [notes] [name] — Add if missing, approve, and generate invite link
+//   /invite <email> [name] — Generate a beta checkout link for a tester (admin)
+//   /waitlist ... — Single admin command for queue actions (list/status/approve/reject/invite)
+//   /license-bind <license_key> [email] — Bind your Discord account to your license key (member command)
 //
 // Environment Variables:
 //   DISCORD_PUBLIC_KEY — from Discord Developer Portal (for signature verification)
@@ -25,6 +21,7 @@
 
 const nacl = require('tweetnacl');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const { normalizeLicenseKey, findCustomerByLicenseKey } = require('./_license-utils');
 
 // Discord interaction types
 const INTERACTION_TYPE = {
@@ -38,6 +35,16 @@ const INTERACTION_RESPONSE_TYPE = {
 };
 
 const WAITLIST_STATUSES = new Set(['pending', 'approved', 'rejected', 'invited', 'converted']);
+const ADMIN_ONLY_COMMANDS = new Set([
+    'invite',
+    'waitlist',
+    'waitlist-list',
+    'waitlist-status',
+    'waitlist-add',
+    'waitlist-approve',
+    'waitlist-reject',
+    'waitlist-invite',
+]);
 
 // Verify Discord request signature using tweetnacl
 function verifyDiscordSignature(rawBody, signature, timestamp) {
@@ -89,6 +96,12 @@ function cleanText(value, maxLen = 500) {
 
 function normalizeEmail(value) {
     return cleanText(value, 240).toLowerCase();
+}
+
+function maskLicenseKey(value) {
+    const key = normalizeLicenseKey(value || '');
+    if (!key) return '';
+    return `${key.slice(0, 11)}-****-${key.slice(-4)}`;
 }
 
 function getOptionValue(options, key, fallback = '') {
@@ -298,22 +311,87 @@ module.exports = async function handler(req, res) {
     // Handle slash commands
     if (body.type === INTERACTION_TYPE.APPLICATION_COMMAND) {
         const { name, options } = body.data;
+        const commandName = cleanText(name, 64).toLowerCase();
         const member = body.member;
-        const actor = cleanText(member?.user?.username || body?.user?.username || 'unknown', 120);
+        const actorUser = member?.user || body?.user || {};
+        const actor = cleanText(actorUser?.username || actorUser?.global_name || 'unknown', 120);
+        const actorDiscordId = cleanText(actorUser?.id || '', 64);
 
         if (!process.env.STRIPE_SECRET_KEY) {
             return res.status(200).json(ephemeral('Stripe is not configured on the server (missing STRIPE_SECRET_KEY).'));
         }
 
-        // Optional: restrict to admin role
-        if (process.env.ADMIN_ROLE_ID) {
+        // Restrict admin-only commands to configured admin role.
+        if (ADMIN_ONLY_COMMANDS.has(commandName)) {
+            if (!process.env.ADMIN_ROLE_ID) {
+                return res.status(200).json(ephemeral('Admin commands are disabled until ADMIN_ROLE_ID is configured.'));
+            }
             const hasRole = member?.roles?.includes(process.env.ADMIN_ROLE_ID);
             if (!hasRole) {
                 return res.status(200).json(ephemeral('You do not have permission to use this command.'));
             }
         }
 
-        if (name === 'invite') {
+        if (commandName === 'license-bind') {
+            const licenseKey = normalizeLicenseKey(getOptionValue(options, 'license_key'));
+            const email = normalizeEmail(getOptionValue(options, 'email', ''));
+
+            if (!licenseKey) {
+                return res.status(200).json(ephemeral('License key is required.'));
+            }
+            if (!actorDiscordId) {
+                return res.status(200).json(ephemeral('Could not identify your Discord account. Try again.'));
+            }
+
+            try {
+                const customer = await findCustomerByLicenseKey(licenseKey);
+                if (!customer || customer.deleted || !(customer.metadata || {}).license_key) {
+                    return res.status(200).json(ephemeral('License key not found.'));
+                }
+
+                const customerEmail = normalizeEmail(customer.email || '');
+                if (email && customerEmail && email !== customerEmail) {
+                    return res.status(200).json(ephemeral('Email does not match the owner of this license key.'));
+                }
+
+                const metadata = customer.metadata || {};
+                const existingDiscordId = cleanText(metadata.license_discord_user_id || metadata.discord_user_id || '', 64);
+                if (existingDiscordId && existingDiscordId !== actorDiscordId) {
+                    return res.status(200).json(
+                        ephemeral('This license is already linked to another Discord account. Contact support if you need to transfer it.')
+                    );
+                }
+
+                const now = new Date().toISOString();
+                const handle = cleanText(
+                    actorUser?.discriminator && actorUser.discriminator !== '0'
+                        ? `${actorUser.username || ''}#${actorUser.discriminator}`
+                        : (actorUser?.username || ''),
+                    120
+                );
+                await stripe.customers.update(customer.id, {
+                    metadata: {
+                        ...metadata,
+                        license_discord_user_id: actorDiscordId,
+                        license_discord_username: handle,
+                        license_discord_global_name: cleanText(actorUser?.global_name || '', 120),
+                        license_discord_linked_at: metadata.license_discord_linked_at || now,
+                        license_discord_last_login_at: now,
+                    },
+                });
+
+                return res.status(200).json(
+                    ephemeral(
+                        `Linked license ${maskLicenseKey(licenseKey)} to your Discord account.\nEmail: ${customer.email || 'unknown'}\nYou can now sign in on the License Dashboard with Discord.`
+                    )
+                );
+            } catch (err) {
+                console.error('Discord license-bind error:', err.message);
+                return res.status(200).json(ephemeral(`Error linking license: ${err.message}`));
+            }
+        }
+
+        if (commandName === 'invite') {
             const email = normalizeEmail(getOptionValue(options, 'email'));
             const testerName = cleanText(getOptionValue(options, 'name', email), 120);
 
@@ -335,7 +413,120 @@ module.exports = async function handler(req, res) {
             }
         }
 
-        if (name === 'waitlist-list') {
+        if (commandName === 'waitlist') {
+            const action = cleanText(getOptionValue(options, 'action', 'list'), 32).toLowerCase();
+            const email = normalizeEmail(getOptionValue(options, 'email'));
+            const status = cleanText(getOptionValue(options, 'status', 'pending'), 32).toLowerCase();
+            const waitlistName = cleanText(getOptionValue(options, 'name', ''), 120);
+            const notes = cleanText(getOptionValue(options, 'notes', ''), 500);
+            const limit = parseInt(String(getOptionValue(options, 'limit', 10)), 10) || 10;
+
+            if (action === 'list') {
+                try {
+                    const result = await listWaitlistEntries(status, limit);
+                    if (!result.entries.length) {
+                        return res.status(200).json(
+                            ephemeral(`No waitlist entries found for status: **${result.status}**.`)
+                        );
+                    }
+                    const lines = result.entries.map((entry, idx) => {
+                        const nameText = cleanText(entry.name, 80) || 'Unknown';
+                        return `${idx + 1}. ${nameText} <${entry.email}> — **${entry.status}** (submissions: ${entry.submissions})`;
+                    });
+                    return res.status(200).json(
+                        ephemeral(`Waitlist (${result.status}) — showing ${result.entries.length}:\n${lines.join('\n')}`)
+                    );
+                } catch (err) {
+                    return res.status(200).json(ephemeral(`Error listing waitlist: ${err.message}`));
+                }
+            }
+
+            if (action === 'status') {
+                if (!email) return res.status(200).json(ephemeral('Email is required for status action.'));
+                try {
+                    const customer = await findCustomerByEmail(email);
+                    if (!customer || customer.deleted || !isWaitlistCustomer(customer.metadata || {})) {
+                        return res.status(200).json(ephemeral(`No waitlist entry found for ${email}.`));
+                    }
+                    const entry = mapWaitlistCustomer(customer);
+                    return res.status(200).json(
+                        ephemeral(
+                            `Waitlist entry:\nEmail: ${entry.email}\nName: ${entry.name || 'Unknown'}\nStatus: **${entry.status}**\nSubmissions: ${entry.submissions}\nSource: ${entry.source || 'n/a'}`
+                        )
+                    );
+                } catch (err) {
+                    return res.status(200).json(ephemeral(`Error fetching entry: ${err.message}`));
+                }
+            }
+
+            if (action === 'approve') {
+                if (!email) return res.status(200).json(ephemeral('Email is required for approve action.'));
+                try {
+                    const updated = await updateWaitlistByEmail(email, 'approved', notes, { reviewedBy: actor });
+                    if (!updated.ok) return res.status(200).json(ephemeral(updated.error));
+                    return res.status(200).json(
+                        ephemeral(`Approved waitlist entry for ${email}. Status is now **${updated.entry.status}**.`)
+                    );
+                } catch (err) {
+                    return res.status(200).json(ephemeral(`Error approving entry: ${err.message}`));
+                }
+            }
+
+            if (action === 'reject') {
+                if (!email) return res.status(200).json(ephemeral('Email is required for reject action.'));
+                if (!notes) return res.status(200).json(ephemeral('Notes are required for reject action.'));
+                try {
+                    const updated = await updateWaitlistByEmail(email, 'rejected', notes, { reviewedBy: actor });
+                    if (!updated.ok) return res.status(200).json(ephemeral(updated.error));
+                    return res.status(200).json(ephemeral(`Rejected waitlist entry for ${email}.`));
+                } catch (err) {
+                    return res.status(200).json(ephemeral(`Error rejecting entry: ${err.message}`));
+                }
+            }
+
+            if (action === 'invite') {
+                if (!email) return res.status(200).json(ephemeral('Email is required for invite action.'));
+                try {
+                    const seeded = await ensureWaitlistCustomer(email, waitlistName, notes, 'discord_waitlist_invite');
+                    if (!seeded.ok) return res.status(200).json(ephemeral(seeded.error || 'Could not prepare waitlist entry.'));
+
+                    const approved = await updateWaitlistByEmail(email, 'approved', notes, { reviewedBy: actor });
+                    if (!approved.ok) return res.status(200).json(ephemeral(approved.error));
+
+                    const entry = approved.entry || {};
+                    const session = await createInviteSession(email, entry.name || email, {
+                        source: 'waitlist_approval',
+                        waitlist_customer_id: entry.customer_id || '',
+                        invited_by: actor,
+                        command: 'waitlist',
+                    }, 24);
+
+                    const previous = approved.customer.metadata || {};
+                    const now = new Date().toISOString();
+                    await stripe.customers.update(approved.customer.id, {
+                        metadata: {
+                            ...previous,
+                            waitlist: 'true',
+                            waitlist_status: 'invited',
+                            waitlist_invited_at: now,
+                            waitlist_updated_at: now,
+                        },
+                    });
+
+                    return res.status(200).json(
+                        ephemeral(`Approved + invited ${email}.\nInvite link (expires in 24h):\n${session.url}`)
+                    );
+                } catch (err) {
+                    return res.status(200).json(ephemeral(`Error inviting entry: ${err.message}`));
+                }
+            }
+
+            return res.status(200).json(
+                ephemeral('Unknown waitlist action. Use one of: list, status, approve, reject, invite.')
+            );
+        }
+
+        if (commandName === 'waitlist-list') {
             const status = cleanText(getOptionValue(options, 'status', 'pending'), 32).toLowerCase();
             const limit = parseInt(String(getOptionValue(options, 'limit', 10)), 10) || 10;
             try {
@@ -359,7 +550,7 @@ module.exports = async function handler(req, res) {
             }
         }
 
-        if (name === 'waitlist-status') {
+        if (commandName === 'waitlist-status') {
             const email = normalizeEmail(getOptionValue(options, 'email'));
             if (!email) return res.status(200).json(ephemeral('Email is required.'));
             try {
@@ -378,7 +569,7 @@ module.exports = async function handler(req, res) {
             }
         }
 
-        if (name === 'waitlist-add') {
+        if (commandName === 'waitlist-add') {
             const email = normalizeEmail(getOptionValue(options, 'email'));
             const waitlistName = cleanText(getOptionValue(options, 'name', ''), 120);
             const notes = cleanText(getOptionValue(options, 'notes', ''), 500);
@@ -397,7 +588,7 @@ module.exports = async function handler(req, res) {
             }
         }
 
-        if (name === 'waitlist-approve') {
+        if (commandName === 'waitlist-approve') {
             const email = normalizeEmail(getOptionValue(options, 'email'));
             const notes = cleanText(getOptionValue(options, 'notes', ''), 500);
             if (!email) return res.status(200).json(ephemeral('Email is required.'));
@@ -412,7 +603,7 @@ module.exports = async function handler(req, res) {
             }
         }
 
-        if (name === 'waitlist-reject') {
+        if (commandName === 'waitlist-reject') {
             const email = normalizeEmail(getOptionValue(options, 'email'));
             const reason = cleanText(getOptionValue(options, 'reason', ''), 500);
             if (!email) return res.status(200).json(ephemeral('Email is required.'));
@@ -428,7 +619,7 @@ module.exports = async function handler(req, res) {
             }
         }
 
-        if (name === 'waitlist-invite') {
+        if (commandName === 'waitlist-invite') {
             const email = normalizeEmail(getOptionValue(options, 'email'));
             const waitlistName = cleanText(getOptionValue(options, 'name', ''), 120);
             const notes = cleanText(getOptionValue(options, 'notes', ''), 500);
