@@ -76,6 +76,46 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .top-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 0 10px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .top-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .top-nav a {
+      flex: 0 0 auto;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 999px;
+      padding: 7px 12px;
+      white-space: nowrap;
+    }
+
+    .top-nav a:hover {
+      color: var(--text-primary);
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+
+    .top-nav a.active {
+      color: #dbeafe;
+      border-color: rgba(59, 130, 246, 0.48);
+      background: rgba(59, 130, 246, 0.16);
     }
 
     .btn {
@@ -318,18 +358,33 @@
       .container { padding: 0 14px; }
       .grid { grid-template-columns: 1fr; }
       .kv { grid-template-columns: 1fr; gap: 3px; }
-      .top-actions { flex-wrap: wrap; justify-content: flex-end; }
+      .topbar-inner {
+        min-height: auto;
+        padding: 12px 0 10px;
+        align-items: flex-start;
+      }
+      .top-actions { gap: 8px; justify-content: flex-start; }
     }
   </style>
 </head>
 <body>
   <header class="topbar">
-    <div class="container topbar-inner">
-      <a class="brand" href="/"><span>Nexus</span> by Hyperfect</a>
-      <div class="top-actions">
-        <a class="btn" href="/getting-started">Setup Guide</a>
-        <a class="btn" href="/">Back to Site</a>
+    <div class="container">
+      <div class="topbar-inner">
+        <a class="brand" href="/"><span>Nexus</span> by Hyperfect</a>
+        <div class="top-actions">
+          <a class="btn" href="/">Back to Site</a>
+        </div>
       </div>
+      <nav class="top-nav" aria-label="Site Sections">
+        <a href="/#demo-gallery">Demos</a>
+        <a href="/#how-it-works">How It Works</a>
+        <a href="/#features">Features</a>
+        <a href="/getting-started">Setup Guide</a>
+        <a href="/license-dashboard" class="active">Manage License</a>
+        <a href="/#faq">FAQ</a>
+        <a href="/#contact">Contact</a>
+      </nav>
     </div>
   </header>
 

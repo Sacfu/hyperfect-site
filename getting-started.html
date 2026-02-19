@@ -77,6 +77,46 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .top-nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 0 10px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .top-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .top-nav a {
+            flex: 0 0 auto;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 999px;
+            padding: 7px 12px;
+            white-space: nowrap;
+        }
+
+        .top-nav a:hover {
+            color: var(--text-primary);
+            border-color: rgba(255, 255, 255, 0.22);
+        }
+
+        .top-nav a.active {
+            color: #dbeafe;
+            border-color: rgba(59, 130, 246, 0.48);
+            background: rgba(59, 130, 246, 0.16);
         }
 
         .btn {
@@ -302,16 +342,40 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        @media (max-width: 720px) {
+            .topbar-inner {
+                min-height: auto;
+                padding: 12px 0 10px;
+                align-items: flex-start;
+            }
+
+            .top-actions {
+                gap: 8px;
+                justify-content: flex-start;
+            }
+        }
     </style>
 </head>
 <body>
     <header class="topbar">
-        <div class="container topbar-inner">
-            <a href="/" class="brand">Hyperfect<span>/Nexus</span></a>
-            <div class="top-actions">
-                <a class="btn" href="/">Back to Site</a>
-                <a class="btn btn-primary" href="/#waitlist-heading">Join Waitlist</a>
+        <div class="container">
+            <div class="topbar-inner">
+                <a href="/" class="brand">Hyperfect<span>/Nexus</span></a>
+                <div class="top-actions">
+                    <a class="btn" href="/">Back to Site</a>
+                    <a class="btn btn-primary" href="/#waitlist-heading">Join Waitlist</a>
+                </div>
             </div>
+            <nav class="top-nav" aria-label="Site Sections">
+                <a href="/#demo-gallery">Demos</a>
+                <a href="/#how-it-works">How It Works</a>
+                <a href="/#features">Features</a>
+                <a href="/getting-started" class="active">Setup Guide</a>
+                <a href="/license-dashboard">Manage License</a>
+                <a href="/#faq">FAQ</a>
+                <a href="/#contact">Contact</a>
+            </nav>
         </div>
     </header>
 
