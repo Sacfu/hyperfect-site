@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>document.documentElement.classList.add('js-anim');</script>
     <title>Nexus - AI Job Application Automation | Hyperfect</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <meta name="description" content="Nexus by Hyperfect — AI-powered desktop app that automatically finds, matches, and applies to jobs across LinkedIn, Indeed, and more.">
@@ -125,11 +126,16 @@
         }
 
         .fade-in {
+            opacity: 1;
+            transform: none;
+        }
+
+        .js-anim .fade-in {
             opacity: 0;
             transform: translateY(20px);
         }
 
-        .fade-in.visible {
+        .js-anim .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
@@ -2631,7 +2637,7 @@
                 </div>
                 <div class="onboarding-feature">
                     <div class="onboarding-feature-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-                    <span><strong>BYO model.</strong> Use OpenAI, Claude, LM Studio, or Ollama.</span>
+                    <span><strong>Built-in AI.</strong> No external tools needed. Also supports OpenAI, Claude, LM Studio, or Ollama.</span>
                 </div>
                 <div class="onboarding-feature">
                     <div class="onboarding-feature-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
@@ -3004,7 +3010,7 @@
                                         <div class="mockup-panel-title">Runtime Settings</div>
                                         <div class="setting-mini">
                                             <span class="setting-mini-label">LLM Provider</span>
-                                            <span class="setting-mini-value">LM Studio (local)</span>
+                                            <span class="setting-mini-value">Nexus Built-in</span>
                                         </div>
                                         <div class="setting-mini">
                                             <span class="setting-mini-label">Model</span>
@@ -3227,8 +3233,8 @@
                     <a href="/getting-started">Open guide</a>
                 </article>
                 <article class="support-card fade-in">
-                    <h3>LM Studio + Qwen Setup</h3>
-                    <p>Exact steps for local inference with LM Studio, including API server settings and model verification.</p>
+                    <h3>AI Model Setup</h3>
+                    <p>Built-in models work out of the box. Or connect LM Studio, Ollama, OpenAI, or Anthropic.</p>
                     <a href="/getting-started#llm-setup">Jump to LLM setup</a>
                 </article>
                 <article class="support-card fade-in">
@@ -3313,7 +3319,7 @@
                         <span class="faq-toggle">+</span>
                     </div>
                     <div class="faq-answer">
-                        <p class="faq-text">Yes. We ship a full onboarding and operations guide that covers install, license activation, LM Studio setup, task configuration, and troubleshooting. Open <a href="/getting-started" style="color: var(--accent);">Getting Started</a> for the complete walkthrough.</p>
+                        <p class="faq-text">Yes. We ship a full onboarding and operations guide that covers install, license activation, AI model setup, task configuration, and troubleshooting. Open <a href="/getting-started" style="color: var(--accent);">Getting Started</a> for the complete walkthrough.</p>
                     </div>
                 </div>
 
@@ -3333,7 +3339,7 @@
                         <span class="faq-toggle">+</span>
                     </div>
                     <div class="faq-answer">
-                        <p class="faq-text">Nexus is LLM-agnostic. You can plug in your preferred model: LM Studio (local), OpenAI (GPT-4), Anthropic Claude, or Ollama. This flexibility means you control which AI powers your applications and can choose based on cost and privacy preferences.</p>
+                        <p class="faq-text">Nexus ships with a built-in AI engine — no external tools needed. Just download a model from Settings and you're ready to go. You can also connect LM Studio, OpenAI (GPT-4), Anthropic Claude, or Ollama for maximum flexibility.</p>
                     </div>
                 </div>
 
@@ -3353,7 +3359,7 @@
                         <span class="faq-toggle">+</span>
                     </div>
                     <div class="faq-answer">
-                        <p class="faq-text">Nexus currently supports LinkedIn, Indeed, and Glassdoor. It also integrates with external ATS systems like Greenhouse, Lever, Workday, and BambooHR. We're continuously adding platform support based on user demand.</p>
+                        <p class="faq-text">Core platform support includes LinkedIn, Indeed, and Glassdoor. External ATS automation is in active rollout (Greenhouse, Lever, Workday, BambooHR, and others) and coverage can vary by employer flow. If a domain is not supported yet, Nexus logs it and skips safely.</p>
                     </div>
                 </div>
 
@@ -3502,16 +3508,26 @@
         });
 
         // ========== Scroll Fade-In Animation ==========
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        if ('IntersectionObserver' in window && document.documentElement.classList.contains('js-anim')) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+            document.querySelectorAll('.fade-in').forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.96) {
+                    el.classList.add('visible');
+                }
+                observer.observe(el);
+            });
+        } else {
+            document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+        }
 
         // ========== Interactive Mockup ==========
         function switchMockupView(viewName, clickedEl) {
@@ -3706,7 +3722,7 @@
 
         async function fetchDiscordUser(token) {
             try {
-                const res = await fetch('https://discord.com/api/users/@me', {
+                const res = await fetch('https://discord.com/api/v10/users/@me', {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 if (!res.ok) throw new Error('Failed to fetch user');

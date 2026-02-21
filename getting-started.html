@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexus Setup Guide | Hyperfect</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <meta name="description" content="Complete Nexus onboarding guide: install, license activation, LM Studio setup, task creation, and troubleshooting.">
+    <meta name="description" content="Complete Nexus onboarding guide: install, license activation, AI model setup, task creation, and troubleshooting.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -400,7 +400,7 @@
         <section class="hero">
             <div class="eyebrow">Operator Documentation</div>
             <h1>Nexus Start-to-End Setup Guide</h1>
-            <p>This guide is for first-time users and beta testers. It covers install, license activation, LM Studio setup, task creation, and practical troubleshooting so you can get to stable, repeatable runs quickly.</p>
+            <p>This guide is for first-time users and beta testers. It covers install, license activation, AI model setup, task creation, and practical troubleshooting so you can get to stable, repeatable runs quickly.</p>
         </section>
 
         <div class="layout">
@@ -408,7 +408,7 @@
                 <h2>Contents</h2>
                 <a href="#preflight">1. Preflight Checklist</a>
                 <a href="#install">2. Install + Activation</a>
-                <a href="#llm-setup">3. LM Studio Setup</a>
+                <a href="#llm-setup">3. AI Model Setup</a>
                 <a href="#accounts">4. Sessions + Accounts</a>
                 <a href="#profiles">5. Resume + Defaults</a>
                 <a href="#tasks">6. Create Your First Task</a>
@@ -426,7 +426,7 @@
                         <li>You have your license key in format <code>NEXUS-XXXX-XXXX-XXXX-XXXX</code>.</li>
                         <li>Your target platforms are signed in at least once manually (LinkedIn and/or Indeed).</li>
                         <li>Your resume PDF is finalized and saved locally.</li>
-                        <li>LM Studio is installed (if using local LLM mode).</li>
+                        <li>If using the built-in AI, 6GB+ free RAM is recommended for lightweight models.</li>
                         <li>You know your daily application limits for each platform.</li>
                     </ul>
                     <div class="callout">Goal: get one successful end-to-end application first, then scale volume.</div>
@@ -445,23 +445,37 @@
                 </section>
 
                 <section class="card" id="llm-setup">
-                    <h2>3. LM Studio Setup (Recommended: Qwen 2.5 7B Instruct)</h2>
-                    <h3>Install and load model</h3>
+                    <h2>3. AI Model Setup</h2>
+
+                    <h3>Option A: Nexus Built-in (Recommended)</h3>
+                    <p>Nexus includes a built-in AI engine — no external tools needed.</p>
                     <ol>
-                        <li>Install LM Studio from the official site.</li>
-                        <li>Open LM Studio, download <code>qwen2.5-7b-instruct</code> (or your preferred model).</li>
-                        <li>Load the model into memory.</li>
-                        <li>Start LM Studio local server.</li>
+                        <li>Open <strong>Settings &rarr; LLM Settings</strong>.</li>
+                        <li>Select provider: <code>Nexus Built-in (Recommended)</code>.</li>
+                        <li>In the <strong>Model Manager</strong> section, click <strong>Download</strong> on your preferred model:
+                            <ul>
+                                <li><strong>phi-3-mini</strong> (~2.3 GB) — lightweight, good for 8GB RAM machines.</li>
+                                <li><strong>qwen2.5-7b</strong> (~4.7 GB) — best quality for form answers. 10GB+ RAM recommended.</li>
+                            </ul>
+                        </li>
+                        <li>Once downloaded, click <strong>Start</strong> to launch the local server.</li>
+                        <li>Click <strong>Test Connection</strong> to verify.</li>
+                    </ol>
+                    <div class="callout success">The built-in server auto-starts on app launch once a model is downloaded.</div>
+
+                    <h3>Option B: LM Studio / Ollama (Alternative Local)</h3>
+                    <ol>
+                        <li>Install LM Studio or Ollama from their official sites.</li>
+                        <li>Download <code>qwen2.5-7b-instruct</code> (or your preferred model) and start the local server.</li>
+                        <li>In Nexus Settings, set provider to <code>LM Studio</code> or <code>Ollama</code>.</li>
+                        <li>API URL: <code>http://localhost:1234/v1</code> (LM Studio) or <code>http://localhost:11434/v1</code> (Ollama).</li>
                     </ol>
 
-                    <h3>Nexus settings</h3>
+                    <h3>Option C: OpenAI / Anthropic (Cloud)</h3>
                     <ul>
-                        <li>Provider: <code>LM Studio</code></li>
-                        <li>API URL: <code>http://localhost:1234/v1</code></li>
-                        <li>Model: leave blank to auto-select loaded model, or set explicit model ID</li>
+                        <li>Set provider to <code>OpenAI</code> or <code>Anthropic</code>.</li>
+                        <li>Enter your API key. Job descriptions will be sent to the cloud provider.</li>
                     </ul>
-
-                    <div class="callout warning">If model name is blank, Nexus now auto-picks the first loaded model from LM Studio.</div>
 
                     <h3>Verify connection</h3>
                     <ol>
@@ -469,19 +483,6 @@
                         <li>Expected result: <code>Connected! Model: ...</code></li>
                         <li>If it fails, read the returned endpoint and status message carefully.</li>
                     </ol>
-
-                    <div class="grid-2">
-                        <div class="mini">
-                            <h4>Fast sanity check in terminal</h4>
-                            <p><code>curl http://127.0.0.1:1234/v1/models</code></p>
-                        </div>
-                        <div class="mini">
-                            <h4>Common fix</h4>
-                            <p>Set URL with <code>/v1</code> and reload model in LM Studio.</p>
-                        </div>
-                    </div>
-
-                    <div class="screenshot-slot">Add screenshot: LM Studio server panel + Nexus LLM settings.</div>
                 </section>
 
                 <section class="card" id="accounts">
@@ -515,13 +516,13 @@
                         <li>Select resume for this task explicitly.</li>
                         <li>Set minimum match score (example: 7.5/10).</li>
                         <li>Set application limit (example: 10/day for calibration).</li>
-                        <li>Enable Easy Apply only for first stable runs.</li>
+                        <li>Set Application Scope to <strong>Hybrid (Recommended)</strong> for a balanced on-platform + external flow.</li>
                     </ol>
 
                     <h3>Good defaults</h3>
                     <ul>
-                        <li>Safe mode: ON</li>
-                        <li>External apply: OFF until base flow is stable</li>
+                        <li>Quick Strategy: <strong>Balanced</strong></li>
+                        <li>Application Scope: <strong>Hybrid</strong> (switch to platform-only when calibrating)</li>
                         <li>Discord webhook: ON for run completion and module gaps</li>
                     </ul>
                     <div class="screenshot-slot">Add screenshot: Create Task modal with recommended defaults.</div>
@@ -541,10 +542,10 @@
                 <section class="card" id="troubleshooting">
                     <h2>8. Troubleshooting</h2>
 
-                    <h3>LLM test shows “connection failed”</h3>
+                    <h3>LLM test shows "connection failed"</h3>
                     <ul>
-                        <li>Verify LM Studio server is running and model is loaded.</li>
-                        <li>Use <code>http://localhost:1234/v1</code>.</li>
+                        <li>If using Nexus Built-in: ensure a model is downloaded and the server is started (green dot in Settings).</li>
+                        <li>If using LM Studio: verify server is running and model is loaded. Use <code>http://localhost:1234/v1</code>.</li>
                         <li>Leave model field blank for auto-select or use exact model ID.</li>
                     </ul>
 
