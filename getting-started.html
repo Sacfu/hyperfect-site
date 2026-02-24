@@ -448,27 +448,29 @@
                     <h2>3. AI Model Setup</h2>
 
                     <h3>Option A: Nexus Built-in (Recommended)</h3>
-                    <p>Nexus includes a built-in AI engine — no external tools needed.</p>
+                    <p>Nexus includes an onboard AI runtime. This is the default and fastest path for new users.</p>
                     <ol>
                         <li>Open <strong>Settings &rarr; LLM Settings</strong>.</li>
                         <li>Select provider: <code>Nexus Built-in (Recommended)</code>.</li>
                         <li>In the <strong>Model Manager</strong> section, click <strong>Download</strong> on your preferred model:
                             <ul>
-                                <li><strong>phi-3-mini</strong> (~2.3 GB) — lightweight, good for 8GB RAM machines.</li>
-                                <li><strong>qwen2.5-7b</strong> (~4.7 GB) — best quality for form answers. 10GB+ RAM recommended.</li>
+                                <li><strong>phi-3-mini</strong> (~2.3 GB) — lightweight baseline for lower-memory systems.</li>
+                                <li><strong>qwen2.5-7b</strong> (~4.7 GB) — recommended default text model for scoring + form answers.</li>
+                                <li><strong>qwen2-vl-2b-visual</strong> (~2.4 GB) — recommended visual model for external apply recovery.</li>
                             </ul>
                         </li>
                         <li>Once downloaded, click <strong>Start</strong> to launch the local server.</li>
                         <li>Click <strong>Test Connection</strong> to verify.</li>
                     </ol>
-                    <div class="callout success">The built-in server auto-starts on app launch once a model is downloaded.</div>
+                    <div class="callout success">Built-in text + visual runtimes can auto-start on demand once models are downloaded.</div>
 
-                    <h3>Option B: LM Studio / Ollama (Alternative Local)</h3>
+                    <h3>Option B: Ollama / LM Studio (Optional External Local Runtime)</h3>
                     <ol>
-                        <li>Install LM Studio or Ollama from their official sites.</li>
+                        <li>Use this only if you specifically prefer your own local runtime.</li>
+                        <li>Install Ollama or LM Studio from their official sites.</li>
                         <li>Download <code>qwen2.5-7b-instruct</code> (or your preferred model) and start the local server.</li>
-                        <li>In Nexus Settings, set provider to <code>LM Studio</code> or <code>Ollama</code>.</li>
-                        <li>API URL: <code>http://localhost:1234/v1</code> (LM Studio) or <code>http://localhost:11434/v1</code> (Ollama).</li>
+                        <li>In Nexus Settings, switch provider to <code>Ollama</code> or <code>LM Studio</code>.</li>
+                        <li>API URL: <code>http://localhost:11434/v1</code> (Ollama) or <code>http://localhost:1234/v1</code> (LM Studio).</li>
                     </ol>
 
                     <h3>Option C: OpenAI / Anthropic (Cloud)</h3>
@@ -545,7 +547,8 @@
                     <h3>LLM test shows "connection failed"</h3>
                     <ul>
                         <li>If using Nexus Built-in: ensure a model is downloaded and the server is started (green dot in Settings).</li>
-                        <li>If using LM Studio: verify server is running and model is loaded. Use <code>http://localhost:1234/v1</code>.</li>
+                        <li>If using Ollama: verify server is running and the model is loaded. Use <code>http://localhost:11434/v1</code>.</li>
+                        <li>If using LM Studio: verify server is running and a model is loaded. Use <code>http://localhost:1234/v1</code>.</li>
                         <li>Leave model field blank for auto-select or use exact model ID.</li>
                     </ul>
 
