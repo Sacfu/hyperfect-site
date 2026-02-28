@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script>document.documentElement.classList.add('js-anim');</script>
     <title>Nexus - AI Job Application Automation | Hyperfect</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <meta name="description" content="Nexus by Hyperfect — AI-powered desktop app that automatically finds, matches, and applies to jobs across LinkedIn, Indeed, and more.">
@@ -33,41 +32,28 @@
            ======================================== */
         :root {
             /* Dark Mode (Default) */
-            --bg-primary: #0b1627;
-            --bg-secondary: #101f34;
-            --bg-tertiary: #152742;
-            --text-primary: #f3f7ff;
-            --text-secondary: #b4c0d6;
-            --text-tertiary: #7988a4;
-            --accent: #59a4ff;
-            --accent-strong: #2f78d6;
-            --cta-bg: #2a67bd;
-            --cta-bg-hover: #1f539d;
-            --accent-rgb: 89, 164, 255;
-            --accent-alt: #62d9c2;
-            --accent-alt-rgb: 98, 217, 194;
-            --border: rgba(154, 178, 211, 0.2);
-            --glass-bg: rgba(255, 255, 255, 0.045);
-            --glass-border: rgba(170, 195, 230, 0.2);
+            --bg-primary: #09090b;
+            --bg-secondary: #0f0f12;
+            --bg-tertiary: #1a1a1f;
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-tertiary: #71717a;
+            --accent: #2563eb;
+            --border: rgba(255, 255, 255, 0.08);
+            --glass-bg: rgba(255, 255, 255, 0.04);
+            --glass-border: rgba(255, 255, 255, 0.08);
         }
 
         body.light-mode {
-            --bg-primary: #e6effa;
-            --bg-secondary: #dce8f7;
-            --bg-tertiary: #cfddf1;
-            --text-primary: #1b2a40;
-            --text-secondary: #435670;
-            --text-tertiary: #5e7089;
-            --accent: #2e6fbe;
-            --accent-strong: #24599a;
-            --cta-bg: #255ea8;
-            --cta-bg-hover: #1f4f8c;
-            --accent-rgb: 46, 111, 190;
-            --accent-alt: #2f8ea2;
-            --accent-alt-rgb: 47, 142, 162;
-            --border: rgba(58, 84, 118, 0.19);
-            --glass-bg: rgba(249, 252, 255, 0.58);
-            --glass-border: rgba(255, 255, 255, 0.84);
+            --bg-primary: #fafafa;
+            --bg-secondary: #f4f4f5;
+            --bg-tertiary: #e4e4e7;
+            --text-primary: #18181b;
+            --text-secondary: #52525b;
+            --text-tertiary: #71717a;
+            --border: rgba(0, 0, 0, 0.08);
+            --glass-bg: rgba(0, 0, 0, 0.03);
+            --glass-border: rgba(0, 0, 0, 0.08);
         }
 
         * {
@@ -82,38 +68,11 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background:
-                radial-gradient(circle at 8% 0%, rgba(59, 130, 246, 0.16), transparent 34%),
-                radial-gradient(circle at 92% 6%, rgba(59, 130, 246, 0.10), transparent 36%),
-                linear-gradient(165deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            background-color: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
-            transition: background 0.3s, color 0.3s, border-color 0.3s;
-        }
-
-        body.light-mode {
-            background:
-                radial-gradient(circle at 8% 0%, rgba(59, 130, 246, 0.14), transparent 34%),
-                radial-gradient(circle at 90% 8%, rgba(45, 111, 185, 0.09), transparent 36%),
-                linear-gradient(165deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-        }
-
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            background:
-                radial-gradient(circle at 15% 78%, rgba(59, 130, 246, 0.06), transparent 35%),
-                radial-gradient(circle at 80% 86%, rgba(59, 130, 246, 0.05), transparent 33%);
-            z-index: -1;
-        }
-
-        body.light-mode::before {
-            background:
-                radial-gradient(circle at 14% 80%, rgba(99, 164, 241, 0.1), transparent 35%),
-                radial-gradient(circle at 82% 86%, rgba(66, 137, 224, 0.1), transparent 33%);
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
         }
 
         /* ========================================
@@ -126,134 +85,86 @@
         }
 
         .fade-in {
-            opacity: 1;
-            transform: none;
-        }
-
-        .js-anim .fade-in {
             opacity: 0;
             transform: translateY(20px);
         }
 
-        .js-anim .fade-in.visible {
+        .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* ========================================
-           NAVIGATION (shared topbar pattern)
+           NAVIGATION
            ======================================== */
-        .topbar {
+        nav {
             position: sticky;
             top: 0;
             z-index: 100;
-            backdrop-filter: blur(14px);
-            background: rgba(11, 22, 39, 0.72);
-            border-bottom: 1px solid var(--border);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            transition: all 0.3s;
         }
 
-        body.light-mode .topbar {
-            background: rgba(230, 239, 250, 0.78);
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
         }
 
-        .topbar-inner {
-            min-height: 56px;
+        .logo {
             display: flex;
             align-items: center;
-            justify-content: flex-start;
-            gap: 12px;
-            padding: 8px 0;
-        }
-
-        .brand {
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 700;
             color: var(--text-primary);
             text-decoration: none;
-            font-weight: 700;
-            font-size: 1rem;
         }
 
-        .brand span {
+        .logo-icon {
+            font-size: 1.5rem;
+            animation: pulse 2.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.65; }
+        }
+
+        .nav-center {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-center a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-center a:hover {
             color: var(--accent);
         }
 
-        .top-nav {
+        .nav-right {
             display: flex;
+            gap: 1rem;
             align-items: center;
-            gap: 6px;
-            padding: 0 4px;
-            flex: 1 1 auto;
-            min-width: 0;
-            overflow-x: auto;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-            justify-content: center;
-        }
-
-        .top-nav::-webkit-scrollbar {
-            display: none;
-        }
-
-        .top-nav a {
-            flex: 0 0 auto;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.78rem;
-            font-weight: 600;
-            border: 1px solid var(--border);
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 999px;
-            padding: 5px 10px;
-            white-space: nowrap;
-            line-height: 1.2;
-            transition: color 0.2s, border-color 0.2s, background 0.2s;
-        }
-
-        .top-nav a:hover {
-            color: var(--text-primary);
-            border-color: rgba(var(--accent-rgb), 0.42);
-            background: rgba(var(--accent-rgb), 0.14);
-        }
-
-        .top-nav a.active {
-            color: #dbeafe;
-            border-color: rgba(59, 130, 246, 0.48);
-            background: rgba(59, 130, 246, 0.16);
-        }
-
-        .top-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: nowrap;
-            justify-content: flex-end;
-            flex-shrink: 0;
-            margin-left: auto;
-        }
-
-        .top-actions .btn {
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            background: transparent;
-            border-radius: 10px;
-            padding: 9px 14px;
-            font-size: 0.88rem;
-            text-decoration: none;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .top-actions .btn-primary {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: white;
         }
 
         .theme-toggle {
             background: transparent;
             border: 1px solid var(--border);
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             border-radius: 8px;
             cursor: pointer;
             display: flex;
@@ -269,26 +180,97 @@
             color: var(--text-primary);
         }
 
-        @media (max-width: 720px) {
-            .topbar-inner {
-                min-height: auto;
-                padding: 10px 0 8px;
-                align-items: center;
-                flex-wrap: wrap;
-                gap: 8px;
-            }
+        .cta-button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.75rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
 
-            .top-actions {
-                gap: 8px;
-                justify-content: flex-end;
-                margin-left: auto;
-            }
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
+        }
 
-            .top-nav {
+        /* Mobile Hamburger Menu */
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .hamburger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: currentColor;
+            margin: 5px 0;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
                 order: 3;
-                width: 100%;
-                justify-content: flex-start;
-                padding: 2px 0 0;
+            }
+
+            .nav-center {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: var(--bg-primary);
+                border-bottom: 1px solid var(--border);
+                padding: 1rem 20px;
+                gap: 0;
+            }
+
+            .nav-center.open {
+                display: flex;
+            }
+
+            .nav-center li {
+                list-style: none;
+            }
+
+            .nav-center a {
+                display: block;
+                padding: 0.75rem 0;
+                border-bottom: 1px solid var(--border);
+                font-size: 1rem;
+            }
+
+            .nav-center li:last-child a {
+                border-bottom: none;
+            }
+
+            .cta-button {
+                display: none;
+            }
+
+            nav .container {
+                position: relative;
             }
         }
 
@@ -296,7 +278,7 @@
            HERO SECTION
            ======================================== */
         .hero {
-            padding: 4rem 0 2.2rem;
+            padding: 4rem 0 2rem;
             position: relative;
             overflow: hidden;
         }
@@ -341,42 +323,6 @@
             text-decoration: underline;
         }
 
-        .hero-quick-steps {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.55rem;
-            margin: 0 auto 1.5rem;
-            max-width: 760px;
-        }
-
-        .quick-step-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.45rem;
-            padding: 0.46rem 0.78rem;
-            border-radius: 999px;
-            border: 1px solid var(--glass-border);
-            background: rgba(var(--accent-rgb), 0.1);
-            color: var(--text-primary);
-            font-size: 0.79rem;
-            font-weight: 600;
-            letter-spacing: 0.01em;
-        }
-
-        .quick-step-pill span {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 1.2rem;
-            height: 1.2rem;
-            border-radius: 999px;
-            background: rgba(var(--accent-rgb), 0.2);
-            color: var(--accent);
-            font-size: 0.72rem;
-            font-weight: 700;
-        }
-
         .button-group {
             display: flex;
             gap: 1rem;
@@ -399,14 +345,13 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--cta-bg), var(--accent-strong));
+            background: var(--accent);
             color: white;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            background: linear-gradient(135deg, var(--cta-bg-hover), var(--cta-bg));
-            box-shadow: 0 14px 34px rgba(var(--accent-rgb), 0.34);
+            box-shadow: 0 12px 32px rgba(37, 99, 235, 0.35);
         }
 
         .btn-secondary {
@@ -416,7 +361,7 @@
         }
 
         .btn-secondary:hover {
-            background: rgba(var(--accent-rgb), 0.12);
+            background: rgba(255, 255, 255, 0.05);
             border-color: var(--accent);
             color: var(--accent);
         }
@@ -446,7 +391,7 @@
             border: 1px solid var(--glass-border);
             border-radius: 18px;
             overflow: hidden;
-            box-shadow: 0 36px 80px rgba(0, 0, 0, 0.42), 0 0 90px rgba(var(--accent-rgb), 0.2);
+            box-shadow: 0 36px 80px rgba(0, 0, 0, 0.42), 0 0 90px rgba(37, 99, 235, 0.11);
             animation: slideUp 0.8s ease-out 0.2s both;
         }
 
@@ -504,11 +449,11 @@
         }
 
         .sidebar-item:hover {
-            background: rgba(var(--accent-rgb), 0.12);
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .sidebar-item.active {
-            background: linear-gradient(120deg, rgba(var(--accent-rgb), 0.28), rgba(var(--accent-rgb), 0.1));
+            background: linear-gradient(120deg, rgba(37, 99, 235, 0.22), rgba(37, 99, 235, 0.08));
             color: #e9f0ff;
             font-weight: 600;
         }
@@ -588,7 +533,7 @@
         }
 
         .badge-applied {
-            background: rgba(var(--accent-rgb), 0.15);
+            background: rgba(37, 99, 235, 0.15);
             color: var(--accent);
         }
 
@@ -789,9 +734,9 @@
             font-weight: 700;
             border-radius: 999px;
             padding: 0.2rem 0.58rem;
-            color: #d5e8ff;
-            border: 1px solid rgba(var(--accent-rgb), 0.35);
-            background: rgba(var(--accent-rgb), 0.14);
+            color: #93c5fd;
+            border: 1px solid rgba(59, 130, 246, 0.35);
+            background: rgba(59, 130, 246, 0.14);
             white-space: nowrap;
         }
 
@@ -1022,525 +967,21 @@
             border-bottom-color: var(--accent);
         }
 
-        /* More realistic app chrome/dashboard styling for hero mockup */
-        .mockup-window {
-            background:
-                radial-gradient(circle at 48% 0%, rgba(63, 90, 132, 0.22), transparent 34%),
-                linear-gradient(160deg, #060a12 0%, #0b121d 66%, #0f1723 100%);
-        }
-
-        .mockup-body {
-            min-height: 520px;
-        }
-
-        .mockup-sidebar {
-            padding: 14px 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            background: linear-gradient(180deg, rgba(8, 11, 18, 0.92), rgba(10, 14, 22, 0.88));
-        }
-
-        .mockup-sidebar-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 30px 8px 14px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .mockup-brand-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 11px;
-            overflow: hidden;
-            background: linear-gradient(145deg, #d0d7e3, #a5b1c2);
-            box-shadow: 0 8px 18px rgba(17, 25, 40, 0.35);
-        }
-
-        .mockup-brand-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .mockup-brand-name {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: #edf3ff;
-            line-height: 1.1;
-        }
-
-        .mockup-brand-subtitle {
-            font-size: 0.62rem;
-            letter-spacing: 1.15px;
-            color: #93a0b5;
-            margin-top: 1px;
-        }
-
-        .mockup-sidebar-nav {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-            flex: 1;
-        }
-
-        .sidebar-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 0.68rem 0.9rem;
-            margin-bottom: 0;
-            border-radius: 11px;
-        }
-
-        .sidebar-item-icon {
-            width: 18px;
-            text-align: center;
-            opacity: 0.88;
-            font-size: 0.84rem;
-        }
-
-        .sidebar-item.active {
-            color: #eaf2ff;
-            border: 1px solid rgba(150, 171, 206, 0.28);
-            background: linear-gradient(130deg, rgba(52, 74, 106, 0.34), rgba(22, 30, 44, 0.28));
-        }
-
-        .mockup-sidebar-bottom {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-top: auto;
-        }
-
-        .mockup-sidebar-chip,
-        .mockup-sidebar-license {
-            border-radius: 11px;
-            padding: 10px 12px;
-            border: 1px solid rgba(151, 171, 202, 0.2);
-            background: rgba(255, 255, 255, 0.03);
-            font-size: 0.74rem;
-            color: #b8c5da;
-        }
-
-        .mockup-sidebar-chip {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .mockup-chip-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 999px;
-            background: #34d399;
-            box-shadow: 0 0 10px rgba(52, 211, 153, 0.75);
-        }
-
-        .mockup-sidebar-license {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .mockup-sidebar-license strong {
-            color: #f2f6ff;
-            font-size: 0.73rem;
-            letter-spacing: 0.2px;
-        }
-
-        .mockup-main {
-            padding: 0.88rem 0.95rem 0.96rem;
-            gap: 0.64rem;
-            background: linear-gradient(180deg, rgba(8, 12, 19, 0.7), rgba(8, 12, 19, 0.9));
-        }
-
-        .mockup-hero-panel {
-            border: 1px solid rgba(142, 164, 195, 0.22);
-            border-radius: 14px;
-            padding: 0.74rem 0.84rem;
-            background: linear-gradient(102deg, rgba(21, 30, 45, 0.68), rgba(13, 19, 30, 0.64));
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 0.72rem;
-        }
-
-        .mockup-hero-subline {
-            font-size: 0.78rem;
-            color: #cad7eb;
-            letter-spacing: 0.02em;
-            font-weight: 600;
-        }
-
-        .stats-grid {
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 0.58rem;
-        }
-
-        .stat-card {
-            background: linear-gradient(150deg, rgba(20, 28, 43, 0.64), rgba(9, 13, 22, 0.6));
-            border: 1px solid rgba(132, 156, 191, 0.24);
-            border-radius: 14px;
-            padding: 0.58rem 0.62rem 0.56rem;
-        }
-
-        .stat-icon {
-            width: 26px;
-            height: 26px;
-            border-radius: 999px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.68rem;
-            font-weight: 700;
-            margin-bottom: 0.36rem;
-        }
-
-        .stat-icon.icon-good {
-            background: rgba(16, 185, 129, 0.16);
-            color: #34d399;
-        }
-
-        .stat-icon.icon-neutral {
-            background: rgba(148, 163, 184, 0.18);
-            color: #c6d2e8;
-        }
-
-        .stat-icon.icon-warn {
-            background: rgba(245, 158, 11, 0.18);
-            color: #fbbf24;
-        }
-
-        .stat-value {
-            font-size: 1.32rem;
-            line-height: 1;
-            margin-bottom: 0.16rem;
-            color: #f3f7ff;
-        }
-
-        .stat-label {
-            text-transform: none;
-            letter-spacing: 0;
-            font-size: 0.69rem;
-            color: #96a4bb;
-            margin-bottom: 0;
-        }
-
-        .dashboard-layout {
-            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-            gap: 0.58rem;
-            align-items: stretch;
-            flex: 1;
-            min-height: 0;
-        }
-
-        .mockup-panel {
-            border-radius: 13px;
-            padding: 0.66rem;
-            background: linear-gradient(160deg, rgba(17, 24, 38, 0.72), rgba(9, 13, 22, 0.62));
-            border: 1px solid rgba(128, 149, 181, 0.22);
-        }
-
-        .mockup-panel-title {
-            font-size: 0.78rem;
-            letter-spacing: 0.06em;
-            margin-bottom: 0.48rem;
-        }
-
-        .connection-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-        }
-
-        .connection-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.6rem;
-            border-radius: 10px;
-            border: 1px solid rgba(121, 143, 176, 0.2);
-            background: rgba(7, 11, 19, 0.54);
-            padding: 0.44rem 0.5rem;
-        }
-
-        .connection-left {
-            display: flex;
-            gap: 0.46rem;
-            align-items: center;
-        }
-
-        .connection-icon {
-            width: 28px;
-            height: 28px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.74rem;
-            color: #d5def0;
-            border: 1px solid rgba(146, 163, 190, 0.24);
-            background: linear-gradient(135deg, rgba(56, 68, 88, 0.78), rgba(38, 48, 65, 0.82));
-        }
-
-        .connection-icon.blue {
-            color: #d9ebff;
-            background: linear-gradient(135deg, rgba(33, 120, 217, 0.78), rgba(20, 78, 146, 0.84));
-        }
-
-        .connection-name {
-            font-size: 0.76rem;
-            font-weight: 600;
-            color: #edf3ff;
-            line-height: 1.2;
-        }
-
-        .connection-status {
-            margin-top: 0.1rem;
-            font-size: 0.63rem;
-        }
-
-        .connection-status.status-bad {
-            color: #f87171;
-        }
-
-        .connection-status.status-warn {
-            color: #fbbf24;
-        }
-
-        .connection-status.status-good {
-            color: #34d399;
-        }
-
-        .connection-action {
-            border: 1px solid rgba(128, 149, 180, 0.36);
-            border-radius: 999px;
-            font-size: 0.62rem;
-            color: #aebfd8;
-            padding: 0.2rem 0.48rem;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .connection-action.primary {
-            color: #d6e9ff;
-            border-color: rgba(63, 131, 222, 0.62);
-        }
-
-        .connection-action.connected {
-            color: #baf7d8;
-            border-color: rgba(52, 211, 153, 0.55);
-            background: rgba(52, 211, 153, 0.12);
-        }
-
-        .session-summary {
-            margin-top: 0.44rem;
-            border-top: 1px solid rgba(130, 151, 182, 0.2);
-            padding-top: 0.42rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.26rem;
-        }
-
-        .session-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-radius: 8px;
-            padding: 0.28rem 0.36rem;
-            background: rgba(12, 19, 31, 0.68);
-            color: #9eadc4;
-            font-size: 0.62rem;
-        }
-
-        .session-row strong {
-            color: #ebf2ff;
-            font-size: 0.64rem;
-        }
-
-        .empty-tasks-preview {
-            border-radius: 12px;
-            border: 1px solid rgba(126, 146, 177, 0.2);
-            min-height: 218px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: rgba(8, 12, 20, 0.56);
-        }
-
-        .empty-tasks-title {
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            font-size: 0.66rem;
-            color: #9aa9bf;
-            margin-bottom: 0.16rem;
-        }
-
-        .empty-tasks-subtitle {
-            color: #c2d1e6;
-            font-size: 0.8rem;
-            margin-bottom: 0.14rem;
-        }
-
-        .empty-tasks-hint {
-            color: #8a98b0;
-            font-size: 0.66rem;
-        }
-
-        #dashboard-view.active {
-            display: flex;
-            flex-direction: column;
-            min-height: 0;
-        }
-
-        #dashboard-view .mockup-panel {
-            display: flex;
-            flex-direction: column;
-            min-height: 0;
-        }
-
-        @media (max-width: 1024px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-        }
-
         @media (max-width: 768px) {
             .mockup-body {
                 grid-template-columns: 1fr;
-                min-height: 0;
             }
             .mockup-sidebar {
                 display: none;
             }
             .mockup-tabs {
-                display: none;
-            }
-            .mockup-window {
-                max-height: 430px;
-            }
-            .mockup-main {
-                padding: 0.54rem;
-                gap: 0.42rem;
-                max-height: 380px;
-                overflow: hidden;
-            }
-            .mockup-hero-panel {
-                padding: 0.52rem 0.58rem;
-                gap: 0.4rem;
-            }
-            .mockup-hero-subline {
-                font-size: 0.58rem;
+                display: flex;
             }
             .stats-grid {
-                grid-template-columns: repeat(4, minmax(0, 1fr));
-                gap: 0.32rem;
-            }
-            .stat-card {
-                border-radius: 10px;
-                padding: 0.34rem 0.34rem 0.3rem;
-            }
-            .stat-icon {
-                width: 16px;
-                height: 16px;
-                font-size: 0.44rem;
-                margin-bottom: 0.18rem;
-            }
-            .stat-value {
-                font-size: 0.78rem;
-                margin-bottom: 0.06rem;
-            }
-            .stat-label {
-                font-size: 0.48rem;
-                line-height: 1.15;
+                grid-template-columns: 1fr;
             }
             .dashboard-layout {
-                grid-template-columns: 1fr 1fr;
-                gap: 0.34rem;
-            }
-            .mockup-panel {
-                border-radius: 9px;
-                padding: 0.36rem;
-            }
-            .mockup-panel-title {
-                font-size: 0.56rem;
-                margin-bottom: 0.24rem;
-                letter-spacing: 0.03em;
-            }
-            .connection-list {
-                gap: 0.2rem;
-            }
-            .connection-item {
-                border-radius: 7px;
-                padding: 0.2rem 0.24rem;
-                gap: 0.2rem;
-            }
-            .connection-left {
-                gap: 0.22rem;
-                min-width: 0;
-            }
-            .connection-icon {
-                width: 16px;
-                height: 16px;
-                border-radius: 5px;
-                font-size: 0.44rem;
-            }
-            .connection-name {
-                font-size: 0.52rem;
-                max-width: 62px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-            .connection-status {
-                font-size: 0.46rem;
-                margin-top: 0;
-            }
-            .connection-action {
-                font-size: 0.44rem;
-                padding: 0.1rem 0.2rem;
-            }
-            .session-summary {
-                margin-top: 0.2rem;
-                padding-top: 0.18rem;
-                gap: 0.12rem;
-            }
-            .session-row {
-                border-radius: 5px;
-                padding: 0.12rem 0.16rem;
-                font-size: 0.46rem;
-            }
-            .session-row strong {
-                font-size: 0.48rem;
-            }
-            .empty-tasks-preview {
-                border-radius: 8px;
-                min-height: 98px;
-            }
-            .empty-tasks-title {
-                font-size: 0.45rem;
-                margin-bottom: 0.05rem;
-            }
-            .empty-tasks-subtitle {
-                font-size: 0.5rem;
-                margin-bottom: 0.05rem;
-            }
-            .empty-tasks-hint {
-                font-size: 0.43rem;
-                line-height: 1.2;
-                max-width: 70px;
-                text-align: center;
-            }
-            .mockup-content:not(#dashboard-view) {
-                display: none !important;
-            }
-            #dashboard-view {
-                display: block !important;
+                grid-template-columns: 1fr;
             }
             .kv-grid {
                 grid-template-columns: 1fr;
@@ -1588,7 +1029,7 @@
         }
 
         .feature-card:hover {
-            background: rgba(var(--accent-rgb), 0.08);
+            background: rgba(37, 99, 235, 0.04);
             border-color: var(--accent);
             transform: translateY(-4px);
         }
@@ -1652,7 +1093,7 @@
             font-size: 1.75rem;
             font-weight: 800;
             margin: 0 auto 1.5rem;
-            box-shadow: 0 8px 24px rgba(var(--accent-rgb), 0.3);
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
         }
 
         .step-title {
@@ -1688,13 +1129,12 @@
            DEMO + SUPPORT SECTIONS
            ======================================== */
         .demo-gallery {
-            padding: 2.1rem 0 3.1rem;
-            position: relative;
+            padding: 2rem 0 3rem;
         }
 
         .demo-grid {
             display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1rem;
             margin-top: 1.4rem;
         }
@@ -1704,26 +1144,6 @@
             border: 1px solid var(--glass-border);
             border-radius: 12px;
             padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            grid-column: span 1;
-            transition: transform 0.3s, border-color 0.3s, background 0.3s;
-        }
-
-        .demo-card.primary {
-            grid-column: span 2;
-            background: linear-gradient(
-                160deg,
-                rgba(var(--accent-rgb), 0.13),
-                rgba(var(--accent-rgb), 0.04) 58%,
-                rgba(var(--accent-alt-rgb), 0.06)
-            );
-        }
-
-        .demo-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(var(--accent-rgb), 0.45);
-            background: rgba(var(--accent-rgb), 0.08);
         }
 
         .demo-title {
@@ -1737,7 +1157,6 @@
             font-size: 0.88rem;
             color: var(--text-secondary);
             margin-bottom: 0.75rem;
-            min-height: 2.9em;
         }
 
         .demo-media-wrap {
@@ -1747,7 +1166,6 @@
             border: 1px solid var(--glass-border);
             background: rgba(0, 0, 0, 0.32);
             min-height: 170px;
-            margin-top: auto;
         }
 
         .demo-gif {
@@ -1768,20 +1186,6 @@
             gap: 0.42rem;
             color: var(--text-tertiary);
             background: linear-gradient(160deg, rgba(30, 41, 59, 0.4), rgba(15, 23, 42, 0.76));
-        }
-
-        @media (max-width: 1024px) {
-            .demo-card,
-            .demo-card.primary {
-                grid-column: span 2;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .demo-card,
-            .demo-card.primary {
-                grid-column: span 4;
-            }
         }
 
         .demo-placeholder strong {
@@ -1849,7 +1253,6 @@
             font-weight: 800;
             margin-bottom: 0.75rem;
             color: var(--text-primary);
-            scroll-margin-top: 84px;
         }
 
         .waitlist-subtitle {
@@ -1877,7 +1280,7 @@
             padding: 0.9rem 1rem;
             border: 1px solid var(--border);
             border-radius: 8px;
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.04);
             color: var(--text-primary);
             font-family: 'Inter', sans-serif;
             font-size: 0.95rem;
@@ -1886,19 +1289,19 @@
 
         body.light-mode .form-input,
         body.light-mode .form-textarea {
-            background: rgba(255, 255, 255, 0.76);
+            background: white;
         }
 
         .form-input:focus,
         .form-textarea:focus {
             outline: none;
             border-color: var(--accent);
-            background: rgba(var(--accent-rgb), 0.12);
+            background: rgba(255, 255, 255, 0.08);
         }
 
         body.light-mode .form-input:focus,
         body.light-mode .form-textarea:focus {
-            background: rgba(255, 255, 255, 0.92);
+            background: white;
         }
 
         .form-textarea {
@@ -1909,7 +1312,7 @@
         .form-submit {
             width: 100%;
             padding: 1rem;
-            background: linear-gradient(135deg, var(--cta-bg), var(--accent-strong));
+            background: var(--accent);
             color: white;
             border: none;
             border-radius: 8px;
@@ -1921,8 +1324,7 @@
 
         .form-submit:hover {
             transform: translateY(-2px);
-            background: linear-gradient(135deg, var(--cta-bg-hover), var(--cta-bg));
-            box-shadow: 0 12px 32px rgba(var(--accent-rgb), 0.35);
+            box-shadow: 0 12px 32px rgba(37, 99, 235, 0.35);
         }
 
         .form-privacy {
@@ -2006,7 +1408,7 @@
         }
 
         .faq-header:hover {
-            background: rgba(var(--accent-rgb), 0.1);
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .faq-question {
@@ -2217,7 +1619,7 @@
             }
 
             .mockup-main {
-                padding: 0.5rem;
+                padding: 1.5rem;
             }
         }
 
@@ -2279,7 +1681,7 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.95rem 2rem;
-            background: linear-gradient(135deg, var(--cta-bg), var(--accent-strong));
+            background: var(--accent);
             color: white;
             border: none;
             border-radius: 8px;
@@ -2293,8 +1695,7 @@
 
         .btn-download:hover {
             transform: translateY(-2px);
-            background: linear-gradient(135deg, var(--cta-bg-hover), var(--cta-bg));
-            box-shadow: 0 12px 32px rgba(var(--accent-rgb), 0.35);
+            box-shadow: 0 12px 32px rgba(37, 99, 235, 0.35);
         }
 
         .hero-logout {
@@ -2382,7 +1783,7 @@
 
         .onboarding-badge {
             display: inline-block;
-            background: rgba(var(--accent-rgb), 0.14);
+            background: rgba(37, 99, 235, 0.12);
             color: var(--accent);
             font-size: 0.75rem;
             font-weight: 600;
@@ -2427,7 +1828,7 @@
             flex-shrink: 0;
             width: 20px;
             height: 20px;
-            background: rgba(var(--accent-rgb), 0.15);
+            background: rgba(37, 99, 235, 0.15);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -2619,6 +2020,7 @@
             }
         }
     </style>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
     <!-- ========================================
@@ -2637,7 +2039,7 @@
                 </div>
                 <div class="onboarding-feature">
                     <div class="onboarding-feature-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-                    <span><strong>Onboard AI runtime.</strong> No external tooling required. Optional support for Ollama, LM Studio, OpenAI, and Anthropic.</span>
+                    <span><strong>Built-in AI.</strong> No external tools needed. Also supports OpenAI, Claude, LM Studio, or Ollama.</span>
                 </div>
                 <div class="onboarding-feature">
                     <div class="onboarding-feature-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
@@ -2645,7 +2047,7 @@
                 </div>
             </div>
             <div class="onboarding-actions">
-                <button class="btn btn-primary" onclick="closeOnboarding(); setTimeout(scrollToWaitlist, 120);">Join Waitlist</button>
+                <button class="btn btn-primary" onclick="closeOnboarding(); document.getElementById('waitlist').scrollIntoView({ behavior: 'smooth' });">Join Waitlist</button>
                 <button class="btn btn-secondary" onclick="closeOnboarding()">Explore the Site</button>
             </div>
         </div>
@@ -2654,20 +2056,26 @@
     <!-- ========================================
          NAVIGATION
          ======================================== -->
-    <header class="topbar">
+    <nav>
         <div class="container">
-            <div class="topbar-inner">
-                <a href="/" class="brand">Hyperfect<span>/Nexus</span></a>
-                <nav class="top-nav" aria-label="Site Sections">
-                    <a href="#demo-gallery">Demos</a>
-                    <a href="#how-it-works">How It Works</a>
-                    <a href="#features">Features</a>
-                    <a href="/getting-started">Setup Guide</a>
-                    <a href="/license-dashboard">Manage License</a>
-                    <a href="#faq">FAQ</a>
-                    <a href="#contact">Contact</a>
-                </nav>
-                <div class="top-actions">
+            <div class="nav-content">
+                <a href="/" class="logo" aria-label="Hyperfect Nexus - Home">
+                    <span>Hyperfect</span><span class="logo-divider">/</span><span class="logo-product">Nexus</span>
+                </a>
+                <ul class="nav-center">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#demo-gallery">Demos</a></li>
+                    <li><a href="/getting-started">Setup Guide</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <div class="nav-right">
+                    <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
                     <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">
                         <svg id="sunIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="12" cy="12" r="5"/>
@@ -2684,11 +2092,11 @@
                             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
                         </svg>
                     </button>
-                    <a class="btn btn-primary" href="#waitlist-heading">Join Waitlist</a>
+                    <button class="cta-button" onclick="document.getElementById('waitlist').scrollIntoView({ behavior: 'smooth' })">Join Waitlist</button>
                 </div>
             </div>
         </div>
-    </header>
+    </nav>
 
     <!-- ========================================
          HERO SECTION
@@ -2700,15 +2108,9 @@
                 <h1>Your Job Search, on Autopilot</h1>
                 <p class="subheading">Nexus by Hyperfect uses AI to automatically find, match, and apply to jobs across LinkedIn, Indeed, and more — while you focus on what matters.</p>
                 <p class="hero-guide-link">New here? Start with the <a href="/getting-started">full setup guide</a>.</p>
-                <p class="hero-guide-link">Already activated? <a href="/license-dashboard">Manage your license</a> and move between machines.</p>
-                <div class="hero-quick-steps">
-                    <div class="quick-step-pill"><span>1</span>Connect accounts + LLM</div>
-                    <div class="quick-step-pill"><span>2</span>Set filters and score threshold</div>
-                    <div class="quick-step-pill"><span>3</span>Launch tasks and review live logs</div>
-                </div>
 
                 <div class="button-group">
-                    <button class="btn btn-primary" onclick="scrollToWaitlist()">Join Waitlist</button>
+                    <button class="btn btn-primary" onclick="document.getElementById('waitlist').scrollIntoView({ behavior: 'smooth' })">Join Waitlist</button>
 
                     <!-- Discord Auth: Logged Out State -->
                     <div id="hero-logged-out" class="hero-auth active">
@@ -2741,6 +2143,15 @@
                             <div class="traffic-light green"></div>
                         </div>
 
+                        <!-- Mockup Toolbar -->
+                        <div class="mockup-toolbar">
+                            <button class="toolbar-btn btn-start" onclick="mockupAction('start')">&#9654; New Task</button>
+                            <button class="toolbar-btn btn-stop" onclick="mockupAction('stop')">&#9632; Stop All</button>
+                            <button class="toolbar-btn btn-pause" onclick="mockupAction('pause')">&#10074;&#10074; Pause</button>
+                            <div class="toolbar-spacer"></div>
+                            <div class="toolbar-status"><div class="status-dot"></div> 3 tasks running</div>
+                        </div>
+
                         <!-- Mobile Tabs (visible on small screens only) -->
                         <div class="mockup-tabs">
                             <button class="mockup-tab active" data-view="dashboard" onclick="switchMockupView('dashboard', this)">Dashboard</button>
@@ -2753,145 +2164,76 @@
                         <!-- Mockup Body -->
                         <div class="mockup-body">
                             <div class="mockup-sidebar">
-                                <div class="mockup-sidebar-brand">
-                                    <div class="mockup-brand-icon">
-                                        <img src="assets/brand/app-icon.png" alt="Nexus icon">
-                                    </div>
-                                    <div>
-                                        <div class="mockup-brand-name">Nexus</div>
-                                        <div class="mockup-brand-subtitle">Search &amp; Apply</div>
-                                    </div>
-                                </div>
-                                <div class="mockup-sidebar-nav">
-                                    <div class="sidebar-item active" data-view="dashboard" onclick="switchMockupView('dashboard', this)">
-                                        <span class="sidebar-item-icon">&#9638;</span><span>Dashboard</span>
-                                    </div>
-                                    <div class="sidebar-item" data-view="tasks" onclick="switchMockupView('tasks', this)">
-                                        <span class="sidebar-item-icon">&#9776;</span><span>Tasks</span>
-                                    </div>
-                                    <div class="sidebar-item" data-view="profiles" onclick="switchMockupView('profiles', this)">
-                                        <span class="sidebar-item-icon">&#9636;</span><span>Resumes</span>
-                                    </div>
-                                    <div class="sidebar-item" data-view="accounts" onclick="switchMockupView('accounts', this)">
-                                        <span class="sidebar-item-icon">&#9675;</span><span>Accounts</span>
-                                    </div>
-                                    <div class="sidebar-item" data-view="settings" onclick="switchMockupView('settings', this)">
-                                        <span class="sidebar-item-icon">&#9881;</span><span>Settings</span>
-                                    </div>
-                                </div>
-                                <div class="mockup-sidebar-bottom">
-                                    <div class="mockup-sidebar-chip">
-                                        <span class="mockup-chip-dot"></span>
-                                        API Connected
-                                    </div>
-                                    <div class="mockup-sidebar-license">
-                                        <span>License</span>
-                                        <strong>Pro</strong>
-                                    </div>
-                                </div>
+                                <div class="sidebar-item active" data-view="dashboard" onclick="switchMockupView('dashboard', this)">Dashboard</div>
+                                <div class="sidebar-item" data-view="tasks" onclick="switchMockupView('tasks', this)">Tasks</div>
+                                <div class="sidebar-item" data-view="profiles" onclick="switchMockupView('profiles', this)">Profiles</div>
+                                <div class="sidebar-item" data-view="accounts" onclick="switchMockupView('accounts', this)">Accounts</div>
+                                <div class="sidebar-item" data-view="settings" onclick="switchMockupView('settings', this)">Settings</div>
                             </div>
 
                             <div class="mockup-main">
                                 <!-- Dashboard View -->
                                 <div id="dashboard-view" class="mockup-content active">
-                                    <div class="mockup-hero-panel">
-                                        <div class="mockup-hero-subline">Session overview • Live task telemetry and decision logs</div>
+                                    <div class="mockup-panel">
+                                        <div class="mockup-panel-title">Session Health</div>
+                                        <div class="status-strip">
+                                            <span class="status-pill connected">LinkedIn Connected</span>
+                                            <span class="status-pill connected">Indeed Connected</span>
+                                            <span class="status-pill connected">LLM Connected</span>
+                                            <span class="status-pill warning">Discord Webhook Pending</span>
+                                        </div>
                                     </div>
                                     <div class="stats-grid">
                                         <div class="stat-card">
-                                            <div class="stat-icon icon-good">&#10003;</div>
-                                            <div class="stat-value">42</div>
-                                            <div class="stat-label">Applications</div>
+                                            <div class="stat-label">Applied</div>
+                                            <div class="stat-value">38</div>
                                         </div>
                                         <div class="stat-card">
-                                            <div class="stat-icon icon-neutral">&#9638;</div>
+                                            <div class="stat-label">Skipped</div>
+                                            <div class="stat-value">14</div>
+                                        </div>
+                                        <div class="stat-card">
+                                            <div class="stat-label">Failed</div>
+                                            <div class="stat-value">2</div>
+                                        </div>
+                                        <div class="stat-card">
+                                            <div class="stat-label">Queue</div>
                                             <div class="stat-value">6</div>
-                                            <div class="stat-label">Total Tasks</div>
-                                        </div>
-                                        <div class="stat-card">
-                                            <div class="stat-icon icon-neutral">&#9646;</div>
-                                            <div class="stat-value">76%</div>
-                                            <div class="stat-label">Success Rate</div>
-                                        </div>
-                                        <div class="stat-card">
-                                            <div class="stat-icon icon-warn">&#8594;</div>
-                                            <div class="stat-value">11</div>
-                                            <div class="stat-label">Jobs Skipped</div>
                                         </div>
                                     </div>
 
                                     <div class="dashboard-layout">
                                         <div class="mockup-panel">
-                                            <div class="mockup-panel-title">Connections</div>
-                                            <div class="connection-list">
-                                                <div class="connection-item">
-                                                    <div class="connection-left">
-                                                        <div class="connection-icon">AI</div>
-                                                        <div>
-                                                            <div class="connection-name">Nexus Built-in</div>
-                                                            <div class="connection-status status-good">Connected</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="connection-action connected">Ready</div>
+                                            <div class="mockup-panel-title">Active Tasks</div>
+                                            <div class="task-mini">
+                                                <div>
+                                                    <div class="task-mini-title">Power Platform — LinkedIn + Indeed</div>
+                                                    <div class="task-mini-meta">Location: New Jersey • Easy Apply only</div>
                                                 </div>
-                                                <div class="connection-item">
-                                                    <div class="connection-left">
-                                                        <div class="connection-icon blue">in</div>
-                                                        <div>
-                                                            <div class="connection-name">LinkedIn</div>
-                                                            <div class="connection-status status-good">Logged In</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="connection-action connected">Ready</div>
-                                                </div>
-                                                <div class="connection-item">
-                                                    <div class="connection-left">
-                                                        <div class="connection-icon blue">I</div>
-                                                        <div>
-                                                            <div class="connection-name">Indeed</div>
-                                                            <div class="connection-status status-good">Logged In</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="connection-action connected">Ready</div>
-                                                </div>
+                                                <span class="score-chip">8.2/10</span>
                                             </div>
-                                            <div class="session-summary">
-                                                <div class="session-row"><span>Total Tasks</span><strong>6</strong></div>
-                                                <div class="session-row"><span>Completed</span><strong>4</strong></div>
-                                                <div class="session-row"><span>Failed</span><strong>1</strong></div>
-                                                <div class="session-row"><span>Resumes</span><strong>3</strong></div>
+                                            <div class="task-mini">
+                                                <div>
+                                                    <div class="task-mini-title">Greenhouse Test URLs</div>
+                                                    <div class="task-mini-meta">Custom links • External form automation</div>
+                                                </div>
+                                                <span class="score-chip">7.6/10</span>
+                                            </div>
+                                            <div class="task-mini">
+                                                <div>
+                                                    <div class="task-mini-title">Indeed Recommended Feed</div>
+                                                    <div class="task-mini-meta">No keyword mode • Resume: PowerPlatform.pdf</div>
+                                                </div>
+                                                <span class="score-chip">7.9/10</span>
                                             </div>
                                         </div>
                                         <div class="mockup-panel">
-                                            <div class="mockup-panel-title">All Tasks</div>
-                                            <div class="task-table">
-                                                <div class="task-mini">
-                                                    <div>
-                                                        <div class="task-mini-title">Power Platform Engineer</div>
-                                                        <div class="task-mini-meta">LinkedIn • Score 8.7 • Applying</div>
-                                                    </div>
-                                                    <span class="row-chip run">Running</span>
-                                                </div>
-                                                <div class="task-mini">
-                                                    <div>
-                                                        <div class="task-mini-title">Indeed Recommendations</div>
-                                                        <div class="task-mini-meta">Indeed • Score 7.9 • Queue</div>
-                                                    </div>
-                                                    <span class="row-chip">Queued</span>
-                                                </div>
-                                                <div class="task-mini">
-                                                    <div>
-                                                        <div class="task-mini-title">External ATS Sweep</div>
-                                                        <div class="task-mini-meta">Greenhouse/Lever • Score 8.1</div>
-                                                    </div>
-                                                    <span class="row-chip pause">Paused</span>
-                                                </div>
-                                            </div>
-                                            <div class="log-list" style="margin-top: 0.5rem; max-height: none; flex: 1;">
-                                                <div class="log-line">[22:41:08] Matched resume: Senior_Software_Developer.pdf</div>
-                                                <div class="log-line">[22:41:14] LLM scored listing 8.7/10 — submit started</div>
-                                                <div class="log-line">[22:41:33] Applied successfully — Senior Platform Engineer</div>
-                                                <div class="log-line">[22:42:10] External domain queued for ATS module handling</div>
+                                            <div class="mockup-panel-title">Live Task Logs</div>
+                                            <div class="log-list">
+                                                <div class="log-line">22:41:09 [Task 419acd2d] Resume file set on frame[0] input[type=file]</div>
+                                                <div class="log-line">22:41:18 [Task 419acd2d] Question solved via LLM: "Authorized to work?" => Yes</div>
+                                                <div class="log-line">22:41:32 [Task 419acd2d] Application submitted: Power Platform Architect</div>
+                                                <div class="log-line">22:41:48 [Task 419acd2d] External domain not automated yet: careers.ey.com (logged + webhook)</div>
                                             </div>
                                         </div>
                                     </div>
@@ -2942,13 +2284,10 @@
                                 <div id="profiles-view" class="mockup-content">
                                     <div class="mockup-panel">
                                         <div class="mockup-panel-title">Primary Resume + Autofill Defaults</div>
-                                        <div style="display:flex; justify-content:flex-end; margin-bottom:0.45rem;">
-                                            <span class="connection-action primary">Upload Resume</span>
-                                        </div>
                                         <div class="kv-grid">
                                             <div class="kv-item">
                                                 <div class="kv-label">Resume</div>
-                                                <div class="kv-value">Senior_Software_Developer.pdf</div>
+                                                <div class="kv-value">SaqibAziz_PowerPlatform.pdf</div>
                                             </div>
                                             <div class="kv-item">
                                                 <div class="kv-label">Phone</div>
@@ -2995,10 +2334,17 @@
                                             </div>
                                             <div class="account-mini">
                                                 <div class="account-mini-head">
-                                                    <span class="account-mini-name">Glassdoor</span>
-                                                    <span class="row-chip run">Ready</span>
+                                                    <span class="account-mini-name">Greenhouse</span>
+                                                    <span class="row-chip">Test Mode</span>
                                                 </div>
-                                                <div class="account-mini-meta">Account connected • Application flow ready</div>
+                                                <div class="account-mini-meta">Custom URL lab enabled</div>
+                                            </div>
+                                            <div class="account-mini">
+                                                <div class="account-mini-head">
+                                                    <span class="account-mini-name">Lever + Workday</span>
+                                                    <span class="row-chip">In Progress</span>
+                                                </div>
+                                                <div class="account-mini-meta">Domain mapping and orchestration</div>
                                             </div>
                                         </div>
                                     </div>
@@ -3042,100 +2388,6 @@
                             <span class="platform">Workday</span>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========================================
-         DEMO GALLERY
-         ======================================== -->
-    <section class="demo-gallery" id="demo-gallery">
-        <div class="container">
-            <h2 class="section-title fade-in">See Nexus In Action</h2>
-            <p class="section-subtitle fade-in">Start here first. This is the exact product flow new users run: configure, launch, and monitor applications in real time.</p>
-
-            <div class="demo-grid">
-                <article class="demo-card primary fade-in">
-                    <h3 class="demo-title">Create and Launch a Task</h3>
-                    <p class="demo-description">From task settings to run start in one flow.</p>
-                    <div class="demo-media-wrap">
-                        <img
-                            class="demo-gif"
-                            src="assets/demos/create-task.gif"
-                            alt="Creating and launching a task in Nexus"
-                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                        >
-                        <div class="demo-placeholder" style="display:none;">
-                            <strong>Add demo GIF:</strong>
-                            <span>assets/demos/create-task.gif</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="demo-card fade-in">
-                    <h3 class="demo-title">Live Apply + Logs</h3>
-                    <p class="demo-description">Watch job scoring, question answering, and progression in real time.</p>
-                    <div class="demo-media-wrap">
-                        <img
-                            class="demo-gif"
-                            src="assets/demos/live-apply.gif"
-                            alt="Live application workflow and logs in Nexus"
-                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                        >
-                        <div class="demo-placeholder" style="display:none;">
-                            <strong>Add demo GIF:</strong>
-                            <span>assets/demos/live-apply.gif</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="demo-card fade-in">
-                    <h3 class="demo-title">Task Review + Controls</h3>
-                    <p class="demo-description">Inspect task details, tweak settings, and relaunch quickly.</p>
-                    <div class="demo-media-wrap">
-                        <img
-                            class="demo-gif"
-                            src="assets/demos/task-review.gif"
-                            alt="Reviewing and editing task settings in Nexus"
-                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                        >
-                        <div class="demo-placeholder" style="display:none;">
-                            <strong>Add demo GIF:</strong>
-                            <span>assets/demos/task-review.gif</span>
-                        </div>
-                    </div>
-                </article>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========================================
-         HOW IT WORKS SECTION
-         ======================================== -->
-    <section class="how-it-works" id="how-it-works">
-        <div class="container">
-            <h2 class="section-title fade-in">How It Works</h2>
-
-            <div class="steps-row">
-                <div class="step fade-in">
-                    <div class="step-number">1</div>
-                    <h3 class="step-title">Upload Your Resume</h3>
-                    <p class="step-description">Add your resume and configure your job preferences.</p>
-                    <div class="step-connector"></div>
-                </div>
-
-                <div class="step fade-in">
-                    <div class="step-number">2</div>
-                    <h3 class="step-title">Create a Search</h3>
-                    <p class="step-description">Choose platform, keywords, location, and filters.</p>
-                    <div class="step-connector"></div>
-                </div>
-
-                <div class="step fade-in">
-                    <div class="step-number">3</div>
-                    <h3 class="step-title">Let Nexus Work</h3>
-                    <p class="step-description">Sit back while Nexus applies and tracks everything in real-time.</p>
                 </div>
             </div>
         </div>
@@ -3219,6 +2471,100 @@
     </section>
 
     <!-- ========================================
+         HOW IT WORKS SECTION
+         ======================================== -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <h2 class="section-title fade-in">How It Works</h2>
+
+            <div class="steps-row">
+                <div class="step fade-in">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Upload Your Resume</h3>
+                    <p class="step-description">Add your resume and configure your job preferences.</p>
+                    <div class="step-connector"></div>
+                </div>
+
+                <div class="step fade-in">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Create a Search</h3>
+                    <p class="step-description">Choose platform, keywords, location, and filters.</p>
+                    <div class="step-connector"></div>
+                </div>
+
+                <div class="step fade-in">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Let Nexus Work</h3>
+                    <p class="step-description">Sit back while Nexus applies and tracks everything in real-time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================
+         DEMO GALLERY
+         ======================================== -->
+    <section class="demo-gallery" id="demo-gallery">
+        <div class="container">
+            <h2 class="section-title fade-in">See Nexus In Action</h2>
+            <p class="section-subtitle fade-in">Short product clips from real task runs. Swap in your own capture files to keep this section fresh.</p>
+
+            <div class="demo-grid">
+                <article class="demo-card fade-in">
+                    <h3 class="demo-title">Create and Launch a Task</h3>
+                    <p class="demo-description">From task settings to run start in one flow.</p>
+                    <div class="demo-media-wrap">
+                        <img
+                            class="demo-gif"
+                            src="assets/demos/create-task.gif"
+                            alt="Creating and launching a task in Nexus"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                        >
+                        <div class="demo-placeholder" style="display:none;">
+                            <strong>Add demo GIF:</strong>
+                            <span>assets/demos/create-task.gif</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="demo-card fade-in">
+                    <h3 class="demo-title">Live Apply + Logs</h3>
+                    <p class="demo-description">Watch job scoring, question answering, and progression in real time.</p>
+                    <div class="demo-media-wrap">
+                        <img
+                            class="demo-gif"
+                            src="assets/demos/live-apply.gif"
+                            alt="Live application workflow and logs in Nexus"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                        >
+                        <div class="demo-placeholder" style="display:none;">
+                            <strong>Add demo GIF:</strong>
+                            <span>assets/demos/live-apply.gif</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="demo-card fade-in">
+                    <h3 class="demo-title">Task Review + Controls</h3>
+                    <p class="demo-description">Inspect task details, tweak settings, and relaunch quickly.</p>
+                    <div class="demo-media-wrap">
+                        <img
+                            class="demo-gif"
+                            src="assets/demos/task-review.gif"
+                            alt="Reviewing and editing task settings in Nexus"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                        >
+                        <div class="demo-placeholder" style="display:none;">
+                            <strong>Add demo GIF:</strong>
+                            <span>assets/demos/task-review.gif</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================
          SUPPORT HUB
          ======================================== -->
     <section class="support-hub" id="support-hub">
@@ -3234,7 +2580,7 @@
                 </article>
                 <article class="support-card fade-in">
                     <h3>AI Model Setup</h3>
-                    <p>Onboard models work out of the box. Optional providers: Ollama, LM Studio, OpenAI, or Anthropic.</p>
+                    <p>Built-in models work out of the box. Or connect LM Studio, Ollama, OpenAI, or Anthropic.</p>
                     <a href="/getting-started#llm-setup">Jump to LLM setup</a>
                 </article>
                 <article class="support-card fade-in">
@@ -3247,11 +2593,6 @@
                     <p>Bot-style operating rhythm: queue strategy, safe throttling, quality controls, and post-run review loops.</p>
                     <a href="/getting-started#power-workflow">View workflow</a>
                 </article>
-                <article class="support-card fade-in">
-                    <h3>License + Machine Transfers</h3>
-                    <p>Reset machine activation, recover access by email code, and move your Nexus key to a new computer.</p>
-                    <a href="/license-dashboard">Open license dashboard</a>
-                </article>
             </div>
         </div>
     </section>
@@ -3262,7 +2603,7 @@
     <section class="waitlist" id="waitlist">
         <div class="container">
             <div class="waitlist-content">
-                <h2 class="waitlist-title fade-in" id="waitlist-heading">Join the Waitlist</h2>
+                <h2 class="waitlist-title fade-in">Join the Waitlist</h2>
                 <p class="waitlist-subtitle fade-in">Be the first to know when Nexus launches. Early access spots are limited.</p>
 
                 <div class="success-message" id="waitlist-success">
@@ -3296,6 +2637,9 @@
                             <a href="privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
                         </label>
                     </div>
+
+                    <div class="cf-turnstile" data-sitekey="0x4AAAAAACjj_SKWDCu0mvTQ" data-callback="onTurnstileVerify" data-theme="dark" style="margin-bottom: 16px;"></div>
+                    <input type="hidden" id="turnstile-token" name="turnstile_token" value="">
 
                     <button type="submit" class="form-submit">Join Waitlist</button>
                 </form>
@@ -3339,7 +2683,7 @@
                         <span class="faq-toggle">+</span>
                     </div>
                     <div class="faq-answer">
-                        <p class="faq-text">Nexus ships with an onboard AI runtime by default. Download a model in Settings and run locally. Recommended defaults are <code>qwen2.5-7b</code> for text decisions and <code>qwen2-vl-2b-visual</code> for external-apply recovery. Optional providers: Ollama, LM Studio, OpenAI, and Anthropic.</p>
+                        <p class="faq-text">Nexus ships with a built-in AI engine — no external tools needed. Just download a model from Settings and you're ready to go. You can also connect LM Studio, OpenAI (GPT-4), Anthropic Claude, or Ollama for maximum flexibility.</p>
                     </div>
                 </div>
 
@@ -3349,7 +2693,7 @@
                         <span class="faq-toggle">+</span>
                     </div>
                     <div class="faq-answer">
-                        <p class="faq-text">No. Everything runs locally on your machine by default. Your resume, job preferences, and application history never leave your computer. The only communication is a periodic license verification ping. If you use an external LLM provider (OpenAI or Anthropic), only prompt context for generation is sent to that provider.</p>
+                        <p class="faq-text">No. Everything runs locally on your machine by default. Your resume, job preferences, and application history never leave your computer. The only communication is a periodic license verification ping. If you use an external LLM (OpenAI, Claude), only the job description gets sent to process—your personal data remains private.</p>
                     </div>
                 </div>
 
@@ -3359,7 +2703,7 @@
                         <span class="faq-toggle">+</span>
                     </div>
                     <div class="faq-answer">
-                        <p class="faq-text">Core platform support includes LinkedIn, Indeed, and Glassdoor. External ATS automation is in active rollout (Greenhouse, Lever, Workday, BambooHR, and others) and coverage can vary by employer flow. If a domain is not supported yet, Nexus logs it and skips safely.</p>
+                        <p class="faq-text">Nexus currently supports LinkedIn, Indeed, and Glassdoor. It also integrates with external ATS systems like Greenhouse, Lever, Workday, and BambooHR. We're continuously adding platform support based on user demand.</p>
                     </div>
                 </div>
 
@@ -3435,13 +2779,12 @@
                 <div class="footer-section">
                     <h3>Product</h3>
                     <ul>
-                        <li><a href="#demo-gallery">Demos</a></li>
-                        <li><a href="#how-it-works">How It Works</a></li>
                         <li><a href="#features">Features</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#demo-gallery">Demos</a></li>
                         <li><a href="/getting-started">Setup Guide</a></li>
-                        <li><a href="/license-dashboard">Manage License</a></li>
                         <li><a href="#faq">FAQ</a></li>
-                        <li><a href="#waitlist-heading">Join Waitlist</a></li>
+                        <li><a href="#waitlist">Join Waitlist</a></li>
                     </ul>
                 </div>
 
@@ -3508,26 +2851,16 @@
         });
 
         // ========== Scroll Fade-In Animation ==========
-        if ('IntersectionObserver' in window && document.documentElement.classList.contains('js-anim')) {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-
-            document.querySelectorAll('.fade-in').forEach(el => {
-                const rect = el.getBoundingClientRect();
-                if (rect.top < window.innerHeight * 0.96) {
-                    el.classList.add('visible');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
                 }
-                observer.observe(el);
             });
-        } else {
-            document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
-        }
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
         // ========== Interactive Mockup ==========
         function switchMockupView(viewName, clickedEl) {
@@ -3562,17 +2895,10 @@
             header.parentElement.classList.toggle('open');
         }
 
-        function scrollToWaitlist() {
-            const target = document.getElementById('waitlist-heading');
-            if (!target) return;
-            const nav = document.querySelector('nav');
-            const navOffset = nav ? nav.getBoundingClientRect().height + 10 : 10;
-            const top = target.getBoundingClientRect().top + window.scrollY - navOffset;
-            window.scrollTo({
-                top: Math.max(0, top),
-                behavior: 'smooth',
-            });
-        }
+        // ========== Turnstile Callback ==========
+        window.onTurnstileVerify = function(token) {
+            document.getElementById('turnstile-token').value = token;
+        };
 
         // ========== Waitlist Form Handling ==========
         async function submitWaitlistForm(formData, formEl, successEl, errorEl) {
@@ -3670,7 +2996,8 @@
                 email: document.getElementById('waitlist-email').value,
                 message: document.getElementById('waitlist-message').value,
                 consent: document.getElementById('waitlist-consent').checked,
-                source: 'website_waitlist'
+                source: 'website_waitlist',
+                turnstile_token: document.getElementById('turnstile-token').value
             }, this, document.getElementById('waitlist-success'), document.getElementById('waitlist-error'));
         });
 
@@ -3722,7 +3049,7 @@
 
         async function fetchDiscordUser(token) {
             try {
-                const res = await fetch('https://discord.com/api/v10/users/@me', {
+                const res = await fetch('https://discord.com/api/users/@me', {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 if (!res.ok) throw new Error('Failed to fetch user');
@@ -3800,6 +3127,23 @@
             localStorage.removeItem('discord_token');
             document.getElementById('hero-logged-in').classList.remove('active');
             document.getElementById('hero-logged-out').classList.add('active');
+        });
+
+        // ========== Mobile Hamburger Menu ==========
+        const hamburger = document.getElementById('hamburger');
+        const navCenter = document.querySelector('.nav-center');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navCenter.classList.toggle('open');
+        });
+
+        // Close mobile menu when a link is clicked
+        navCenter.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navCenter.classList.remove('open');
+            });
         });
 
         // ========== Onboarding Modal ==========

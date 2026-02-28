@@ -10,6 +10,21 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const crypto = require('crypto');
 
+// ──── Sentry observability (optional, graceful if not configured) ────
+let Sentry = null;
+try {
+    if (process.env.SENTRY_DSN) {
+        Sentry = require('@sentry/node');
+        Sentry.init({
+            dsn: process.env.SENTRY_DSN,
+            environment: process.env.VERCEL_ENV || 'production',
+            tracesSampleRate: 0.2,
+        });
+    }
+} catch (e) {
+    // Sentry not installed — continue without it
+}
+
 // Generate a unique license key: NEXUS-XXXX-XXXX-XXXX-XXXX
 function generateLicenseKey() {
     const segments = [];
@@ -34,70 +49,121 @@ async function getRawBody(req) {
     return Buffer.concat(chunks);
 }
 
-// Send the license key via Resend transactional email
-async function sendLicenseEmail(email, licenseKey, plan) {
+// Send the license key via Resend transactional email with retry logic
+async function sendLicenseEmail(email, licenseKey, plan, customerId = null) {
     if (!process.env.RESEND_API_KEY) {
         console.log('RESEND_API_KEY not set — skipping email delivery');
-        return;
+        return { ok: false, error: 'RESEND_API_KEY not configured' };
     }
 
-    const res = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            from: 'Nexus by Hyperfect <noreply@admin.hyperfect.dev>',
-            to: email,
-            subject: 'Your Nexus License Key',
-            html: `
-                <div style="background-color: #0f0f1a; padding: 0; margin: 0; width: 100%;">
-                    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 560px; margin: 0 auto; padding: 40px 20px;">
+    const emailBody = {
+        from: 'Nexus by Hyperfect <noreply@admin.hyperfect.dev>',
+        to: email,
+        subject: 'Your Nexus License Key',
+        html: `
+            <div style="background-color: #0f0f1a; padding: 0; margin: 0; width: 100%;">
+                <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 560px; margin: 0 auto; padding: 40px 20px;">
 
-                        <div style="text-align: center; margin-bottom: 32px;">
-                            <h1 style="font-size: 26px; color: #ffffff; margin: 0; font-weight: 700;">Welcome to Nexus</h1>
-                            <p style="color: #d4d4d8; font-size: 15px; margin-top: 10px;">Thanks for your purchase! Here's your license key.</p>
-                        </div>
-
-                        <div style="background-color: #1a1a2e; border: 1px solid #2a2a40; border-radius: 12px; padding: 24px; text-align: center; margin: 24px 0;">
-                            <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #a1a1aa; margin-bottom: 12px;">Your License Key</div>
-                            <div style="font-family: 'SF Mono', 'Fira Code', Consolas, monospace; font-size: 20px; font-weight: 700; color: #ffffff; letter-spacing: 2px; padding: 14px; background-color: #1e2a4a; border-radius: 8px;">
-                                ${licenseKey}
-                            </div>
-                            <div style="font-size: 13px; color: #a1a1aa; margin-top: 12px;">Plan: ${plan === 'subscription' ? 'Subscription' : 'Beta Access'}</div>
-                        </div>
-
-                        <div style="background-color: #141428; border: 1px solid #2a2a40; border-radius: 8px; padding: 20px; margin: 24px 0;">
-                            <h3 style="font-size: 15px; color: #ffffff; margin: 0 0 12px 0; font-weight: 600;">Getting Started</h3>
-                            <ol style="color: #d4d4d8; font-size: 14px; line-height: 2; margin: 0; padding-left: 18px;">
-                                <li>Join our Discord server to download Nexus</li>
-                                <li>Open the app and enter your license key</li>
-                                <li>Upload your resume and configure your job preferences</li>
-                                <li>Create your first task and let Nexus work</li>
-                            </ol>
-                        </div>
-
-                        <div style="text-align: center; margin: 28px 0;">
-                            <a href="https://discord.gg/Ynvcw6Dts4" style="display: inline-block; background-color: #5865F2; color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 600; padding: 14px 32px; border-radius: 8px;">Join the Discord Server</a>
-                        </div>
-
-                        <div style="text-align: center; margin-top: 32px; padding-top: 24px; border-top: 1px solid #2a2a40;">
-                            <p style="color: #a1a1aa; font-size: 12px; margin: 0;">Questions? Reach us at <a href="mailto:Hyperfectllc@gmail.com" style="color: #3b82f6;">Hyperfectllc@gmail.com</a></p>
-                            <p style="color: #71717a; font-size: 11px; margin-top: 8px;">&copy; 2026 Hyperfect LLC &bull; <a href="https://hyperfect.dev" style="color: #71717a;">hyperfect.dev</a></p>
-                        </div>
-
+                    <div style="text-align: center; margin-bottom: 32px;">
+                        <h1 style="font-size: 26px; color: #ffffff; margin: 0; font-weight: 700;">Welcome to Nexus</h1>
+                        <p style="color: #d4d4d8; font-size: 15px; margin-top: 10px;">Thanks for your purchase! Here's your license key.</p>
                     </div>
-                </div>
-            `,
-        }),
-    });
 
-    if (!res.ok) {
-        console.error('Failed to send license email:', await res.text());
-    } else {
-        console.log(`License email sent to ${email}`);
+                    <div style="background-color: #1a1a2e; border: 1px solid #2a2a40; border-radius: 12px; padding: 24px; text-align: center; margin: 24px 0;">
+                        <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #a1a1aa; margin-bottom: 12px;">Your License Key</div>
+                        <div style="font-family: 'SF Mono', 'Fira Code', Consolas, monospace; font-size: 20px; font-weight: 700; color: #ffffff; letter-spacing: 2px; padding: 14px; background-color: #1e2a4a; border-radius: 8px;">
+                            ${licenseKey}
+                        </div>
+                        <div style="font-size: 13px; color: #a1a1aa; margin-top: 12px;">Plan: ${plan === 'subscription' ? 'Subscription' : 'Beta Access'}</div>
+                    </div>
+
+                    <div style="background-color: #141428; border: 1px solid #2a2a40; border-radius: 8px; padding: 20px; margin: 24px 0;">
+                        <h3 style="font-size: 15px; color: #ffffff; margin: 0 0 12px 0; font-weight: 600;">Getting Started</h3>
+                        <ol style="color: #d4d4d8; font-size: 14px; line-height: 2; margin: 0; padding-left: 18px;">
+                            <li>Join our Discord server to download Nexus</li>
+                            <li>Open the app and enter your license key</li>
+                            <li>Upload your resume and configure your job preferences</li>
+                            <li>Create your first task and let Nexus work</li>
+                        </ol>
+                    </div>
+
+                    <div style="text-align: center; margin: 28px 0;">
+                        <a href="https://discord.gg/Ynvcw6Dts4" style="display: inline-block; background-color: #5865F2; color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 600; padding: 14px 32px; border-radius: 8px;">Join the Discord Server</a>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 32px; padding-top: 24px; border-top: 1px solid #2a2a40;">
+                        <p style="color: #a1a1aa; font-size: 12px; margin: 0;">Questions? Reach us at <a href="mailto:Hyperfectllc@gmail.com" style="color: #3b82f6;">Hyperfectllc@gmail.com</a></p>
+                        <p style="color: #71717a; font-size: 11px; margin-top: 8px;">&copy; 2026 Hyperfect LLC &bull; <a href="https://hyperfect.dev" style="color: #71717a;">hyperfect.dev</a></p>
+                    </div>
+
+                </div>
+            </div>
+        `,
+    };
+
+    // Retry up to 3 times with exponential backoff
+    const MAX_RETRIES = 3;
+    let lastError = '';
+    for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+        try {
+            const res = await fetch('https://api.resend.com/emails', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(emailBody),
+            });
+
+            if (res.ok) {
+                const data = await res.json().catch(() => ({}));
+                console.log(`License email sent to ${email} (attempt ${attempt}, id=${data?.id || 'unknown'})`);
+                return { ok: true, id: data?.id || '', attempt };
+            }
+
+            lastError = await res.text().catch(() => `HTTP ${res.status}`);
+            console.error(`License email attempt ${attempt}/${MAX_RETRIES} failed: ${lastError}`);
+
+            // Don't retry on 4xx client errors (bad request, invalid email, etc.)
+            if (res.status >= 400 && res.status < 500) {
+                break;
+            }
+        } catch (err) {
+            lastError = err?.message || String(err);
+            console.error(`License email attempt ${attempt}/${MAX_RETRIES} error: ${lastError}`);
+        }
+
+        // Wait before retry (1s, 2s, 4s)
+        if (attempt < MAX_RETRIES) {
+            await new Promise(r => setTimeout(r, 1000 * Math.pow(2, attempt - 1)));
+        }
     }
+
+    // All retries exhausted — log to Sentry and store failure on customer metadata
+    const errorMsg = `License email delivery failed after ${MAX_RETRIES} attempts: ${lastError}`;
+    console.error(errorMsg);
+    if (Sentry) {
+        Sentry.captureMessage(errorMsg, { level: 'error', extra: { email, licenseKey, customerId } });
+    }
+
+    // Store email failure on customer metadata so admin can manually resend
+    if (customerId) {
+        try {
+            const existing = await stripe.customers.retrieve(customerId);
+            await stripe.customers.update(customerId, {
+                metadata: {
+                    ...(existing?.metadata || {}),
+                    license_email_failed: 'true',
+                    license_email_error: String(lastError).slice(0, 200),
+                    license_email_failed_at: new Date().toISOString(),
+                },
+            });
+        } catch (metaErr) {
+            console.error('Failed to store email failure on customer:', metaErr?.message);
+        }
+    }
+
+    return { ok: false, error: lastError };
 }
 
 module.exports = async function handler(req, res) {
@@ -120,6 +186,7 @@ module.exports = async function handler(req, res) {
         return res.status(400).json({ error: `Webhook Error: ${err.message}` });
     }
 
+    try {
     switch (event.type) {
         case 'checkout.session.completed': {
             const session = event.data.object;
@@ -194,9 +261,12 @@ module.exports = async function handler(req, res) {
                 console.error('Failed to store license on customer:', err.message);
             }
 
-            // Email the license key to the customer
+            // Email the license key to the customer (with retry)
             if (customerEmail) {
-                await sendLicenseEmail(customerEmail, licenseKey, plan);
+                const emailResult = await sendLicenseEmail(customerEmail, licenseKey, plan, customerId);
+                if (!emailResult.ok) {
+                    console.error(`CRITICAL: License email failed for ${customerEmail} (key=${licenseKey}, customer=${customerId})`);
+                }
             }
 
             break;
@@ -214,4 +284,9 @@ module.exports = async function handler(req, res) {
     }
 
     return res.status(200).json({ received: true });
+    } catch (err) {
+        console.error('Webhook handler error:', err?.stack || err?.message || String(err));
+        if (Sentry) Sentry.captureException(err);
+        return res.status(500).json({ error: 'Internal webhook error' });
+    }
 };

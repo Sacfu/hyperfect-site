@@ -4,18 +4,78 @@
 //   POST /api/waitlist
 //   Body: { name, email, message, consent, source }
 //
-// Admin (Authorization: Bearer <ADMIN_SECRET|DISCORD_OAUTH_TOKEN>):
+// Admin (Authorization: Bearer <ADMIN_SECRET>):
 //   GET /api/waitlist?status=pending|approved|rejected|invited|converted|all&limit=50&cursor=cus_xxx
 //   PATCH /api/waitlist
-//   Body: { customer_id?, email?, status, notes?, send_invite?, send_invite_email? }
-//   DELETE /api/waitlist
-//   Body: { customer_id? email? }
+//   Body: { customer_id?, email?, status, notes?, send_invite? }
 //
 // Data is persisted on Stripe customers via metadata.
 // This keeps costs low while providing a queue-style review workflow.
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const { verifyDiscordAdmin } = require('./_discord-auth');
+
+// ──── Sentry observability (optional, graceful if not configured) ────
+let Sentry = null;
+try {
+    if (process.env.SENTRY_DSN) {
+        Sentry = require('@sentry/node');
+        Sentry.init({
+            dsn: process.env.SENTRY_DSN,
+            environment: process.env.VERCEL_ENV || 'production',
+            tracesSampleRate: 0.2,
+        });
+    }
+} catch (e) {
+    // Sentry not installed — continue without it
+}
+
+// ──── Rate limiting for waitlist submissions (anti-spam) ────
+const _rateMap = new Map();
+const RATE_WINDOW_MS = 60_000; // 1 minute
+const RATE_MAX = 5;            // 5 submissions per IP per minute
+
+function isRateLimited(ip) {
+    const now = Date.now();
+    const key = String(ip || 'unknown');
+    const entry = _rateMap.get(key);
+    if (!entry || (now - entry.windowStart) > RATE_WINDOW_MS) {
+        _rateMap.set(key, { windowStart: now, count: 1 });
+        // Cleanup old entries periodically
+        if (_rateMap.size > 5000) {
+            for (const [k, v] of _rateMap) {
+                if ((now - v.windowStart) > RATE_WINDOW_MS) _rateMap.delete(k);
+            }
+        }
+        return false;
+    }
+    entry.count += 1;
+    return entry.count > RATE_MAX;
+}
+
+function getClientIP(req) {
+    return req.headers['x-forwarded-for']?.split(',')[0]?.trim()
+        || req.headers['x-real-ip']
+        || req.socket?.remoteAddress
+        || 'unknown';
+}
+
+// ──── Cloudflare Turnstile CAPTCHA verification ────
+async function verifyTurnstile(token) {
+    if (!process.env.TURNSTILE_SECRET_KEY) return true; // Skip if not configured
+    if (!token) return false;
+    try {
+        const resp = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `secret=${encodeURIComponent(process.env.TURNSTILE_SECRET_KEY)}&response=${encodeURIComponent(token)}`,
+        });
+        const data = await resp.json();
+        return data.success === true;
+    } catch (err) {
+        console.error('Turnstile verification error:', err?.message || String(err));
+        return true; // Fail open — don't block users if Turnstile is down
+    }
+}
 
 const WAITLIST_STATUSES = new Set([
     'pending',
@@ -25,19 +85,9 @@ const WAITLIST_STATUSES = new Set([
     'converted',
 ]);
 
-const WAITLIST_NOTIFY_ENABLED = String(process.env.WAITLIST_NOTIFY_ENABLED || 'true')
-    .trim()
-    .toLowerCase() !== 'false';
-const WAITLIST_NOTIFY_ENDPOINT = String(
-    process.env.WAITLIST_NOTIFY_ENDPOINT || 'https://formsubmit.co/ajax/Hyperfectllc@gmail.com'
-).trim();
-const WAITLIST_INVITE_FROM = String(
-    process.env.WAITLIST_INVITE_FROM || 'Nexus by Hyperfect <noreply@admin.hyperfect.dev>'
-).trim();
-
 function setCors(res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 }
 
@@ -47,35 +97,14 @@ function getBearerToken(req) {
     return auth.slice(7).trim();
 }
 
-async function requireAdmin(req, res) {
+function requireAdmin(req, res) {
     const expected = String(process.env.ADMIN_SECRET || '').trim();
     const received = getBearerToken(req);
-
-    // Allow legacy ADMIN_SECRET auth path.
-    if (expected && received && received === expected) {
-        req.admin_auth = { type: 'secret' };
-        return true;
-    }
-
-    if (!received) {
-        res.status(401).json({ success: false, error: 'Unauthorized: missing bearer token' });
+    if (!expected || received !== expected) {
+        res.status(401).json({ success: false, error: 'Unauthorized' });
         return false;
     }
-
-    // Allow Discord OAuth token auth for users with ADMIN_ROLE_ID in DISCORD_GUILD_ID.
-    const discord = await verifyDiscordAdmin(received);
-    if (discord.ok) {
-        req.admin_auth = { type: 'discord', user: discord.user };
-        return true;
-    }
-
-    if (discord.reason === 'missing_server_config' && !expected) {
-        res.status(500).json({ success: false, error: 'Admin auth is not configured on the server' });
-        return false;
-    }
-
-    res.status(401).json({ success: false, error: 'Unauthorized: Discord admin role required' });
-    return false;
+    return true;
 }
 
 function cleanText(value, maxLen) {
@@ -128,72 +157,9 @@ function mapWaitlistCustomer(customer) {
         updated_at: metadata.waitlist_updated_at || null,
         last_submitted_at: metadata.waitlist_last_submitted_at || null,
         invited_at: metadata.waitlist_invited_at || null,
-        invite_email_sent_at: metadata.waitlist_invite_email_sent_at || null,
-        invite_email_id: metadata.waitlist_invite_email_id || '',
-        invite_email_error: metadata.waitlist_invite_email_error || '',
         converted_at: metadata.waitlist_converted_at || null,
         license_key: metadata.license_key || '',
     };
-}
-
-async function sendWaitlistNotification({
-    name,
-    email,
-    interest,
-    source,
-    consent,
-    status,
-    alreadyJoined,
-    customerId,
-    submissions,
-}) {
-    if (!WAITLIST_NOTIFY_ENABLED || !WAITLIST_NOTIFY_ENDPOINT) return;
-
-    const joinedText = alreadyJoined ? 'Updated Existing Waitlist Entry' : 'New Waitlist Signup';
-    const messageLines = [
-        `Type: ${joinedText}`,
-        `Name: ${name || 'N/A'}`,
-        `Email: ${email || 'N/A'}`,
-        `Status: ${status || 'pending'}`,
-        `Source: ${source || 'website_waitlist'}`,
-        `Submissions: ${submissions || 1}`,
-        `Customer ID: ${customerId || 'N/A'}`,
-        `Consent: ${consent ? 'yes' : 'no'}`,
-        `Interest: ${interest || '(none provided)'}`,
-    ];
-
-    const payload = {
-        name: 'Nexus Waitlist',
-        email: 'noreply@hyperfect.dev',
-        message: messageLines.join('\n'),
-        _subject: `Nexus Waitlist: ${joinedText}`,
-        _template: 'table',
-        _captcha: 'false',
-    };
-
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 7000);
-
-    try {
-        const response = await fetch(WAITLIST_NOTIFY_ENDPOINT, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            },
-            body: JSON.stringify(payload),
-            signal: controller.signal,
-        });
-
-        if (!response.ok) {
-            const detail = await response.text().catch(() => '');
-            console.error(`Waitlist notify failed (HTTP ${response.status}): ${detail.slice(0, 200)}`);
-        }
-    } catch (err) {
-        console.error('Waitlist notify request failed:', err?.message || String(err));
-    } finally {
-        clearTimeout(timeout);
-    }
 }
 
 async function findCustomerByEmail(email) {
@@ -224,8 +190,7 @@ async function createInviteForCustomer(email, name, customerId) {
         customer_email: email,
         success_url: `${siteUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${siteUrl}/?checkout=cancelled`,
-        // Stripe Checkout currently caps expires_at to ~24 hours from now.
-        expires_at: Math.floor(Date.now() / 1000) + (24 * 60 * 60),
+        expires_at: Math.floor(Date.now() / 1000) + (72 * 60 * 60), // 72 hours
         metadata: {
             source: 'waitlist_approval',
             invite_for: name || email,
@@ -237,74 +202,26 @@ async function createInviteForCustomer(email, name, customerId) {
         ok: true,
         invite_url: session.url,
         session_id: session.id,
-        expires_in: '24 hours',
-    };
-}
-
-async function sendInviteCheckoutEmail({ email, name, inviteUrl, expiresIn = '24 hours' }) {
-    if (!process.env.RESEND_API_KEY) {
-        return { ok: false, error: 'RESEND_API_KEY not configured' };
-    }
-
-    const safeEmail = normalizeEmail(email);
-    if (!safeEmail) {
-        return { ok: false, error: 'Invite email is missing a valid recipient' };
-    }
-
-    const safeName = cleanText(name, 120) || safeEmail;
-    const safeUrl = cleanText(inviteUrl, 2000);
-    const safeExpiresIn = cleanText(expiresIn, 60) || '24 hours';
-
-    const response = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            from: WAITLIST_INVITE_FROM,
-            to: safeEmail,
-            subject: 'Your Nexus Beta Invite Is Ready',
-            html: `
-                <div style="background:#0f172a;padding:20px 12px;">
-                    <div style="max-width:560px;margin:0 auto;background:#0b1220;border:1px solid #23314a;border-radius:12px;padding:24px;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#e2e8f0;">
-                        <h1 style="margin:0 0 10px;font-size:24px;color:#f8fafc;">You're invited to Nexus beta</h1>
-                        <p style="margin:0 0 16px;color:#cbd5e1;line-height:1.6;">Hi ${safeName}, your waitlist request has been approved. Use your private checkout link below to activate access.</p>
-                        <div style="margin:18px 0;">
-                            <a href="${safeUrl}" style="display:inline-block;background:#2563eb;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px;">Activate Beta Access</a>
-                        </div>
-                        <p style="margin:10px 0;color:#93c5fd;font-size:13px;">This link expires in ${safeExpiresIn}.</p>
-                        <p style="margin:16px 0 0;color:#94a3b8;font-size:12px;line-height:1.6;">If the button doesn't open, copy and paste this URL into your browser:<br><span style="color:#dbeafe;word-break:break-all;">${safeUrl}</span></p>
-                    </div>
-                </div>
-            `,
-            text: [
-                `Hi ${safeName},`,
-                '',
-                'Your Nexus beta waitlist request has been approved.',
-                `Activate here: ${safeUrl}`,
-                `This link expires in ${safeExpiresIn}.`,
-            ].join('\n'),
-        }),
-    });
-
-    if (!response.ok) {
-        const detail = await response.text().catch(() => '');
-        return {
-            ok: false,
-            error: `Invite email failed (HTTP ${response.status})${detail ? `: ${cleanText(detail, 180)}` : ''}`,
-        };
-    }
-
-    const payload = await response.json().catch(() => ({}));
-    return {
-        ok: true,
-        id: payload?.id || '',
+        expires_in: '72 hours',
     };
 }
 
 async function handlePublicSubmit(req, res) {
+    // Rate limit check
+    const clientIP = getClientIP(req);
+    if (isRateLimited(clientIP)) {
+        return res.status(429).json({ success: false, error: 'Too many submissions. Please try again later.' });
+    }
+
     const body = req.body && typeof req.body === 'object' ? req.body : {};
+
+    // Turnstile CAPTCHA verification
+    const turnstileToken = body.turnstile_token || body['cf-turnstile-response'] || '';
+    const captchaOk = await verifyTurnstile(turnstileToken);
+    if (!captchaOk) {
+        return res.status(400).json({ success: false, error: 'CAPTCHA verification failed. Please try again.' });
+    }
+
     const name = cleanText(body.name, 120);
     const email = normalizeEmail(body.email);
     const interest = cleanText(body.message, 480);
@@ -344,18 +261,6 @@ async function handlePublicSubmit(req, res) {
             },
         });
 
-        await sendWaitlistNotification({
-            name,
-            email,
-            interest,
-            source,
-            consent,
-            status: getWaitlistStatus(updated.metadata) || nextStatus,
-            alreadyJoined: true,
-            customerId: updated.id,
-            submissions: submissionCount,
-        });
-
         return res.status(200).json({
             success: true,
             status: getWaitlistStatus(updated.metadata) || nextStatus,
@@ -382,18 +287,6 @@ async function handlePublicSubmit(req, res) {
         },
     });
 
-    await sendWaitlistNotification({
-        name,
-        email,
-        interest,
-        source,
-        consent,
-        status: 'pending',
-        alreadyJoined: false,
-        customerId: created.id,
-        submissions: 1,
-    });
-
     return res.status(200).json({
         success: true,
         status: 'pending',
@@ -403,7 +296,7 @@ async function handlePublicSubmit(req, res) {
 }
 
 async function handleAdminList(req, res) {
-    if (!await requireAdmin(req, res)) return;
+    if (!requireAdmin(req, res)) return;
 
     const statusFilter = cleanText(req.query.status || 'all', 32).toLowerCase();
     const normalizedStatus = statusFilter === 'all' ? 'all' : statusFilter;
@@ -459,7 +352,7 @@ async function handleAdminList(req, res) {
 }
 
 async function handleAdminUpdate(req, res) {
-    if (!await requireAdmin(req, res)) return;
+    if (!requireAdmin(req, res)) return;
 
     const body = req.body && typeof req.body === 'object' ? req.body : {};
     const customerId = cleanText(body.customer_id, 64);
@@ -467,7 +360,6 @@ async function handleAdminUpdate(req, res) {
     const requestedStatus = cleanText(body.status, 32).toLowerCase();
     const notes = cleanText(body.notes, 500);
     const sendInvite = !!body.send_invite;
-    const sendInviteEmail = sendInvite ? body.send_invite_email !== false : false;
 
     if (!customerId && !email) {
         return res.status(400).json({ success: false, error: 'customer_id or email is required' });
@@ -502,7 +394,6 @@ async function handleAdminUpdate(req, res) {
     };
 
     let invite = null;
-    let inviteEmail = null;
     if (sendInvite) {
         if (!normalizeEmail(customer.email)) {
             return res.status(400).json({ success: false, error: 'Customer is missing an email; cannot generate invite' });
@@ -520,27 +411,6 @@ async function handleAdminUpdate(req, res) {
         invite = inviteResult;
         metadata.waitlist_status = 'invited';
         metadata.waitlist_invited_at = now;
-
-        if (sendInviteEmail) {
-            inviteEmail = await sendInviteCheckoutEmail({
-                email: normalizeEmail(customer.email),
-                name: previous.waitlist_name || customer.name || customer.email || '',
-                inviteUrl: inviteResult.invite_url,
-                expiresIn: inviteResult.expires_in,
-            });
-            metadata.waitlist_invite_email_sent_at = inviteEmail.ok ? now : '';
-            metadata.waitlist_invite_email_id = inviteEmail.ok ? cleanText(inviteEmail.id, 120) : '';
-            metadata.waitlist_invite_email_error = inviteEmail.ok ? '' : cleanText(inviteEmail.error, 240);
-        } else {
-            inviteEmail = {
-                ok: false,
-                skipped: true,
-                reason: 'send_invite_email_false',
-            };
-            metadata.waitlist_invite_email_sent_at = '';
-            metadata.waitlist_invite_email_id = '';
-            metadata.waitlist_invite_email_error = '';
-        }
     }
 
     const updated = await stripe.customers.update(customer.id, { metadata });
@@ -548,61 +418,6 @@ async function handleAdminUpdate(req, res) {
         success: true,
         entry: mapWaitlistCustomer(updated),
         invite,
-        invite_email: inviteEmail,
-    });
-}
-
-async function handleAdminDelete(req, res) {
-    if (!await requireAdmin(req, res)) return;
-
-    const body = req.body && typeof req.body === 'object' ? req.body : {};
-    const customerId = cleanText(body.customer_id, 64);
-    const email = normalizeEmail(body.email);
-
-    if (!customerId && !email) {
-        return res.status(400).json({ success: false, error: 'customer_id or email is required' });
-    }
-
-    let customer = null;
-    if (customerId) {
-        customer = await stripe.customers.retrieve(customerId);
-    } else {
-        customer = await findCustomerByEmail(email);
-    }
-
-    if (!customer || customer.deleted) {
-        return res.status(404).json({ success: false, error: 'Waitlist customer not found' });
-    }
-    if (!isWaitlistCustomer(customer.metadata || {})) {
-        return res.status(404).json({ success: false, error: 'Waitlist customer not found' });
-    }
-
-    const previous = customer.metadata || {};
-    const now = new Date().toISOString();
-    const metadata = {
-        ...previous,
-        waitlist: 'false',
-        waitlist_status: '',
-        waitlist_name: '',
-        waitlist_interest: '',
-        waitlist_source: '',
-        waitlist_consent: '',
-        waitlist_submission_count: '',
-        waitlist_last_submitted_at: '',
-        waitlist_created_at: '',
-        waitlist_updated_at: now,
-        waitlist_reviewed_at: '',
-        waitlist_review_notes: '',
-        waitlist_invited_at: '',
-        waitlist_converted_at: '',
-        waitlist_removed_at: now,
-    };
-
-    const updated = await stripe.customers.update(customer.id, { metadata });
-    return res.status(200).json({
-        success: true,
-        removed: true,
-        entry: mapWaitlistCustomer(updated),
     });
 }
 
@@ -621,14 +436,10 @@ module.exports = async function handler(req, res) {
         if (req.method === 'POST') return await handlePublicSubmit(req, res);
         if (req.method === 'GET') return await handleAdminList(req, res);
         if (req.method === 'PATCH') return await handleAdminUpdate(req, res);
-        if (req.method === 'DELETE') return await handleAdminDelete(req, res);
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     } catch (err) {
-        console.error('Waitlist API error:', err?.stack || err?.message || String(err));
-        const detail = cleanText(err?.message || 'Unknown error', 220);
-        if (req.method === 'POST') {
-            return res.status(500).json({ success: false, error: 'Waitlist request failed' });
-        }
-        return res.status(500).json({ success: false, error: detail || 'Waitlist request failed' });
+        console.error('Waitlist API error:', err?.message || String(err));
+        if (Sentry) Sentry.captureException(err);
+        return res.status(500).json({ success: false, error: 'Waitlist request failed' });
     }
 };
