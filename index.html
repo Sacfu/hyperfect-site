@@ -2806,8 +2806,9 @@
             </div>
 
             <div class="footer-divider">
-                <p class="footer-copy">&copy; 2026 Hyperfect LLC. All rights reserved.</p>
+                <p class="footer-copy" id="footer-copy" style="cursor: default;">&copy; 2026 Hyperfect LLC. All rights reserved.</p>
                 <p class="footer-disclaimer">Nexus is a product of Hyperfect LLC. Not affiliated with LinkedIn, Indeed, Glassdoor, Greenhouse, Lever, or Workday. Use responsibly and in accordance with each platform's terms of service.</p>
+                <a id="admin-link" href="/waitlist-admin" style="display:none; font-size: 0.7rem; color: var(--text-tertiary); text-decoration: none; margin-top: 4px; opacity: 0.5;">Admin</a>
             </div>
         </div>
     </footer>
@@ -3166,6 +3167,24 @@
                 if (e.target === overlay) closeOnboarding();
             });
         }
+
+        // ========== Admin Link (5-click reveal) ==========
+        (function() {
+            let clicks = 0, timer = null;
+            const el = document.getElementById('footer-copy');
+            const link = document.getElementById('admin-link');
+            if (el && link) {
+                el.addEventListener('click', function() {
+                    clicks++;
+                    clearTimeout(timer);
+                    timer = setTimeout(function() { clicks = 0; }, 1500);
+                    if (clicks >= 5) {
+                        link.style.display = 'inline-block';
+                        clicks = 0;
+                    }
+                });
+            }
+        })();
 
         // ========== Initialize ==========
         initializeTheme();
