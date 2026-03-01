@@ -97,14 +97,28 @@ function getBearerToken(req) {
     return auth.slice(7).trim();
 }
 
-function requireAdmin(req, res) {
-    const expected = String(process.env.ADMIN_SECRET || '').trim();
+async function requireAdmin(req, res) {
     const received = getBearerToken(req);
-    if (!expected || received !== expected) {
+    if (!received) {
         res.status(401).json({ success: false, error: 'Unauthorized' });
         return false;
     }
-    return true;
+
+    // Option 1: Static admin secret (for scripts/CLI)
+    const expected = String(process.env.ADMIN_SECRET || '').trim();
+    if (expected && received === expected) return true;
+
+    // Option 2: Discord OAuth token verified as admin
+    try {
+        const { verifyDiscordAdmin } = require('./_discord-auth');
+        const result = await verifyDiscordAdmin(received);
+        if (result.ok) return true;
+    } catch (_) {
+        // Discord auth module not available; fall through
+    }
+
+    res.status(401).json({ success: false, error: 'Unauthorized' });
+    return false;
 }
 
 function cleanText(value, maxLen) {
@@ -296,7 +310,7 @@ async function handlePublicSubmit(req, res) {
 }
 
 async function handleAdminList(req, res) {
-    if (!requireAdmin(req, res)) return;
+    if (!(await requireAdmin(req, res))) return;
 
     const statusFilter = cleanText(req.query.status || 'all', 32).toLowerCase();
     const normalizedStatus = statusFilter === 'all' ? 'all' : statusFilter;
@@ -352,7 +366,7 @@ async function handleAdminList(req, res) {
 }
 
 async function handleAdminUpdate(req, res) {
-    if (!requireAdmin(req, res)) return;
+    if (!(await requireAdmin(req, res))) return;
 
     const body = req.body && typeof req.body === 'object' ? req.body : {};
     const customerId = cleanText(body.customer_id, 64);
