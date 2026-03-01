@@ -22,8 +22,19 @@ async function verifyDiscordAdmin(accessToken) {
     const base = await verifyDiscordMember(token);
     if (!base.ok) return base;
 
+    // Allow access by Discord user ID (ADMIN_USER_IDS, comma-separated)
+    const adminUserIds = cleanText(process.env.ADMIN_USER_IDS, 512);
+    if (adminUserIds && base.user && base.user.id) {
+        const allowedIds = adminUserIds.split(',').map(id => id.trim()).filter(Boolean);
+        if (allowedIds.includes(base.user.id)) {
+            return base;
+        }
+    }
+
+    // Fallback: check by Discord role
     const adminRoleId = cleanText(process.env.ADMIN_ROLE_ID, 64);
     if (!adminRoleId) {
+        // Neither ADMIN_USER_IDS nor ADMIN_ROLE_ID configured
         return { ok: false, reason: 'missing_server_config' };
     }
 
