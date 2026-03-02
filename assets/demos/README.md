@@ -1,11 +1,11 @@
 # Demo Assets
 
-Drop short product clips/GIFs here to support the secondary workflow-clips section on the homepage.
+Drop short product clips/GIFs here for the optional Motion Passes section on the homepage.
 
 Expected filenames:
-- `create-task.gif`
-- `live-apply.gif`
-- `task-review.gif`
+- `create-search.gif`
+- `live-run.gif`
+- `search-review.gif`
 
 Recommended use:
 - Screenshots should carry the primary proof.
