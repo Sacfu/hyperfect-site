@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus - AI Job Application Automation | Hyperfect</title>
+    <title>Nexus - Local-First Job Search Automation | Hyperfect</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <meta name="description" content="Nexus by Hyperfect — AI-powered desktop app that automatically finds, matches, and applies to jobs across LinkedIn, Indeed, and more.">
-    <meta property="og:title" content="Nexus by Hyperfect — Your Job Search, on Autopilot">
-    <meta property="og:description" content="AI-powered desktop app that automatically finds, matches, and applies to jobs across LinkedIn, Indeed, and more.">
+    <meta name="description" content="Nexus by Hyperfect is a local-first desktop operator for structured job search runs across LinkedIn, Indeed, and supported ATS flows.">
+    <meta property="og:title" content="Nexus by Hyperfect — Local-First Job Search Automation">
+    <meta property="og:description" content="Local-first desktop operator for structured job search runs across LinkedIn, Indeed, and supported ATS flows.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://hyperfect.dev">
     <meta property="og:image" content="https://hyperfect.dev/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Nexus by Hyperfect — Your Job Search, on Autopilot">
-    <meta name="twitter:description" content="AI-powered desktop app that automatically finds, matches, and applies to jobs across LinkedIn, Indeed, and more.">
+    <meta name="twitter:title" content="Nexus by Hyperfect — Local-First Job Search Automation">
+    <meta name="twitter:description" content="Local-first desktop operator for structured job search runs across LinkedIn, Indeed, and supported ATS flows.">
     <meta name="twitter:image" content="https://hyperfect.dev/og-image.png">
     <!-- Google Analytics (GA4) — Replace G-8YDQ0S2021 with your Measurement ID from analytics.google.com -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8YDQ0S2021"></script>
@@ -1909,8 +1909,8 @@
                     <li><a href="#how-it-works">How It Works</a></li>
                     <li><a href="#demo-gallery">Demos</a></li>
                     <li><a href="/getting-started">Setup Guide</a></li>
+                    <li><a href="/license-dashboard">Manage License</a></li>
                     <li><a href="#faq">FAQ</a></li>
-                    <li><a href="#contact">Contact</a></li>
                 </ul>
                 <div class="nav-right">
                     <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
@@ -1949,7 +1949,7 @@
                 <div class="product-badge">Closed beta for <strong>local-first</strong> job search automation</div>
                 <h1>Set Up Your Job Search Once. Let Nexus Run It.</h1>
                 <p class="subheading">Nexus is a desktop job search operator for LinkedIn, Indeed, and external ATS flows. You define the roles, resumes, and guardrails. Nexus handles the repeat work locally on your machine.</p>
-                <p class="hero-guide-link">See the full setup before you join. The <a href="/getting-started">setup guide</a> walks through install, sign-in, resumes, and task configuration.</p>
+                <p class="hero-guide-link">See the full setup before you join. The <a href="/getting-started">setup guide</a> walks through install, sign-in, resumes, and search configuration.</p>
 
                 <div class="button-group">
                     <button class="btn btn-primary" onclick="document.getElementById('waitlist').scrollIntoView({ behavior: 'smooth' })">Join Waitlist</button>
@@ -1989,20 +1989,20 @@
 
                         <!-- Mockup Toolbar -->
                         <div class="mockup-toolbar">
-                            <button class="toolbar-btn btn-start" onclick="mockupAction('start')">&#9654; New Task</button>
+                            <button class="toolbar-btn btn-start" onclick="mockupAction('start')">&#9654; New Search</button>
+                            <button class="toolbar-btn btn-pause" onclick="mockupAction('pause')">&#10074;&#10074; Pause Queue</button>
                             <button class="toolbar-btn btn-stop" onclick="mockupAction('stop')">&#9632; Stop All</button>
-                            <button class="toolbar-btn btn-pause" onclick="mockupAction('pause')">&#10074;&#10074; Pause</button>
                             <div class="toolbar-spacer"></div>
-                            <div class="toolbar-status"><div class="status-dot"></div> 3 tasks running</div>
+                            <div class="toolbar-status"><div class="status-dot"></div> 2 searches active</div>
                         </div>
 
                         <!-- Mobile Tabs (visible on small screens only) -->
                         <div class="mockup-tabs">
                             <button class="mockup-tab active" data-view="dashboard" onclick="switchMockupView('dashboard', this)">Dashboard</button>
                             <button class="mockup-tab" data-view="tasks" onclick="switchMockupView('tasks', this)">Tasks</button>
-                            <button class="mockup-tab" data-view="profiles" onclick="switchMockupView('profiles', this)">Profiles</button>
+                            <button class="mockup-tab" data-view="profiles" onclick="switchMockupView('profiles', this)">Resumes</button>
                             <button class="mockup-tab" data-view="accounts" onclick="switchMockupView('accounts', this)">Accounts</button>
-                            <button class="mockup-tab" data-view="settings" onclick="switchMockupView('settings', this)">Settings</button>
+                            <button class="mockup-tab" data-view="license" onclick="switchMockupView('license', this)">License</button>
                         </div>
 
                         <!-- Mockup Body -->
@@ -2010,35 +2010,35 @@
                             <div class="mockup-sidebar">
                                 <div class="sidebar-item active" data-view="dashboard" onclick="switchMockupView('dashboard', this)">Dashboard</div>
                                 <div class="sidebar-item" data-view="tasks" onclick="switchMockupView('tasks', this)">Tasks</div>
-                                <div class="sidebar-item" data-view="profiles" onclick="switchMockupView('profiles', this)">Profiles</div>
+                                <div class="sidebar-item" data-view="profiles" onclick="switchMockupView('profiles', this)">Resumes</div>
                                 <div class="sidebar-item" data-view="accounts" onclick="switchMockupView('accounts', this)">Accounts</div>
-                                <div class="sidebar-item" data-view="settings" onclick="switchMockupView('settings', this)">Settings</div>
+                                <div class="sidebar-item" data-view="license" onclick="switchMockupView('license', this)">License</div>
                             </div>
 
                             <div class="mockup-main">
                                 <!-- Dashboard View -->
                                 <div id="dashboard-view" class="mockup-content active">
                                     <div class="mockup-panel">
-                                        <div class="mockup-panel-title">Session Health</div>
+                                        <div class="mockup-panel-title">Setup Checklist</div>
                                         <div class="status-strip">
+                                            <span class="status-pill connected">Resume Ready</span>
+                                            <span class="status-pill connected">LLM Verified</span>
                                             <span class="status-pill connected">LinkedIn Connected</span>
-                                            <span class="status-pill connected">Indeed Connected</span>
-                                            <span class="status-pill connected">LLM Connected</span>
-                                            <span class="status-pill warning">Discord Webhook Pending</span>
+                                            <span class="status-pill connected">License Active</span>
                                         </div>
                                     </div>
                                     <div class="stats-grid">
                                         <div class="stat-card">
-                                            <div class="stat-label">Applied</div>
+                                            <div class="stat-label">Applications</div>
                                             <div class="stat-value">38</div>
                                         </div>
                                         <div class="stat-card">
-                                            <div class="stat-label">Skipped</div>
-                                            <div class="stat-value">14</div>
+                                            <div class="stat-label">Running</div>
+                                            <div class="stat-value">2</div>
                                         </div>
                                         <div class="stat-card">
-                                            <div class="stat-label">Failed</div>
-                                            <div class="stat-value">2</div>
+                                            <div class="stat-label">Success Rate</div>
+                                            <div class="stat-value">92%</div>
                                         </div>
                                         <div class="stat-card">
                                             <div class="stat-label">Queue</div>
@@ -2048,36 +2048,36 @@
 
                                     <div class="dashboard-layout">
                                         <div class="mockup-panel">
-                                            <div class="mockup-panel-title">Active Tasks</div>
+                                            <div class="mockup-panel-title">Live Searches</div>
                                             <div class="task-mini">
                                                 <div>
-                                                    <div class="task-mini-title">Power Platform — LinkedIn + Indeed</div>
-                                                    <div class="task-mini-meta">Location: New Jersey • Easy Apply only</div>
+                                                    <div class="task-mini-title">Power Platform - LinkedIn + Indeed</div>
+                                                    <div class="task-mini-meta">New Jersey • Resume A • Easy Apply first</div>
                                                 </div>
                                                 <span class="score-chip">8.2/10</span>
                                             </div>
                                             <div class="task-mini">
                                                 <div>
-                                                    <div class="task-mini-title">Greenhouse Test URLs</div>
-                                                    <div class="task-mini-meta">Custom links • External form automation</div>
+                                                    <div class="task-mini-title">Greenhouse custom URLs</div>
+                                                    <div class="task-mini-meta">External apply sandbox • Manual assist allowed</div>
                                                 </div>
                                                 <span class="score-chip">7.6/10</span>
                                             </div>
                                             <div class="task-mini">
                                                 <div>
-                                                    <div class="task-mini-title">Indeed Recommended Feed</div>
+                                                    <div class="task-mini-title">Indeed recommended feed</div>
                                                     <div class="task-mini-meta">No keyword mode • Resume: PowerPlatform.pdf</div>
                                                 </div>
                                                 <span class="score-chip">7.9/10</span>
                                             </div>
                                         </div>
                                         <div class="mockup-panel">
-                                            <div class="mockup-panel-title">Live Task Logs</div>
+                                            <div class="mockup-panel-title">Activity Feed</div>
                                             <div class="log-list">
-                                                <div class="log-line">22:41:09 [Task 419acd2d] Resume file set on frame[0] input[type=file]</div>
-                                                <div class="log-line">22:41:18 [Task 419acd2d] Question solved via LLM: "Authorized to work?" => Yes</div>
-                                                <div class="log-line">22:41:32 [Task 419acd2d] Application submitted: Power Platform Architect</div>
-                                                <div class="log-line">22:41:48 [Task 419acd2d] External domain not automated yet: careers.ey.com (logged + webhook)</div>
+                                                <div class="log-line">22:41:09 [Search 419acd2d] Resume file attached on frame[0] input[type=file]</div>
+                                                <div class="log-line">22:41:18 [Search 419acd2d] LLM answered: "Authorized to work?" = Yes</div>
+                                                <div class="log-line">22:41:32 [Search 419acd2d] Application submitted: Power Platform Architect</div>
+                                                <div class="log-line">22:41:48 [Search 419acd2d] External domain queued for module review: careers.ey.com</div>
                                             </div>
                                         </div>
                                     </div>
@@ -2086,7 +2086,7 @@
                                 <!-- Tasks View -->
                                 <div id="tasks-view" class="mockup-content">
                                     <div class="mockup-panel">
-                                        <div class="mockup-panel-title">Task Queue</div>
+                                        <div class="mockup-panel-title">Search Queue</div>
                                         <div class="task-table">
                                             <div class="task-row">
                                                 <div class="task-row-main">
@@ -2115,19 +2115,19 @@
                                         </div>
                                     </div>
                                     <div class="mockup-panel" style="margin-top: 0.7rem;">
-                                        <div class="mockup-panel-title">Run Controls</div>
+                                        <div class="mockup-panel-title">Search Defaults</div>
                                         <div class="status-strip">
-                                            <span class="status-pill connected">Safe Mode: On</span>
-                                            <span class="status-pill">Easy Apply Only: On</span>
-                                            <span class="status-pill">External Apply: Off</span>
+                                            <span class="status-pill connected">Minimum score: 7.5+</span>
+                                            <span class="status-pill">Hybrid scope</span>
+                                            <span class="status-pill">Advanced options collapsed</span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- Profiles View -->
+                                <!-- Resumes View -->
                                 <div id="profiles-view" class="mockup-content">
                                     <div class="mockup-panel">
-                                        <div class="mockup-panel-title">Primary Resume + Autofill Defaults</div>
+                                        <div class="mockup-panel-title">Resume Library + Auto-Fill Defaults</div>
                                         <div class="kv-grid">
                                             <div class="kv-item">
                                                 <div class="kv-label">Resume</div>
@@ -2194,25 +2194,25 @@
                                     </div>
                                 </div>
 
-                                <!-- Settings View -->
-                                <div id="settings-view" class="mockup-content">
+                                <!-- License View -->
+                                <div id="license-view" class="mockup-content">
                                     <div class="mockup-panel">
-                                        <div class="mockup-panel-title">Runtime Settings</div>
+                                        <div class="mockup-panel-title">License Management</div>
                                         <div class="setting-mini">
-                                            <span class="setting-mini-label">LLM Provider</span>
-                                            <span class="setting-mini-value">Nexus Built-in</span>
+                                            <span class="setting-mini-label">Tier</span>
+                                            <span class="setting-mini-value">Closed Beta</span>
                                         </div>
                                         <div class="setting-mini">
-                                            <span class="setting-mini-label">Model</span>
-                                            <span class="setting-mini-value">qwen2.5-7b-instruct</span>
+                                            <span class="setting-mini-label">Key Status</span>
+                                            <span class="setting-mini-value">Verified on this Mac</span>
                                         </div>
                                         <div class="setting-mini">
-                                            <span class="setting-mini-label">Blocked Companies</span>
-                                            <span class="setting-mini-value">12 configured</span>
+                                            <span class="setting-mini-label">Machine Lock</span>
+                                            <span class="setting-mini-value">Reset available from portal</span>
                                         </div>
                                         <div class="setting-mini">
-                                            <span class="setting-mini-label">Update Channel</span>
-                                            <span class="setting-mini-value">beta (auto-check enabled)</span>
+                                            <span class="setting-mini-label">Self-Service Portal</span>
+                                            <span class="setting-mini-value">Linked for reset + access checks</span>
                                         </div>
                                     </div>
                                 </div>
@@ -2351,17 +2351,17 @@
     <section class="demo-gallery" id="demo-gallery">
         <div class="container">
             <h2 class="section-title fade-in">See Nexus In Action</h2>
-            <p class="section-subtitle fade-in">Short product clips from real task runs. Swap in your own capture files to keep this section fresh.</p>
+            <p class="section-subtitle fade-in">Short product clips from real search runs. Swap in your own capture files to keep this section fresh.</p>
 
             <div class="demo-grid">
                 <article class="demo-card fade-in">
                     <h3 class="demo-title">Create and Launch a Task</h3>
-                    <p class="demo-description">From task settings to run start in one flow.</p>
+                    <p class="demo-description">From search setup to run start in one flow.</p>
                     <div class="demo-media-wrap">
                         <img
                             class="demo-gif"
                             src="assets/demos/create-task.gif"
-                            alt="Creating and launching a task in Nexus"
+                            alt="Creating and launching a search in Nexus"
                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
                         >
                         <div class="demo-placeholder" style="display:none;">
@@ -2390,12 +2390,12 @@
 
                 <article class="demo-card fade-in">
                     <h3 class="demo-title">Task Review + Controls</h3>
-                    <p class="demo-description">Inspect task details, tweak settings, and relaunch quickly.</p>
+                    <p class="demo-description">Inspect search details, adjust defaults, and relaunch quickly.</p>
                     <div class="demo-media-wrap">
                         <img
                             class="demo-gif"
                             src="assets/demos/task-review.gif"
-                            alt="Reviewing and editing task settings in Nexus"
+                            alt="Reviewing and editing search settings in Nexus"
                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
                         >
                         <div class="demo-placeholder" style="display:none;">
@@ -2419,7 +2419,7 @@
             <div class="support-grid">
                 <article class="support-card fade-in">
                     <h3>Start-to-End Setup Guide</h3>
-                    <p>Install Nexus, activate license, connect sessions, configure defaults, and launch your first task.</p>
+                    <p>Install Nexus, activate license, connect sessions, configure defaults, and launch your first search.</p>
                     <a href="/getting-started">Open guide</a>
                 </article>
                 <article class="support-card fade-in">
@@ -2507,7 +2507,7 @@
                         <span class="faq-toggle">+</span>
                     </div>
                     <div class="faq-answer">
-                        <p class="faq-text">Yes. We ship a full onboarding and operations guide that covers install, license activation, AI model setup, task configuration, and troubleshooting. Open <a href="/getting-started" style="color: var(--accent);">Getting Started</a> for the complete walkthrough.</p>
+                        <p class="faq-text">Yes. We ship a full setup and operations guide that covers install, license activation, AI model setup, search configuration, and troubleshooting. Open <a href="/getting-started" style="color: var(--accent);">Getting Started</a> for the complete walkthrough.</p>
                     </div>
                 </div>
 
@@ -2627,6 +2627,7 @@
                         <li><a href="#how-it-works">How It Works</a></li>
                         <li><a href="#demo-gallery">Demos</a></li>
                         <li><a href="/getting-started">Setup Guide</a></li>
+                        <li><a href="/license-dashboard">Manage License</a></li>
                         <li><a href="#faq">FAQ</a></li>
                         <li><a href="#waitlist">Join Waitlist</a></li>
                     </ul>
@@ -2727,11 +2728,11 @@
             if (!statusEl) return;
 
             if (action === 'start') {
-                statusEl.innerHTML = '<div class="status-dot"></div> 4 tasks running';
+                statusEl.innerHTML = '<div class="status-dot"></div> 3 searches active';
             } else if (action === 'stop') {
-                statusEl.innerHTML = '<div class="status-dot" style="background:#ef4444;animation:none"></div> All tasks stopped';
+                statusEl.innerHTML = '<div class="status-dot" style="background:#ef4444;animation:none"></div> All searches stopped';
             } else if (action === 'pause') {
-                statusEl.innerHTML = '<div class="status-dot" style="background:#f59e0b"></div> Tasks paused';
+                statusEl.innerHTML = '<div class="status-dot" style="background:#f59e0b"></div> Queue paused';
             }
         }
 

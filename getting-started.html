@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexus Setup Guide | Hyperfect</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <meta name="description" content="Complete Nexus onboarding guide: install, license activation, AI model setup, task creation, and troubleshooting.">
+    <meta name="description" content="Complete Nexus setup guide: install, license activation, AI runtime setup, first search configuration, and troubleshooting.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -504,8 +504,8 @@
                     <li><a href="/#how-it-works">How It Works</a></li>
                     <li><a href="/#demo-gallery">Demos</a></li>
                     <li><a href="/getting-started" class="active">Setup Guide</a></li>
+                    <li><a href="/license-dashboard">Manage License</a></li>
                     <li><a href="/#faq">FAQ</a></li>
-                    <li><a href="/#contact">Contact</a></li>
                 </ul>
                 <div class="nav-right">
                     <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
@@ -540,7 +540,7 @@
         <section class="hero">
             <div class="eyebrow">Operator Documentation</div>
             <h1>Nexus Start-to-End Setup Guide</h1>
-            <p>This guide is for first-time users and beta testers. It covers install, license activation, AI model setup, task creation, and practical troubleshooting so you can get to stable, repeatable runs quickly.</p>
+            <p>This guide is for first-time users and beta testers. It covers install, license activation, AI runtime setup, first search configuration, and practical troubleshooting so you can get to stable, repeatable runs quickly.</p>
         </section>
 
         <div class="layout">
@@ -551,7 +551,7 @@
                 <a href="#llm-setup">3. AI Model Setup</a>
                 <a href="#accounts">4. Sessions + Accounts</a>
                 <a href="#profiles">5. Resume + Defaults</a>
-                <a href="#tasks">6. Create Your First Task</a>
+                <a href="#tasks">6. Create Your First Search</a>
                 <a href="#run-review">7. Run + Review Loop</a>
                 <a href="#troubleshooting">8. Troubleshooting</a>
                 <a href="#power-workflow">9. Power User Workflow</a>
@@ -588,7 +588,7 @@
                     <h2>3. AI Model Setup</h2>
 
                     <h3>Option A: Nexus Built-in (Recommended)</h3>
-                    <p>Nexus includes an onboard AI runtime. This is the default and fastest path for new users.</p>
+                    <p>Nexus includes a built-in AI runtime. This is the default and fastest path for new users.</p>
                     <ol>
                         <li>Open <strong>Settings &rarr; LLM Settings</strong>.</li>
                         <li>Select provider: <code>Nexus Built-in (Recommended)</code>.</li>
@@ -629,53 +629,54 @@
 
                 <section class="card" id="accounts">
                     <h2>4. Sessions + Accounts</h2>
-                    <p>Use the Accounts page in Nexus to verify platform sessions before running tasks.</p>
+                    <p>Use the Accounts page in Nexus to verify platform sessions before running searches.</p>
                     <ol>
                         <li>Open LinkedIn session window and sign in.</li>
                         <li>Open Indeed session window and sign in.</li>
                         <li>Refresh status inside Nexus until each shows connected.</li>
                     </ol>
-                    <div class="callout">If task start says “no login detected” but dashboard looks connected, refresh session status from Dashboard once before starting.</div>
+                    <div class="callout">If search start says “no login detected” but Command Center looks connected, refresh session status once before starting.</div>
                 </section>
 
                 <section class="card" id="profiles">
-                    <h2>5. Resume + Auto-Fill Defaults</h2>
+                    <h2>5. Resume Library + Auto-Fill Defaults</h2>
                     <ol>
                         <li>Upload resume in Resumes tab.</li>
                         <li>Confirm file path via “Open location” when needed.</li>
                         <li>Set profile defaults: location, work authorization, phone, etc.</li>
                         <li>If available in your build, set demographic defaults (race, etc.) carefully.</li>
                     </ol>
-                    <p>For consistent outcomes, keep one primary resume per task and avoid switching mid-run.</p>
+                    <p>For consistent outcomes, keep one primary resume per search and avoid switching mid-run.</p>
                 </section>
 
                 <section class="card" id="tasks">
-                    <h2>6. Create Your First Task</h2>
-                    <h3>Baseline task recipe</h3>
+                    <h2>6. Create Your First Search</h2>
+                    <h3>Baseline search recipe</h3>
                     <ol>
                         <li>Choose site (LinkedIn or Indeed first).</li>
                         <li>Add keyword + location.</li>
-                        <li>Select resume for this task explicitly.</li>
+                        <li>Select resume for this search explicitly.</li>
                         <li>Set minimum match score (example: 7.5/10).</li>
                         <li>Set application limit (example: 10/day for calibration).</li>
                         <li>Set Application Scope to <strong>Hybrid (Recommended)</strong> for a balanced on-platform + external flow.</li>
                     </ol>
 
-                    <h3>Good defaults</h3>
+                    <h3>Good first-pass defaults</h3>
                     <ul>
-                        <li>Quick Strategy: <strong>Balanced</strong></li>
+                        <li>Start with only the required fields plus one resume.</li>
                         <li>Application Scope: <strong>Hybrid</strong> (switch to platform-only when calibrating)</li>
+                        <li>Leave advanced options collapsed until the first stable run.</li>
                         <li>Discord webhook: ON for run completion and module gaps</li>
                     </ul>
-                    <div class="screenshot-slot">Add screenshot: Create Task modal with recommended defaults.</div>
+                    <div class="screenshot-slot">Add screenshot: Create Search modal with recommended defaults.</div>
                 </section>
 
                 <section class="card" id="run-review">
                     <h2>7. Run + Review Loop</h2>
                     <ol>
-                        <li>Start one task and watch first 2-3 applications closely.</li>
+                        <li>Start one search and watch first 2-3 applications closely.</li>
                         <li>Confirm question answering behavior (text, dropdown, radio).</li>
-                        <li>Check task logs for applied/skipped/failed counters.</li>
+                        <li>Check activity logs for applied/skipped/failed counters.</li>
                         <li>Review post-run summary and adjust thresholds.</li>
                     </ol>
                     <p>After one stable run, scale to more pages and higher daily limits.</p>
@@ -700,7 +701,7 @@
 
                     <h3>Easy Apply rate limit</h3>
                     <ul>
-                        <li>If rate-limited and task is Easy Apply only, stop task and retry next day.</li>
+                        <li>If rate-limited and the search is Easy Apply only, stop it and retry next day.</li>
                         <li>If external apply is enabled, skip easy applies and continue with supported external flows.</li>
                     </ul>
 
@@ -729,7 +730,7 @@
                     <p>If you need help with a run, include these artifacts in your report:</p>
                     <ul>
                         <li>Task ID and timestamp window</li>
-                        <li>Relevant task logs</li>
+                        <li>Relevant search logs</li>
                         <li>Target URL and platform</li>
                         <li>Screenshot of blocking UI state</li>
                     </ul>
@@ -741,7 +742,7 @@
 
     <div class="container footer">
         <div class="footer-divider">
-            <p class="footer-copy" id="footer-copy" style="cursor: default;">&copy; 2026 Hyperfect LLC. Nexus beta documentation.</p>
+            <p class="footer-copy" id="footer-copy" style="cursor: default;">&copy; 2026 Hyperfect LLC. Nexus setup documentation.</p>
             <p class="footer-note">Use this guide alongside the live app state. The dashboard and setup checklist should be your source of truth once Nexus is installed.</p>
             <a id="admin-link" href="/waitlist-admin" style="display:none; font-size: 0.7rem; color: var(--text-tertiary); text-decoration: none; margin-top: 4px; opacity: 0.5;">Admin</a>
         </div>

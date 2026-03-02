@@ -326,13 +326,12 @@
                 <span style="color: var(--accent); font-weight: 600">Nexus</span>
             </a>
             <ul class="nav-links">
-                <li><a href="/#demo-gallery">Demos</a></li>
-                <li><a href="/#how-it-works">How It Works</a></li>
                 <li><a href="/#features">Features</a></li>
+                <li><a href="/#how-it-works">How It Works</a></li>
+                <li><a href="/#demo-gallery">Demos</a></li>
                 <li><a href="/getting-started">Setup Guide</a></li>
                 <li><a href="/license-dashboard">Manage License</a></li>
                 <li><a href="/#faq">FAQ</a></li>
-                <li><a href="/#contact">Contact</a></li>
             </ul>
             <div class="nav-right">
                 <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
@@ -558,6 +557,8 @@
                 <ul>
                     <li><a href="/#features">Features</a></li>
                     <li><a href="/#how-it-works">How It Works</a></li>
+                    <li><a href="/getting-started">Setup Guide</a></li>
+                    <li><a href="/license-dashboard">Manage License</a></li>
                     <li><a href="/#faq">FAQ</a></li>
                 </ul>
             </div>
@@ -580,8 +581,9 @@
         <div class="footer-divider"></div>
 
         <div class="footer-bottom">
-            <p>© 2026 Hyperfect LLC. All rights reserved.</p>
+            <p id="footer-copy" style="cursor: default;">© 2026 Hyperfect LLC. All rights reserved.</p>
             <p>Nexus is not affiliated with or endorsed by LinkedIn, Indeed, Glassdoor, or any other third-party employment platforms.</p>
+            <a id="admin-link" href="/waitlist-admin" style="display:none; font-size: 0.7rem; color: var(--text-tertiary); text-decoration: none; margin-top: 4px; opacity: 0.5;">Admin</a>
         </div>
     </footer>
 
@@ -604,6 +606,24 @@
             localStorage.setItem('theme', newTheme);
             themeIcon.textContent = isLightMode ? '☀️' : '🌙';
         });
+
+        (function() {
+            let clicks = 0;
+            let timer = null;
+            const el = document.getElementById('footer-copy');
+            const link = document.getElementById('admin-link');
+            if (el && link) {
+                el.addEventListener('click', function() {
+                    clicks++;
+                    clearTimeout(timer);
+                    timer = setTimeout(function() { clicks = 0; }, 1500);
+                    if (clicks >= 5) {
+                        link.style.display = 'inline-block';
+                        clicks = 0;
+                    }
+                });
+            }
+        })();
     </script>
 </body>
 </html>

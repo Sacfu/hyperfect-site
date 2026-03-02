@@ -360,13 +360,12 @@
                 <span style="color: var(--text-primary)">Hyperfect</span><span style="color: var(--text-tertiary); margin: 0 0.35rem; font-weight: 400">/</span><span style="color: var(--accent); font-weight: 600">Nexus</span>
             </a>
             <div class="nav-links">
-                <a href="/#demo-gallery">Demos</a>
-                <a href="/#how-it-works">How It Works</a>
                 <a href="/#features">Features</a>
+                <a href="/#how-it-works">How It Works</a>
+                <a href="/#demo-gallery">Demos</a>
                 <a href="/getting-started">Setup Guide</a>
                 <a href="/license-dashboard">Manage License</a>
                 <a href="/#faq">FAQ</a>
-                <a href="/#contact">Contact</a>
             </div>
             <div class="nav-controls">
                 <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☀️</button>
@@ -664,6 +663,8 @@
                     <ul>
                         <li><a href="/#features">Features</a></li>
                         <li><a href="/#how-it-works">How It Works</a></li>
+                        <li><a href="/getting-started">Setup Guide</a></li>
+                        <li><a href="/license-dashboard">Manage License</a></li>
                         <li><a href="/#faq">FAQ</a></li>
                     </ul>
                 </div>
@@ -686,8 +687,9 @@
             </div>
 
             <div class="footer-bottom">
-                <p class="footer-copyright">© 2026 Hyperfect LLC. All rights reserved.</p>
+                <p class="footer-copyright" id="footer-copy" style="cursor: default;">© 2026 Hyperfect LLC. All rights reserved.</p>
                 <p class="footer-disclaimer">Nexus is not affiliated with LinkedIn, OpenAI, or any other third-party service. All trademarks and logos are the property of their respective owners.</p>
+                <a id="admin-link" href="/waitlist-admin" style="display:none; font-size: 0.7rem; color: var(--text-tertiary); text-decoration: none; margin-top: 4px; opacity: 0.5;">Admin</a>
             </div>
         </div>
     </footer>
@@ -715,6 +717,24 @@
             localStorage.setItem('theme', theme);
             themeToggle.textContent = isLightMode ? '🌙' : '☀️';
         });
+
+        (function() {
+            let clicks = 0;
+            let timer = null;
+            const el = document.getElementById('footer-copy');
+            const link = document.getElementById('admin-link');
+            if (el && link) {
+                el.addEventListener('click', function() {
+                    clicks++;
+                    clearTimeout(timer);
+                    timer = setTimeout(function() { clicks = 0; }, 1500);
+                    if (clicks >= 5) {
+                        link.style.display = 'inline-block';
+                        clicks = 0;
+                    }
+                });
+            }
+        })();
     </script>
 </body>
 </html>
