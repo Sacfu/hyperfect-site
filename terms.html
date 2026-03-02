@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Terms of Service - Hyperfect / Nexus</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -49,89 +50,142 @@
         }
 
         /* Navigation */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
         nav {
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(var(--bg-primary-rgb, 9, 9, 11), 0.8);
+            background: var(--glass-bg);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border);
-            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--glass-border);
+            transition: all 0.3s;
         }
 
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
+        .nav-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 1rem 0;
         }
 
         .logo {
+            color: var(--text-primary);
             text-decoration: none;
-            font-size: 1.125rem;
-            font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 0.25rem;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 700;
         }
 
-        .nav-links {
+        .logo-divider {
+            color: var(--text-tertiary);
+            font-weight: 400;
+        }
+
+        .logo-product {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .nav-center {
             display: flex;
-            gap: 0.85rem;
+            gap: 2.5rem;
             list-style: none;
-            flex-wrap: wrap;
-            justify-content: center;
+            align-items: center;
         }
 
-        .nav-links a {
+        .nav-center a {
             text-decoration: none;
             color: var(--text-secondary);
-            font-size: 0.88rem;
+            font-size: 0.95rem;
             font-weight: 500;
-            transition: color 0.2s ease;
+            transition: color 0.3s;
         }
 
-        .nav-links a:hover {
+        .nav-center a:hover,
+        .nav-center a.active {
             color: var(--accent);
         }
 
         .nav-right {
             display: flex;
-            gap: 1.5rem;
             align-items: center;
+            gap: 0.85rem;
         }
 
         .theme-toggle {
-            background: none;
-            border: none;
+            background: transparent;
+            border: 1px solid var(--border);
             color: var(--text-secondary);
             cursor: pointer;
-            font-size: 1.25rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
-            transition: color 0.2s ease;
+            justify-content: center;
+            transition: all 0.3s;
         }
 
         .theme-toggle:hover {
-            color: var(--accent);
+            background: var(--glass-bg);
+            border-color: var(--accent);
+            color: var(--text-primary);
         }
 
         .btn-waitlist {
-            padding: 0.5rem 1.25rem;
-            background-color: var(--accent);
+            padding: 0.7rem 1.75rem;
+            background: var(--accent);
             color: white;
             border: none;
-            border-radius: 0.5rem;
+            border-radius: 8px;
             font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
             text-decoration: none;
-            transition: opacity 0.2s ease;
+            transition: all 0.3s;
         }
 
         .btn-waitlist:hover {
-            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
+        }
+
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .hamburger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: currentColor;
+            margin: 5px 0;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
         }
 
         /* Main Content */
@@ -279,25 +333,6 @@
 
         /* Responsive */
         @media (max-width: 768px) {
-            nav {
-                padding: 1rem;
-            }
-
-            .nav-container {
-                flex-wrap: wrap;
-                gap: 1rem;
-            }
-
-            .nav-links {
-                gap: 1rem;
-                order: 3;
-                width: 100%;
-            }
-
-            .nav-links a {
-                font-size: 0.9rem;
-            }
-
             h1 {
                 font-size: 2rem;
             }
@@ -314,18 +349,74 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 0 14px;
+            }
+
+            .hamburger {
+                display: block;
+                order: 3;
+            }
+
+            .nav-center {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: var(--bg-primary);
+                border-bottom: 1px solid var(--border);
+                padding: 1rem 20px;
+                gap: 0;
+            }
+
+            .nav-center.open {
+                display: flex;
+            }
+
+            .nav-center li {
+                width: 100%;
+                list-style: none;
+            }
+
+            .nav-center a {
+                display: block;
+                padding: 0.75rem 0;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .nav-center li:last-child a {
+                border-bottom: none;
+            }
+
+            .nav-right {
+                gap: 0.6rem;
+            }
+
+            .btn-waitlist {
+                padding: 0.7rem 1rem;
+            }
+
+            nav {
+                position: relative;
+            }
+        }
     </style>
 </head>
 <body>
     <!-- Navigation -->
     <nav>
-        <div class="nav-container">
-            <a href="/" class="logo">
-                <span style="color: var(--text-primary)">Hyperfect</span>
-                <span style="color: var(--text-tertiary); margin: 0 0.35rem; font-weight: 400">/</span>
-                <span style="color: var(--accent); font-weight: 600">Nexus</span>
+        <div class="container">
+            <div class="nav-content">
+            <a href="/" class="logo" aria-label="Hyperfect Nexus - Home">
+                <span>Hyperfect</span>
+                <span class="logo-divider">/</span>
+                <span class="logo-product">Nexus</span>
             </a>
-            <ul class="nav-links">
+            <ul class="nav-center">
                 <li><a href="/#features">Features</a></li>
                 <li><a href="/#how-it-works">How It Works</a></li>
                 <li><a href="/#demo-gallery">Demos</a></li>
@@ -334,10 +425,29 @@
                 <li><a href="/#faq">FAQ</a></li>
             </ul>
             <div class="nav-right">
-                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                    <span id="themeIcon">🌙</span>
+                <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">
+                    <svg id="sunIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"/>
+                        <line x1="12" y1="1" x2="12" y2="3"/>
+                        <line x1="12" y1="21" x2="12" y2="23"/>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                        <line x1="1" y1="12" x2="3" y2="12"/>
+                        <line x1="21" y1="12" x2="23" y2="12"/>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                    </svg>
+                    <svg id="moonIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
                 </button>
                 <a href="/#waitlist" class="btn-waitlist">Join Waitlist</a>
+            </div>
             </div>
         </div>
     </nav>
@@ -360,7 +470,7 @@
             <section>
                 <h2>2. Description of Service</h2>
                 <p>
-                    Nexus is an AI-powered desktop application designed to automate job application workflows. The Software utilizes artificial intelligence and machine learning technologies to assist users in preparing, customizing, and submitting job applications to various online job platforms and career websites. Nexus is provided as a tool to enhance efficiency and streamline the job application process, subject to the terms and conditions outlined herein.
+                    Nexus is a desktop application designed to automate structured job search workflows. The Software may use local automation and optional third-party AI services to help users prepare, customize, and submit job applications across supported job platforms and career websites. Nexus is provided as a tool to streamline repetitive job search work, subject to the terms and conditions outlined herein.
                 </p>
                 <p>
                     The Software operates as a client-side desktop application and integrates with third-party job platforms including but not limited to LinkedIn, Indeed, Glassdoor, and other employment websites. Your use of Nexus is subject to compliance with the terms of service and usage policies of all third-party platforms you access through or with the assistance of the Software.
@@ -590,21 +700,44 @@
     <!-- Theme Toggle Script -->
     <script>
         const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = document.getElementById('themeIcon');
-        const htmlElement = document.documentElement;
+        const sunIcon = document.getElementById('sunIcon');
+        const moonIcon = document.getElementById('moonIcon');
+        const hamburger = document.getElementById('hamburger');
+        const navCenter = document.querySelector('.nav-center');
 
-        // Check for saved theme preference or default to dark mode
-        const currentTheme = localStorage.getItem('theme') || 'dark';
-        if (currentTheme === 'light') {
-            document.body.classList.add('light-mode');
-            themeIcon.textContent = '☀️';
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            setTheme(savedTheme);
+        }
+
+        function setTheme(theme) {
+            if (theme === 'light') {
+                document.body.classList.add('light-mode');
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'block';
+            } else {
+                document.body.classList.remove('light-mode');
+                sunIcon.style.display = 'block';
+                moonIcon.style.display = 'none';
+            }
+            localStorage.setItem('theme', theme);
         }
 
         themeToggle.addEventListener('click', () => {
-            const isLightMode = document.body.classList.toggle('light-mode');
-            const newTheme = isLightMode ? 'light' : 'dark';
-            localStorage.setItem('theme', newTheme);
-            themeIcon.textContent = isLightMode ? '☀️' : '🌙';
+            const currentTheme = document.body.classList.contains('light-mode') ? 'light' : 'dark';
+            setTheme(currentTheme === 'light' ? 'dark' : 'light');
+        });
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navCenter.classList.toggle('open');
+        });
+
+        navCenter.querySelectorAll('a').forEach((link) => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navCenter.classList.remove('open');
+            });
         });
 
         (function() {
@@ -624,6 +757,8 @@
                 });
             }
         })();
+
+        initializeTheme();
     </script>
 </body>
 </html>

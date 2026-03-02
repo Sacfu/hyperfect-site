@@ -8,19 +8,33 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-primary: #0b1627;
-      --bg-secondary: #101f34;
+      --bg-primary: #09090b;
+      --bg-secondary: #0f0f12;
       --bg-card: rgba(255, 255, 255, 0.04);
-      --text-primary: #f8fbff;
-      --text-secondary: #a8b6c9;
-      --text-muted: #7b8aa1;
-      --accent: #3b82f6;
-      --accent-strong: #2563eb;
-      --border: rgba(255, 255, 255, 0.10);
+      --text-primary: #fafafa;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+      --accent: #2563eb;
+      --accent-strong: #1d4ed8;
+      --border: rgba(255, 255, 255, 0.08);
+      --glass-bg: rgba(255, 255, 255, 0.04);
+      --glass-border: rgba(255, 255, 255, 0.08);
       --success: #22c55e;
       --warning: #f59e0b;
       --danger: #ef4444;
       --discord: #5865f2;
+    }
+
+    body.light-mode {
+      --bg-primary: #fafafa;
+      --bg-secondary: #f4f4f5;
+      --bg-card: rgba(0, 0, 0, 0.03);
+      --text-primary: #18181b;
+      --text-secondary: #52525b;
+      --text-muted: #71717a;
+      --border: rgba(0, 0, 0, 0.08);
+      --glass-bg: rgba(0, 0, 0, 0.03);
+      --glass-border: rgba(0, 0, 0, 0.08);
     }
 
     * {
@@ -31,98 +45,149 @@
 
     body {
       font-family: 'Inter', sans-serif;
-      background: radial-gradient(circle at 10% 4%, #15233b 0%, transparent 36%), linear-gradient(160deg, #0b1627, #091425 64%, #0f1b30 100%);
+      background-color: var(--bg-primary);
       color: var(--text-primary);
       line-height: 1.55;
       min-height: 100vh;
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     }
 
     .container {
-      max-width: 1120px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 0 20px;
     }
 
-    .topbar {
+    nav {
       position: sticky;
       top: 0;
-      z-index: 20;
-      backdrop-filter: blur(14px);
-      background: rgba(11, 22, 39, 0.72);
-      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--glass-border);
+      transition: all 0.3s;
     }
 
-    .topbar-inner {
-      min-height: 56px;
+    .nav-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    .logo {
       display: flex;
       align-items: center;
-      justify-content: flex-start;
-      gap: 12px;
-      padding: 8px 0;
-    }
-
-    .brand {
+      gap: 0.75rem;
       color: var(--text-primary);
       text-decoration: none;
       font-weight: 700;
-      font-size: 1rem;
-      letter-spacing: 0.01em;
+      font-size: 1.25rem;
     }
 
-    .brand span {
+    .logo-divider {
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .logo-product {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .nav-center {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-center a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-center a:hover,
+    .nav-center a.active {
       color: var(--accent);
     }
 
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: nowrap;
-      justify-content: flex-end;
-      flex-shrink: 0;
-      margin-left: auto;
-    }
-
-    .top-nav {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 0 4px;
-      flex: 1 1 auto;
-      min-width: 0;
-      overflow-x: auto;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      justify-content: center;
-    }
-
-    .top-nav::-webkit-scrollbar {
-      display: none;
-    }
-
-    .top-nav a {
-      flex: 0 0 auto;
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 0.78rem;
-      font-weight: 600;
+    .theme-toggle {
+      background: transparent;
       border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: 999px;
-      padding: 5px 10px;
-      white-space: nowrap;
-      line-height: 1.2;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      transition: all 0.3s;
     }
 
-    .top-nav a:hover {
+    .theme-toggle:hover {
+      background: var(--glass-bg);
+      border-color: var(--accent);
       color: var(--text-primary);
-      border-color: rgba(255, 255, 255, 0.22);
     }
 
-    .top-nav a.active {
-      color: #dbeafe;
-      border-color: rgba(59, 130, 246, 0.48);
-      background: rgba(59, 130, 246, 0.16);
+    .cta-button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 0.7rem 1.75rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
+    }
+
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: currentColor;
+      margin: 5px 0;
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
     }
 
     .btn {
@@ -140,7 +205,7 @@
 
     .btn:hover {
       border-color: rgba(255, 255, 255, 0.2);
-      background: rgba(255, 255, 255, 0.05);
+      background: var(--glass-bg);
     }
 
     .btn.primary {
@@ -181,11 +246,11 @@
     }
 
     .hero {
-      padding: 38px 0 14px;
+      padding: 44px 0 14px;
     }
 
     .eyebrow {
-      color: #93c5fd;
+      color: var(--accent);
       text-transform: uppercase;
       letter-spacing: 0.11em;
       font-size: 0.75rem;
@@ -215,7 +280,7 @@
 
     .card {
       background: var(--bg-card);
-      border: 1px solid var(--border);
+      border: 1px solid var(--glass-border);
       border-radius: 14px;
       padding: 18px;
       backdrop-filter: blur(16px) saturate(120%);
@@ -258,7 +323,7 @@
     input {
       width: 100%;
       border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.04);
+      background: var(--bg-secondary);
       color: var(--text-primary);
       border-radius: 10px;
       padding: 12px;
@@ -355,6 +420,29 @@
       flex-wrap: wrap;
     }
 
+    .footer {
+      padding-bottom: 48px;
+    }
+
+    .footer-divider {
+      border-top: 1px solid var(--glass-border);
+      padding-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+    }
+
+    .footer-copy {
+      color: var(--text-primary);
+    }
+
+    .footer-note {
+      color: var(--text-muted);
+      max-width: 720px;
+    }
+
     @media (max-width: 980px) {
       .layout {
         grid-template-columns: 1fr;
@@ -365,58 +453,103 @@
       .container { padding: 0 14px; }
       .grid { grid-template-columns: 1fr; }
       .kv { grid-template-columns: 1fr; gap: 3px; }
-      .topbar-inner {
-        min-height: auto;
-        padding: 10px 0 8px;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-      .top-actions {
-        gap: 8px;
-        justify-content: flex-end;
-        margin-left: auto;
-      }
-      .top-nav {
+      .hamburger {
+        display: block;
         order: 3;
+      }
+      .nav-center {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: var(--bg-primary);
+        border-bottom: 1px solid var(--border);
+        padding: 1rem 20px;
+        gap: 0;
+      }
+      .nav-center.open {
+        display: flex;
+      }
+      .nav-center li {
         width: 100%;
-        justify-content: flex-start;
-        padding: 2px 0 0;
+        list-style: none;
+      }
+      .nav-center a {
+        display: block;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-center li:last-child a {
+        border-bottom: none;
+      }
+      .nav-right {
+        gap: 0.6rem;
+      }
+      .cta-button {
+        padding: 0.7rem 1rem;
+      }
+      nav {
+        position: relative;
       }
     }
   </style>
 </head>
 <body>
-  <header class="topbar">
+  <nav>
     <div class="container">
-      <div class="topbar-inner">
-        <a class="brand" href="/">Hyperfect<span>/Nexus</span></a>
-        <nav class="top-nav" aria-label="Site Sections">
-          <a href="/#features">Features</a>
-          <a href="/#how-it-works">How It Works</a>
-          <a href="/#demo-gallery">Demos</a>
-          <a href="/getting-started">Setup Guide</a>
-          <a href="/license-dashboard" class="active">Manage License</a>
-          <a href="/#faq">FAQ</a>
-        </nav>
-        <div class="top-actions">
-          <a class="btn primary" href="/#waitlist-heading">Join Waitlist</a>
+      <div class="nav-content">
+        <a href="/" class="logo" aria-label="Hyperfect Nexus - Home">
+          <span>Hyperfect</span><span class="logo-divider">/</span><span class="logo-product">Nexus</span>
+        </a>
+        <ul class="nav-center">
+          <li><a href="/#features">Features</a></li>
+          <li><a href="/#how-it-works">How It Works</a></li>
+          <li><a href="/#demo-gallery">Demos</a></li>
+          <li><a href="/getting-started">Setup Guide</a></li>
+          <li><a href="/license-dashboard" class="active">Manage License</a></li>
+          <li><a href="/#faq">FAQ</a></li>
+        </ul>
+        <div class="nav-right">
+          <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">
+            <svg id="sunIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"/>
+              <line x1="12" y1="1" x2="12" y2="3"/>
+              <line x1="12" y1="21" x2="12" y2="23"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="1" y1="12" x2="3" y2="12"/>
+              <line x1="21" y1="12" x2="23" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+            <svg id="moonIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          </button>
+          <a class="cta-button" href="/#waitlist">Join Waitlist</a>
         </div>
       </div>
     </div>
-  </header>
+  </nav>
 
   <main class="container">
     <section class="hero">
       <div class="eyebrow">License Center</div>
       <h1>Manage Your Nexus License</h1>
-      <p>Sign in with Discord (recommended) or verify by email code. Reset machine activation any time if you need to move Nexus to another computer.</p>
+      <p>Check the license tied to your Nexus purchase, verify by Discord or email, and reset the machine lock when you need to move to a different computer.</p>
     </section>
 
     <section class="layout" id="auth-layout">
       <article class="card">
         <h2>Sign In with Discord</h2>
-        <p>Use the same Discord account from our server. If this is your first time, run <code>/license-bind</code> in Discord to link your key.</p>
+        <p>Use the same Discord account you used for beta access. If this is your first time, run <code>/license-bind</code> in Discord to link your key.</p>
         <div class="row">
           <button class="btn discord" id="discord-login-btn">Sign In with Discord</button>
           <button class="btn" id="discord-retry-btn">Retry Discord Login</button>
@@ -474,7 +607,21 @@
     </section>
   </main>
 
+  <div class="container footer">
+    <div class="footer-divider">
+      <p class="footer-copy" id="footer-copy" style="cursor: default;">&copy; 2026 Hyperfect LLC. Nexus license management.</p>
+      <p class="footer-note">Use this page to verify ownership, review license status, and reset the machine lock if you need to move Nexus to another computer.</p>
+      <a id="admin-link" href="/waitlist-admin" style="display:none; font-size: 0.7rem; color: var(--text-muted); text-decoration: none; margin-top: 4px; opacity: 0.5;">Admin</a>
+    </div>
+  </div>
+
   <script>
+    const themeToggle = document.getElementById('themeToggle');
+    const sunIcon = document.getElementById('sunIcon');
+    const moonIcon = document.getElementById('moonIcon');
+    const hamburger = document.getElementById('hamburger');
+    const navCenter = document.querySelector('.nav-center');
+
     const API = '/api/license-portal';
     const DISCORD_CLIENT_ID = '1472604757687275723';
     const DISCORD_SCOPE = 'identify';
@@ -489,6 +636,24 @@
     const dashboardCard = document.getElementById('dashboard-card');
     const licenseKv = document.getElementById('license-kv');
     const machinePill = document.getElementById('machine-pill');
+
+    function initializeTheme() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      setTheme(savedTheme);
+    }
+
+    function setTheme(theme) {
+      if (theme === 'light') {
+        document.body.classList.add('light-mode');
+        sunIcon.style.display = 'none';
+        moonIcon.style.display = 'block';
+      } else {
+        document.body.classList.remove('light-mode');
+        sunIcon.style.display = 'block';
+        moonIcon.style.display = 'none';
+      }
+      localStorage.setItem('theme', theme);
+    }
 
     function setStatus(el, text, kind = '') {
       el.className = `status ${kind}`.trim();
@@ -724,7 +889,42 @@
       await authenticateWithDiscord(token);
     });
 
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.body.classList.contains('light-mode') ? 'light' : 'dark';
+      setTheme(currentTheme === 'light' ? 'dark' : 'light');
+    });
+
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      navCenter.classList.toggle('open');
+    });
+
+    navCenter.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navCenter.classList.remove('open');
+      });
+    });
+
+    (function revealAdminLink() {
+      let clicks = 0;
+      let timer = null;
+      const el = document.getElementById('footer-copy');
+      const link = document.getElementById('admin-link');
+      if (!el || !link) return;
+      el.addEventListener('click', () => {
+        clicks += 1;
+        clearTimeout(timer);
+        timer = setTimeout(() => { clicks = 0; }, 1500);
+        if (clicks >= 5) {
+          link.style.display = 'inline-block';
+          clicks = 0;
+        }
+      });
+    })();
+
     (async function init() {
+      initializeTheme();
       parseDiscordTokenFromHash();
       await loadDashboard();
       if (getPortalToken()) return;
