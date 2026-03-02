@@ -308,9 +308,10 @@
         }
 
         .hero-guide-link {
-            margin: -0.9rem 0 1.2rem;
+            margin: -0.9rem auto 1.2rem;
             font-size: 0.92rem;
             color: var(--text-secondary);
+            max-width: 680px;
         }
 
         .hero-guide-link a {
@@ -327,8 +328,26 @@
             display: flex;
             gap: 1rem;
             justify-content: center;
-            margin-bottom: 3rem;
+            margin-bottom: 1rem;
             flex-wrap: wrap;
+        }
+
+        .hero-access {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.85rem;
+            margin-bottom: 3rem;
+        }
+
+        .hero-access-copy {
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .hero-access-copy strong {
+            color: var(--text-primary);
         }
 
         .btn {
@@ -1720,153 +1739,6 @@
         }
 
         /* ========================================
-           ONBOARDING MODAL
-           ======================================== */
-        .onboarding-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-        }
-
-        .onboarding-overlay.visible {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .onboarding-modal {
-            background: var(--bg-secondary);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            max-width: 520px;
-            width: 100%;
-            padding: 2.5rem;
-            position: relative;
-            transform: scale(0.95) translateY(10px);
-            transition: transform 0.3s;
-        }
-
-        .onboarding-overlay.visible .onboarding-modal {
-            transform: scale(1) translateY(0);
-        }
-
-        .onboarding-close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            color: var(--text-tertiary);
-            cursor: pointer;
-            font-size: 1.25rem;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 6px;
-            transition: all 0.2s;
-        }
-
-        .onboarding-close:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-primary);
-        }
-
-        .onboarding-badge {
-            display: inline-block;
-            background: rgba(37, 99, 235, 0.12);
-            color: var(--accent);
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 0.35rem 0.85rem;
-            border-radius: 100px;
-            letter-spacing: 0.3px;
-            text-transform: uppercase;
-            margin-bottom: 1.25rem;
-        }
-
-        .onboarding-modal h2 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin-bottom: 0.75rem;
-            color: var(--text-primary);
-        }
-
-        .onboarding-modal p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.65;
-            margin-bottom: 1.5rem;
-        }
-
-        .onboarding-features {
-            display: flex;
-            flex-direction: column;
-            gap: 0.85rem;
-            margin-bottom: 2rem;
-        }
-
-        .onboarding-feature {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-
-        .onboarding-feature-icon {
-            flex-shrink: 0;
-            width: 20px;
-            height: 20px;
-            background: rgba(37, 99, 235, 0.15);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 2px;
-        }
-
-        .onboarding-feature-icon svg {
-            width: 10px;
-            height: 10px;
-            stroke: var(--accent);
-            fill: none;
-            stroke-width: 3;
-        }
-
-        .onboarding-actions {
-            display: flex;
-            gap: 0.75rem;
-        }
-
-        .onboarding-actions .btn {
-            flex: 1;
-            text-align: center;
-        }
-
-        @media (max-width: 480px) {
-            .onboarding-modal {
-                padding: 1.75rem;
-            }
-            .onboarding-modal h2 {
-                font-size: 1.25rem;
-            }
-            .onboarding-actions {
-                flex-direction: column;
-            }
-        }
-
-        /* ========================================
            BRANDING & PRODUCT BADGE
            ======================================== */
         .logo-divider {
@@ -2024,36 +1896,6 @@
 </head>
 <body>
     <!-- ========================================
-         ONBOARDING MODAL (first-time visitors)
-         ======================================== -->
-    <div class="onboarding-overlay" id="onboarding">
-        <div class="onboarding-modal">
-            <button class="onboarding-close" id="onboarding-close" aria-label="Close">&times;</button>
-            <div class="onboarding-badge">Closed Beta</div>
-            <h2>Welcome to Nexus</h2>
-            <p>Nexus is an AI-powered desktop app that automatically finds, matches, and applies to jobs for you — across LinkedIn, Indeed, and more.</p>
-            <div class="onboarding-features">
-                <div class="onboarding-feature">
-                    <div class="onboarding-feature-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-                    <span><strong>100% local.</strong> Your resume and data never leave your machine.</span>
-                </div>
-                <div class="onboarding-feature">
-                    <div class="onboarding-feature-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-                    <span><strong>Built-in AI.</strong> No external tools needed. Also supports OpenAI, Claude, LM Studio, or Ollama.</span>
-                </div>
-                <div class="onboarding-feature">
-                    <div class="onboarding-feature-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-                    <span><strong>Set it and forget it.</strong> Nexus applies while you sleep.</span>
-                </div>
-            </div>
-            <div class="onboarding-actions">
-                <button class="btn btn-primary" onclick="closeOnboarding(); document.getElementById('waitlist').scrollIntoView({ behavior: 'smooth' });">Join Waitlist</button>
-                <button class="btn btn-secondary" onclick="closeOnboarding()">Explore the Site</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ========================================
          NAVIGATION
          ======================================== -->
     <nav>
@@ -2104,23 +1946,25 @@
     <section class="hero">
         <div class="container">
             <div class="hero-content fade-in">
-                <div class="product-badge">Introducing <strong>Nexus</strong> — a Hyperfect product</div>
-                <h1>Your Job Search, on Autopilot</h1>
-                <p class="subheading">Nexus by Hyperfect uses AI to automatically find, match, and apply to jobs across LinkedIn, Indeed, and more — while you focus on what matters.</p>
-                <p class="hero-guide-link">New here? Start with the <a href="/getting-started">full setup guide</a>.</p>
+                <div class="product-badge">Closed beta for <strong>local-first</strong> job search automation</div>
+                <h1>Set Up Your Job Search Once. Let Nexus Run It.</h1>
+                <p class="subheading">Nexus is a desktop job search operator for LinkedIn, Indeed, and external ATS flows. You define the roles, resumes, and guardrails. Nexus handles the repeat work locally on your machine.</p>
+                <p class="hero-guide-link">See the full setup before you join. The <a href="/getting-started">setup guide</a> walks through install, sign-in, resumes, and task configuration.</p>
 
                 <div class="button-group">
                     <button class="btn btn-primary" onclick="document.getElementById('waitlist').scrollIntoView({ behavior: 'smooth' })">Join Waitlist</button>
+                    <a class="btn btn-secondary" href="/getting-started">See Setup Guide</a>
+                </div>
 
-                    <!-- Discord Auth: Logged Out State -->
+                <div class="hero-access">
+                    <div class="hero-access-copy"><strong>Already approved for beta?</strong> Use Discord to unlock your download.</div>
                     <div id="hero-logged-out" class="hero-auth active">
                         <button class="discord-login-btn" id="discord-login-btn">
                             <svg role="img" viewBox="0 0 24 24" fill="currentColor" aria-label="Discord"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
-                            Sign in with Discord
+                            Unlock with Discord
                         </button>
                     </div>
 
-                    <!-- Discord Auth: Logged In State — shows download -->
                     <div id="hero-logged-in" class="hero-auth">
                         <div class="hero-user-row">
                             <img id="discord-avatar" src="" alt="Avatar" class="hero-avatar">
@@ -3147,27 +2991,6 @@
             });
         });
 
-        // ========== Onboarding Modal ==========
-        function closeOnboarding() {
-            const overlay = document.getElementById('onboarding');
-            overlay.classList.remove('visible');
-            setTimeout(() => overlay.remove(), 300);
-            localStorage.setItem('nexus_onboarded', 'true');
-        }
-
-        function initOnboarding() {
-            if (localStorage.getItem('nexus_onboarded')) return;
-            const overlay = document.getElementById('onboarding');
-            if (!overlay) return;
-            // Small delay so it feels intentional, not jarring
-            setTimeout(() => overlay.classList.add('visible'), 400);
-
-            document.getElementById('onboarding-close').addEventListener('click', closeOnboarding);
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) closeOnboarding();
-            });
-        }
-
         // ========== Admin Link (5-click reveal) ==========
         (function() {
             let clicks = 0, timer = null;
@@ -3189,7 +3012,6 @@
         // ========== Initialize ==========
         initializeTheme();
         initDiscordAuth();
-        initOnboarding();
     </script>
     <!-- Vercel Analytics -->
     <script defer src="/_vercel/insights/script.js"></script>
