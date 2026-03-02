@@ -10,6 +10,9 @@
         :root {
             --bg: #09090b;
             --bg-soft: #0f0f12;
+            --page-grid: rgba(255, 255, 255, 0.028);
+            --page-glow-1: rgba(37, 99, 235, 0.12);
+            --page-glow-2: rgba(148, 163, 184, 0.08);
             --panel: rgba(255, 255, 255, 0.06);
             --panel-strong: rgba(255, 255, 255, 0.04);
             --border: rgba(255, 255, 255, 0.08);
@@ -28,6 +31,9 @@
         body.light-mode {
             --bg: #fafafa;
             --bg-soft: #f4f4f5;
+            --page-grid: rgba(15, 23, 42, 0.04);
+            --page-glow-1: rgba(37, 99, 235, 0.11);
+            --page-glow-2: rgba(120, 136, 160, 0.1);
             --panel: rgba(0, 0, 0, 0.03);
             --panel-strong: rgba(0, 0, 0, 0.03);
             --border: rgba(0, 0, 0, 0.08);
@@ -45,6 +51,14 @@
             font-family: 'Inter', sans-serif;
             color: var(--text);
             background-color: var(--bg);
+            background-image:
+                radial-gradient(circle at 14% 10%, var(--page-glow-1), transparent 26%),
+                radial-gradient(circle at 84% 0%, var(--page-glow-2), transparent 22%),
+                linear-gradient(var(--page-grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--page-grid) 1px, transparent 1px),
+                linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%);
+            background-size: auto, auto, 30px 30px, 30px 30px, auto;
+            background-attachment: fixed;
             transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
 

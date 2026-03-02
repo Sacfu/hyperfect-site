@@ -35,6 +35,9 @@
             --bg-primary: #09090b;
             --bg-secondary: #0f0f12;
             --bg-tertiary: #1a1a1f;
+            --page-grid: rgba(255, 255, 255, 0.028);
+            --page-glow-1: rgba(37, 99, 235, 0.12);
+            --page-glow-2: rgba(148, 163, 184, 0.08);
             --text-primary: #fafafa;
             --text-secondary: #a1a1aa;
             --text-tertiary: #71717a;
@@ -48,6 +51,9 @@
             --bg-primary: #fafafa;
             --bg-secondary: #f4f4f5;
             --bg-tertiary: #e4e4e7;
+            --page-grid: rgba(15, 23, 42, 0.04);
+            --page-glow-1: rgba(37, 99, 235, 0.11);
+            --page-glow-2: rgba(120, 136, 160, 0.1);
             --text-primary: #18181b;
             --text-secondary: #52525b;
             --text-tertiary: #71717a;
@@ -69,6 +75,14 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-primary);
+            background-image:
+                radial-gradient(circle at 14% 10%, var(--page-glow-1), transparent 26%),
+                radial-gradient(circle at 84% 0%, var(--page-glow-2), transparent 22%),
+                linear-gradient(var(--page-grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--page-grid) 1px, transparent 1px),
+                linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            background-size: auto, auto, 30px 30px, 30px 30px, auto;
+            background-attachment: fixed;
             color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
@@ -292,10 +306,18 @@
         .hero h1 {
             font-size: clamp(2.5rem, 8vw, 4rem);
             font-weight: 800;
-            line-height: 1.15;
+            line-height: 1.08;
             margin-bottom: 1.5rem;
             color: var(--text-primary);
             letter-spacing: -0.02em;
+        }
+
+        .hero h1 span {
+            display: block;
+        }
+
+        .hero h1 span + span {
+            margin-top: 0.12em;
         }
 
         .hero .subheading {
@@ -1801,6 +1823,16 @@
             text-decoration: underline;
         }
 
+        .turnstile-wrap {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        #turnstile-widget {
+            min-height: 66px;
+        }
+
         .success-message {
             background: rgba(34, 197, 94, 0.1);
             border: 1px solid rgba(34, 197, 94, 0.3);
@@ -2312,7 +2344,7 @@
             }
         }
     </style>
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 </head>
 <body>
     <!-- ========================================
@@ -2367,7 +2399,7 @@
         <div class="container">
             <div class="hero-content fade-in">
                 <div class="product-badge">Closed beta for <strong>local-first</strong> job search automation</div>
-                <h1>Set Up Your Job Search Once. Let Nexus Run It.</h1>
+                <h1><span>Set Up Your Job Search Once.</span><span>Let Nexus Run It.</span></h1>
                 <p class="subheading">Nexus is a desktop job search operator for LinkedIn, Indeed, and external ATS flows. You define the roles, resumes, and guardrails. Nexus handles the repeat work locally on your machine.</p>
                 <p class="hero-guide-link">See the full setup before you join. The <a href="/getting-started">setup guide</a> walks through install, sign-in, resumes, and search configuration.</p>
 
@@ -2812,7 +2844,9 @@
                         </label>
                     </div>
 
-                    <div class="cf-turnstile" data-sitekey="0x4AAAAAACjj_SKWDCu0mvTQ" data-callback="onTurnstileVerify" data-theme="dark" style="margin-bottom: 16px;"></div>
+                    <div class="turnstile-wrap">
+                        <div id="turnstile-widget" aria-label="Spam protection"></div>
+                    </div>
                     <input type="hidden" id="turnstile-token" name="turnstile_token" value="">
 
                     <button type="submit" class="form-submit">Join Waitlist</button>
@@ -3002,6 +3036,49 @@
         const themeToggle = document.getElementById('themeToggle');
         const sunIcon = document.getElementById('sunIcon');
         const moonIcon = document.getElementById('moonIcon');
+        const TURNSTILE_SITE_KEY = '0x4AAAAAACjj_SKWDCu0mvTQ';
+        let turnstileWidgetId = null;
+        let turnstileRenderAttempts = 0;
+
+        function getTurnstileTheme() {
+            return document.body.classList.contains('light-mode') ? 'light' : 'dark';
+        }
+
+        function renderTurnstileWidget() {
+            if (!window.turnstile?.render) return false;
+            const target = document.getElementById('turnstile-widget');
+            if (!target) return false;
+
+            if (turnstileWidgetId) {
+                try {
+                    window.turnstile.remove(turnstileWidgetId);
+                } catch (_) {
+                    // Ignore stale widget cleanup errors.
+                }
+                turnstileWidgetId = null;
+            }
+
+            target.innerHTML = '';
+            turnstileWidgetId = window.turnstile.render(target, {
+                sitekey: TURNSTILE_SITE_KEY,
+                theme: getTurnstileTheme(),
+                callback: window.onTurnstileVerify,
+            });
+            return true;
+        }
+
+        function scheduleTurnstileRender() {
+            turnstileRenderAttempts = 0;
+
+            const attemptRender = () => {
+                if (renderTurnstileWidget()) return;
+                if (turnstileRenderAttempts >= 40) return;
+                turnstileRenderAttempts += 1;
+                window.setTimeout(attemptRender, 250);
+            };
+
+            attemptRender();
+        }
 
         function initializeTheme() {
             const savedTheme = localStorage.getItem('theme') || 'dark';
@@ -3019,6 +3096,10 @@
                 moonIcon.style.display = 'none';
             }
             localStorage.setItem('theme', theme);
+
+            if (turnstileWidgetId || window.turnstile?.render) {
+                renderTurnstileWidget();
+            }
         }
 
         themeToggle.addEventListener('click', () => {
@@ -3047,6 +3128,8 @@
         window.onTurnstileVerify = function(token) {
             document.getElementById('turnstile-token').value = token;
         };
+
+        scheduleTurnstileRender();
 
         // ========== Waitlist Form Handling ==========
         async function submitWaitlistForm(formData, formEl, successEl, errorEl) {
