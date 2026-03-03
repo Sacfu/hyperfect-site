@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexus Setup Guide | Hyperfect</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <meta name="description" content="Complete Nexus setup guide: install, license activation, AI runtime setup, first search configuration, and troubleshooting.">
+    <meta name="description" content="Set up Nexus from install to first search: activate your license, connect AI, sign in to job sites, and fix common blockers.">
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -809,23 +809,23 @@
             <div class="container">
                 <div class="hero-shell">
                     <div class="hero-copy-panel">
-                        <div class="eyebrow mono"><span class="eyebrow-dot"></span>Operator documentation</div>
-                        <h1>Nexus start-to-end setup guide.</h1>
-                        <p>This is the operational path for first-time users and beta testers: install the app, activate the key, connect the runtime, verify site sessions, then launch one clean run before scaling volume.</p>
+                        <div class="eyebrow mono"><span class="eyebrow-dot"></span>Setup guide</div>
+                        <h1>Set up Nexus from install to first search.</h1>
+                        <p>This guide walks through activation, AI setup, job-site sign-ins, resume setup, and your first search so you can get started without guesswork.</p>
                         <div class="hero-meta">
-                            <div class="meta-pill">Install + activation</div>
-                            <div class="meta-pill">LLM setup</div>
-                            <div class="meta-pill">Search configuration</div>
-                            <div class="meta-pill">Troubleshooting</div>
+                            <div class="meta-pill">Install</div>
+                            <div class="meta-pill">Activate</div>
+                            <div class="meta-pill">Connect AI</div>
+                            <div class="meta-pill">Run first search</div>
                         </div>
                     </div>
 
                     <div class="hero-side-panel">
                         <h2>Fast path</h2>
                         <div class="quick-stack">
-                            <div class="quick-item"><strong>1. Activate the app</strong><span>Download Nexus, install it, and apply your license key first.</span></div>
-                            <div class="quick-item"><strong>2. Verify runtime + sessions</strong><span>Test the model connection and sign in to your target platforms before creating a search.</span></div>
-                            <div class="quick-item"><strong>3. Run one controlled search</strong><span>Calibrate with a small batch before increasing application volume.</span></div>
+                            <div class="quick-item"><strong>1. Activate Nexus</strong><span>Install the app and apply your license key first.</span></div>
+                            <div class="quick-item"><strong>2. Sign in + test setup</strong><span>Verify your AI connection and sign in to the job sites you plan to use.</span></div>
+                            <div class="quick-item"><strong>3. Start with one small search</strong><span>Run a low-volume first pass before increasing daily applications.</span></div>
                         </div>
                         <div class="hero-side-actions">
                             <a class="btn" href="/license-dashboard">Manage License</a>
@@ -842,22 +842,22 @@
                 <div class="toc-links">
                     <a href="#preflight">1. Preflight Checklist</a>
                     <a href="#install">2. Install + Activation</a>
-                    <a href="#llm-setup">3. AI Model Setup</a>
-                    <a href="#accounts">4. Sessions + Accounts</a>
-                    <a href="#profiles">5. Resume + Defaults</a>
+                    <a href="#llm-setup">3. AI Setup</a>
+                    <a href="#accounts">4. Job Site Sign-ins</a>
+                    <a href="#profiles">5. Resumes + Defaults</a>
                     <a href="#tasks">6. Create Your First Search</a>
-                    <a href="#run-review">7. Run + Review Loop</a>
+                    <a href="#run-review">7. Watch the First Run</a>
                     <a href="#troubleshooting">8. Troubleshooting</a>
-                    <a href="#power-workflow">9. Power User Workflow</a>
-                    <a href="#support">10. Support + Escalation</a>
+                    <a href="#power-workflow">9. Scale Up Safely</a>
+                    <a href="#support">10. Get Help</a>
                 </div>
-                <p class="toc-note">Use this guide with the live app. Once Nexus is installed, the dashboard and setup checklist should become the day-to-day source of truth.</p>
+                <p class="toc-note">Use this guide alongside the app. Once Nexus is installed, the dashboard and setup checklist become your day-to-day home base.</p>
             </aside>
 
             <div class="content">
                 <section class="card" id="preflight">
                     <h2>1. Preflight Checklist</h2>
-                    <p>Before opening Nexus, verify these five items so your first run is clean:</p>
+                    <p>Before you get started, make sure these five things are ready:</p>
                     <ul>
                         <li>You have your license key in format <code>NEXUS-XXXX-XXXX-XXXX-XXXX</code>.</li>
                         <li>Your target platforms are signed in at least once manually (LinkedIn and/or Indeed).</li>
@@ -876,7 +876,7 @@
                         <li>Paste your license key on the activation screen and click <strong>Activate</strong>.</li>
                         <li>If activation fails: verify internet connectivity and retry once.</li>
                     </ol>
-                    <div class="callout success">Once activated, Nexus stores local license state and periodically verifies in the background.</div>
+                    <div class="callout success">Once a machine is activated, you usually will not need to enter the key again unless you move devices.</div>
                     <figure class="guide-shot">
                         <img src="assets/screenshots/nexus-activation-screen.png" alt="Nexus activation screen requesting a license key" loading="lazy">
                         <figcaption>Activation happens before the full workspace opens. Once the key verifies, Nexus unlocks the full desktop app.</figcaption>
@@ -884,9 +884,9 @@
                 </section>
 
                 <section class="card" id="llm-setup">
-                    <h2>3. AI Model Setup</h2>
+                    <h2>3. AI Setup</h2>
 
-                    <h3>Option A: Nexus Built-in (Recommended)</h3>
+                    <h3>Option A: Built-in AI (Recommended)</h3>
                     <p>Nexus includes a built-in AI runtime. This is the default and fastest path for new users.</p>
                     <ol>
                         <li>Open <strong>Settings &rarr; LLM Settings</strong>.</li>
@@ -926,22 +926,22 @@
                 </section>
 
                 <section class="card" id="accounts">
-                    <h2>4. Sessions + Accounts</h2>
+                    <h2>4. Job Site Sign-ins</h2>
                     <p>Use the Accounts page in Nexus to verify platform sessions before running searches.</p>
                     <ol>
                         <li>Open the LinkedIn session window and sign in.</li>
                         <li>Open the Indeed session window and sign in.</li>
                         <li>Refresh status inside Nexus until each shows connected.</li>
                     </ol>
-                    <div class="callout">If search start says “no login detected” but Command Center looks connected, refresh session status once before starting.</div>
+                    <div class="callout">If Nexus says a site is not signed in, refresh that session once from the Accounts page before starting again.</div>
                     <figure class="guide-shot">
-                        <img src="assets/screenshots/accounts-and-sessions.png" alt="Nexus Accounts and Sessions page showing LinkedIn, Indeed, and Glassdoor session controls" loading="lazy">
+                        <img src="assets/screenshots/accounts-and-sessions.png" alt="Nexus Accounts page showing job-site session controls" loading="lazy">
                         <figcaption>Keep at least one active session per platform you plan to automate before launching a search.</figcaption>
                     </figure>
                 </section>
 
                 <section class="card" id="profiles">
-                    <h2>5. Resume Library + Auto-Fill Defaults</h2>
+                    <h2>5. Resumes + Profile Defaults</h2>
                     <ol>
                         <li>Upload your resume in the Resumes tab.</li>
                         <li>Confirm the file path via “Open location” when needed.</li>
@@ -964,24 +964,24 @@
                         <li>Select a resume for this search explicitly.</li>
                         <li>Set minimum match score (for example: <code>7.5 / 10</code>).</li>
                         <li>Set a daily application limit (for example: <code>10</code> for calibration).</li>
-                        <li>Set Application Scope to <strong>Hybrid (Recommended)</strong>.</li>
+                        <li>Set Search Style to <strong>Balanced (Recommended)</strong>.</li>
                     </ol>
 
                     <h3>Good first-pass defaults</h3>
                     <ul>
                         <li>Start with required fields plus one resume.</li>
-                        <li>Use <strong>Hybrid</strong> scope, or platform-only if you are calibrating slowly.</li>
+                        <li>Use <strong>Balanced</strong> Search Style for most first runs.</li>
                         <li>Leave advanced options collapsed until the first stable run.</li>
-                        <li>Keep Discord webhook notifications on for run completion and module gaps.</li>
+                        <li>Keep the daily limit low until the first run is stable.</li>
                     </ul>
                     <figure class="guide-shot">
                         <img src="assets/screenshots/create-search.png" alt="Nexus Create Search flow with recommended defaults for a first search" loading="lazy">
-                        <figcaption>For the first pass, stick to the default search recipe, one resume, and a modest daily budget until the workflow proves itself.</figcaption>
+                        <figcaption>For the first pass, use one resume, Balanced Search Style, and a modest daily limit until the workflow proves itself.</figcaption>
                     </figure>
                 </section>
 
                 <section class="card" id="run-review">
-                    <h2>7. Run + Review Loop</h2>
+                    <h2>7. Watch the First Run</h2>
                     <ol>
                         <li>Start one search and watch the first 2 to 3 applications closely.</li>
                         <li>Confirm question-answering behavior across text, dropdown, and radio fields.</li>
@@ -1022,8 +1022,8 @@
                 </section>
 
                 <section class="card" id="power-workflow">
-                    <h2>9. Power User Workflow</h2>
-                    <p>Borrowing from high-discipline operator playbooks:</p>
+                    <h2>9. Scale Up Safely</h2>
+                    <p>Once your first search is clean:</p>
                     <ul>
                         <li>Run small batches, validate quality, then scale volume.</li>
                         <li>Keep one known-good config profile as a fallback baseline.</li>
@@ -1035,7 +1035,7 @@
                 </section>
 
                 <section class="card" id="support">
-                    <h2>10. Support + Escalation</h2>
+                    <h2>10. Get Help</h2>
                     <p>If you need help with a run, include these artifacts in your report:</p>
                     <ul>
                         <li>Search ID and timestamp window</li>
@@ -1053,7 +1053,7 @@
         <div class="container">
             <div class="footer-shell">
                 <p class="footer-copy" id="footer-copy">&copy; 2026 Hyperfect LLC. Nexus setup documentation.</p>
-                <p class="footer-note">Use this guide alongside the live app state. Once Nexus is installed, the dashboard and setup checklist should be your operational source of truth.</p>
+                <p class="footer-note">Use this guide alongside the app. Once Nexus is installed, the dashboard and setup checklist are the best place to see what still needs attention.</p>
                 <a id="admin-link" href="/waitlist-admin">Admin</a>
             </div>
         </div>
