@@ -87,7 +87,7 @@ const WAITLIST_STATUSES = new Set([
 
 function setCors(res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 }
 
@@ -165,7 +165,7 @@ function mapWaitlistCustomer(customer) {
         is_waitlist: isWaitlist,
         interest: metadata.waitlist_interest || '',
         source: metadata.waitlist_source || '',
-        notes: metadata.waitlist_notes || '',
+        notes: metadata.waitlist_review_notes || metadata.waitlist_notes || '',
         submissions: parseInt(metadata.waitlist_submission_count || '1', 10) || 1,
         created_at: metadata.waitlist_created_at || fallbackCreatedAt,
         updated_at: metadata.waitlist_updated_at || null,
@@ -220,6 +220,20 @@ async function createInviteForCustomer(email, name, customerId) {
     };
 }
 
+function buildWaitlistMetadataPatch(nextValues = {}) {
+    const patch = {};
+    for (const [key, value] of Object.entries(nextValues)) {
+        if (!key.startsWith('waitlist_') && key !== 'waitlist') continue;
+        patch[key] = typeof value === 'string' ? value : String(value ?? '');
+    }
+    return patch;
+}
+
+function getAdminErrorMessage(err) {
+    const raw = err?.raw?.message || err?.message || String(err || '');
+    return cleanText(raw || 'Waitlist request failed', 240) || 'Waitlist request failed';
+}
+
 async function handlePublicSubmit(req, res) {
     // Rate limit check
     const clientIP = getClientIP(req);
@@ -260,8 +274,7 @@ async function handlePublicSubmit(req, res) {
 
         const updated = await stripe.customers.update(existing.id, {
             name: name || existing.name || undefined,
-            metadata: {
-                ...previous,
+            metadata: buildWaitlistMetadataPatch({
                 waitlist: 'true',
                 waitlist_status: nextStatus,
                 waitlist_name: name,
@@ -272,7 +285,7 @@ async function handlePublicSubmit(req, res) {
                 waitlist_last_submitted_at: now,
                 waitlist_updated_at: now,
                 waitlist_created_at: previous.waitlist_created_at || now,
-            },
+            }),
         });
 
         return res.status(200).json({
@@ -398,14 +411,13 @@ async function handleAdminUpdate(req, res) {
 
     const previous = customer.metadata || {};
     const now = new Date().toISOString();
-    const metadata = {
-        ...previous,
+    const metadata = buildWaitlistMetadataPatch({
         waitlist: 'true',
         waitlist_status: requestedStatus,
         waitlist_updated_at: now,
         waitlist_reviewed_at: now,
         waitlist_review_notes: notes,
-    };
+    });
 
     let invite = null;
     if (sendInvite) {
@@ -435,6 +447,54 @@ async function handleAdminUpdate(req, res) {
     });
 }
 
+async function handleAdminDelete(req, res) {
+    if (!(await requireAdmin(req, res))) return;
+
+    const body = req.body && typeof req.body === 'object' ? req.body : {};
+    const customerId = cleanText(body.customer_id, 64);
+    const email = normalizeEmail(body.email);
+
+    if (!customerId && !email) {
+        return res.status(400).json({ success: false, error: 'customer_id or email is required' });
+    }
+
+    let customer = null;
+    if (customerId) {
+        customer = await stripe.customers.retrieve(customerId);
+    } else {
+        customer = await findCustomerByEmail(email);
+    }
+
+    if (!customer || customer.deleted || !isWaitlistCustomer(customer.metadata || {})) {
+        return res.status(404).json({ success: false, error: 'Waitlist customer not found' });
+    }
+
+    const updated = await stripe.customers.update(customer.id, {
+        metadata: buildWaitlistMetadataPatch({
+            waitlist: '',
+            waitlist_status: '',
+            waitlist_name: '',
+            waitlist_interest: '',
+            waitlist_source: '',
+            waitlist_consent: '',
+            waitlist_submission_count: '',
+            waitlist_last_submitted_at: '',
+            waitlist_updated_at: '',
+            waitlist_created_at: '',
+            waitlist_review_notes: '',
+            waitlist_reviewed_at: '',
+            waitlist_invited_at: '',
+            waitlist_converted_at: '',
+        }),
+    });
+
+    return res.status(200).json({
+        success: true,
+        entry: mapWaitlistCustomer(updated),
+        removed: true,
+    });
+}
+
 module.exports = async function handler(req, res) {
     setCors(res);
 
@@ -450,10 +510,15 @@ module.exports = async function handler(req, res) {
         if (req.method === 'POST') return await handlePublicSubmit(req, res);
         if (req.method === 'GET') return await handleAdminList(req, res);
         if (req.method === 'PATCH') return await handleAdminUpdate(req, res);
+        if (req.method === 'DELETE') return await handleAdminDelete(req, res);
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     } catch (err) {
-        console.error('Waitlist API error:', err?.message || String(err));
+        console.error('Waitlist API error:', err?.stack || err?.message || String(err));
         if (Sentry) Sentry.captureException(err);
-        return res.status(500).json({ success: false, error: 'Waitlist request failed' });
+        const exposeAdminError = req.method !== 'POST' || !!getBearerToken(req);
+        return res.status(500).json({
+            success: false,
+            error: exposeAdminError ? getAdminErrorMessage(err) : 'Waitlist request failed',
+        });
     }
 };
