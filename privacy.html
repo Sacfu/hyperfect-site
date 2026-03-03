@@ -205,20 +205,20 @@
             cursor: pointer;
             padding: 0.5rem;
             color: var(--text-primary);
+            gap: 4px;
         }
 
         .hamburger span {
-            display: block;
-            width: 22px;
-            height: 2px;
+            display: inline-block;
+            width: 2px;
+            height: 18px;
             background: currentColor;
-            margin: 5px 0;
             border-radius: 2px;
             transition: all 0.3s;
         }
 
         .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
+            transform: translateX(6px) rotate(45deg);
         }
 
         .hamburger.active span:nth-child(2) {
@@ -226,7 +226,7 @@
         }
 
         .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
+            transform: translateX(-6px) rotate(-45deg);
         }
 
         /* Main Content */
