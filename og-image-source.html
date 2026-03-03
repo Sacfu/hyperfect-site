@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1200, initial-scale=1.0">
+    <title>Nexus Social Preview</title>
+    <style>
+        :root {
+            --bg-primary: #09090b;
+            --bg-secondary: #0f0f12;
+            --text-primary: #fafafa;
+            --text-secondary: #b5b7c2;
+            --text-tertiary: #7a8091;
+            --accent: #2563eb;
+            --accent-soft: rgba(37, 99, 235, 0.22);
+            --surface: rgba(255, 255, 255, 0.045);
+            --surface-strong: rgba(15, 23, 42, 0.72);
+            --surface-border: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            width: 1200px;
+            height: 630px;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 18% 18%, rgba(37, 99, 235, 0.16), transparent 28%),
+                radial-gradient(circle at 82% 12%, rgba(148, 163, 184, 0.08), transparent 22%),
+                radial-gradient(circle at -8% 22%, transparent 39%, rgba(96, 165, 250, 0.08) 39.5%, transparent 40%),
+                radial-gradient(circle at 112% 26%, transparent 26.5%, rgba(148, 163, 184, 0.06) 27%, transparent 27.5%),
+                radial-gradient(circle at 52% 110%, transparent 24%, rgba(255, 255, 255, 0.035) 24.5%, transparent 25%),
+                linear-gradient(135deg, rgba(255, 255, 255, 0.022) 0%, transparent 32%, transparent 68%, rgba(255, 255, 255, 0.018) 100%),
+                linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif;
+        }
+
+        .canvas {
+            position: relative;
+            width: 1200px;
+            height: 630px;
+            padding: 46px 52px;
+            display: grid;
+            grid-template-columns: 1.08fr 0.92fr;
+            gap: 34px;
+        }
+
+        .canvas::before {
+            content: "";
+            position: absolute;
+            inset: 18px;
+            border-radius: 28px;
+            border: 1px solid rgba(37, 99, 235, 0.14);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+            pointer-events: none;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-right: 12px;
+        }
+
+        .brand-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .brand-mark {
+            width: 58px;
+            height: 58px;
+            border-radius: 18px;
+            background: linear-gradient(180deg, rgba(37, 99, 235, 0.22), rgba(37, 99, 235, 0.1));
+            border: 1px solid rgba(96, 165, 250, 0.24);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 18px 42px rgba(37, 99, 235, 0.18);
+        }
+
+        .brand-mark img {
+            width: 34px;
+            height: 34px;
+            display: block;
+        }
+
+        .brand-copy {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+        }
+
+        .brand-copy .hyperfect {
+            color: var(--text-primary);
+        }
+
+        .brand-copy .slash {
+            color: rgba(255, 255, 255, 0.28);
+            font-weight: 500;
+        }
+
+        .brand-copy .nexus {
+            color: #3b82f6;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            width: fit-content;
+            padding: 9px 16px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.72);
+            border: 1px solid rgba(37, 99, 235, 0.16);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            font-size: 14px;
+            font-weight: 600;
+            color: rgba(226, 232, 240, 0.92);
+            margin-bottom: 24px;
+        }
+
+        .pill-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: #3b82f6;
+            box-shadow: 0 0 14px rgba(59, 130, 246, 0.9);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 68px;
+            line-height: 1.02;
+            letter-spacing: -0.05em;
+            font-weight: 800;
+            max-width: 620px;
+        }
+
+        h1 span {
+            display: block;
+        }
+
+        h1 span + span {
+            margin-top: 8px;
+        }
+
+        .subtitle {
+            margin-top: 24px;
+            max-width: 575px;
+            font-size: 24px;
+            line-height: 1.45;
+            color: var(--text-secondary);
+            letter-spacing: -0.02em;
+        }
+
+        .chips {
+            margin-top: 28px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .chip {
+            padding: 11px 16px;
+            border-radius: 999px;
+            border: 1px solid var(--surface-border);
+            background: rgba(255, 255, 255, 0.04);
+            color: rgba(226, 232, 240, 0.9);
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .visual {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .visual::before {
+            content: "";
+            position: absolute;
+            inset: 60px 28px 42px 46px;
+            border-radius: 36px;
+            background: radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.3), transparent 68%);
+            filter: blur(26px);
+            opacity: 0.75;
+        }
+
+        .app-shell {
+            position: relative;
+            width: 470px;
+            height: 500px;
+            border-radius: 28px;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01)),
+                rgba(9, 9, 11, 0.88);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow:
+                0 22px 54px rgba(2, 6, 23, 0.48),
+                inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            overflow: hidden;
+            transform: rotate(4deg);
+        }
+
+        .app-shell::after {
+            content: "";
+            position: absolute;
+            inset: 16px;
+            border-radius: 22px;
+            border: 1px solid rgba(37, 99, 235, 0.12);
+            pointer-events: none;
+        }
+
+        .app-topbar {
+            height: 58px;
+            padding: 0 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .app-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.16);
+        }
+
+        .app-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: rgba(248, 250, 252, 0.92);
+            letter-spacing: -0.02em;
+        }
+
+        .app-badge {
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: rgba(37, 99, 235, 0.16);
+            color: #93c5fd;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .app-body {
+            padding: 22px;
+            display: grid;
+            grid-template-columns: 122px 1fr;
+            gap: 18px;
+        }
+
+        .sidebar {
+            padding: 16px 12px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.026);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .side-pill {
+            height: 28px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .side-pill.active {
+            background: linear-gradient(90deg, rgba(37, 99, 235, 0.32), rgba(37, 99, 235, 0.14));
+            border-color: rgba(37, 99, 235, 0.18);
+        }
+
+        .main {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .hero-panel {
+            padding: 18px;
+            border-radius: 18px;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(37, 99, 235, 0.18), transparent 38%),
+                rgba(255, 255, 255, 0.032);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .hero-panel .eyebrow {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #60a5fa;
+        }
+
+        .hero-panel .panel-title {
+            margin-top: 8px;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            color: #f8fafc;
+        }
+
+        .hero-panel .panel-copy {
+            margin-top: 8px;
+            font-size: 13px;
+            line-height: 1.5;
+            color: rgba(226, 232, 240, 0.72);
+        }
+
+        .panel-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .mini-card {
+            min-height: 112px;
+            padding: 14px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.032);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .mini-card .label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: rgba(191, 219, 254, 0.76);
+        }
+
+        .mini-card .value {
+            margin-top: 10px;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            color: #f8fafc;
+        }
+
+        .mini-card .meta {
+            margin-top: 6px;
+            font-size: 12px;
+            color: rgba(226, 232, 240, 0.64);
+        }
+
+        .timeline {
+            padding: 15px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.028);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+        }
+
+        .timeline-row {
+            display: grid;
+            grid-template-columns: 72px 1fr auto;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            color: rgba(226, 232, 240, 0.8);
+        }
+
+        .timeline-row .time {
+            color: rgba(148, 163, 184, 0.74);
+            font-weight: 600;
+        }
+
+        .timeline-row .text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .timeline-row .status {
+            padding: 5px 8px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .status.green {
+            background: rgba(34, 197, 94, 0.14);
+            color: #86efac;
+        }
+
+        .status.blue {
+            background: rgba(59, 130, 246, 0.14);
+            color: #93c5fd;
+        }
+    </style>
+</head>
+<body>
+    <main class="canvas">
+        <section class="content">
+            <div class="brand-row">
+                <div class="brand-mark">
+                    <img src="./assets/brand/app-icon.png" alt="">
+                </div>
+                <div class="brand-copy">
+                    <span class="hyperfect">Hyperfect</span>
+                    <span class="slash">/</span>
+                    <span class="nexus">Nexus</span>
+                </div>
+            </div>
+
+            <div class="pill">
+                <span class="pill-dot"></span>
+                <span>Local-first desktop operator</span>
+            </div>
+
+            <h1>
+                <span>Set Up Your Job Search Once.</span>
+                <span>Let Nexus Run It.</span>
+            </h1>
+
+            <p class="subtitle">
+                Configure resumes, filters, and guardrails once. Nexus handles LinkedIn, Indeed, and ATS search workflows from your machine.
+            </p>
+
+            <div class="chips">
+                <span class="chip">LinkedIn</span>
+                <span class="chip">Indeed</span>
+                <span class="chip">ATS workflows</span>
+                <span class="chip">Private by default</span>
+            </div>
+        </section>
+
+        <section class="visual">
+            <div class="app-shell">
+                <div class="app-topbar">
+                    <div class="app-dots">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                    <div class="app-title">Command Center</div>
+                    <div class="app-badge">Local run</div>
+                </div>
+
+                <div class="app-body">
+                    <aside class="sidebar">
+                        <div class="side-pill active"></div>
+                        <div class="side-pill"></div>
+                        <div class="side-pill"></div>
+                        <div class="side-pill"></div>
+                        <div class="side-pill"></div>
+                    </aside>
+
+                    <div class="main">
+                        <div class="hero-panel">
+                            <div class="eyebrow">Nexus overview</div>
+                            <div class="panel-title">Run once. Review clearly.</div>
+                            <div class="panel-copy">Structured job search across platforms, with logs, resumes, and guardrails in one place.</div>
+                        </div>
+
+                        <div class="panel-grid">
+                            <div class="mini-card">
+                                <div class="label">Search queue</div>
+                                <div class="value">12</div>
+                                <div class="meta">Ready to process</div>
+                            </div>
+                            <div class="mini-card">
+                                <div class="label">Resumes</div>
+                                <div class="value">4</div>
+                                <div class="meta">Mapped by role</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline">
+                            <div class="timeline-row">
+                                <span class="time">09:18</span>
+                                <span class="text">LinkedIn search reviewed for Product roles</span>
+                                <span class="status green">Ready</span>
+                            </div>
+                            <div class="timeline-row">
+                                <span class="time">09:26</span>
+                                <span class="text">Resume selected for Analytics Engineer flow</span>
+                                <span class="status blue">Live</span>
+                            </div>
+                            <div class="timeline-row">
+                                <span class="time">09:41</span>
+                                <span class="text">License verified. Workspace tools available.</span>
+                                <span class="status green">OK</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
