@@ -35,6 +35,8 @@ const INTERACTION_RESPONSE_TYPE = {
 };
 
 const WAITLIST_STATUSES = new Set(['pending', 'approved', 'rejected', 'invited', 'converted']);
+const INVITE_EXPIRY_SECONDS = 23 * 60 * 60;
+const INVITE_EXPIRY_LABEL = '23h';
 const ADMIN_ONLY_COMMANDS = new Set([
     'invite',
     'waitlist',
@@ -189,6 +191,7 @@ async function createInviteSession(email, name, metadata = {}, expiresHours = 24
     const priceId = process.env.BETA_PRICE_ID;
     if (!priceId) throw new Error('BETA_PRICE_ID not configured');
     const siteUrl = process.env.SITE_URL || 'https://www.hyperfect.dev';
+    const requestedExpirySeconds = Math.max(1, Number(expiresHours) || 24) * 60 * 60;
     return stripe.checkout.sessions.create({
         payment_method_types: ['card'],
         line_items: [{ price: priceId, quantity: 1 }],
@@ -196,7 +199,7 @@ async function createInviteSession(email, name, metadata = {}, expiresHours = 24
         customer_email: email,
         success_url: `${siteUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${siteUrl}/?checkout=cancelled`,
-        expires_at: Math.floor(Date.now() / 1000) + (expiresHours * 60 * 60),
+        expires_at: Math.floor(Date.now() / 1000) + Math.min(requestedExpirySeconds, INVITE_EXPIRY_SECONDS),
         metadata: {
             invite_for: name || email,
             source: 'discord_bot',
@@ -405,7 +408,7 @@ module.exports = async function handler(req, res) {
                     command: 'invite',
                 }, 24);
                 return res.status(200).json(
-                    ephemeral(`**Beta invite generated for ${testerName}**\nEmail: ${email}\nCheckout link (expires in 24h):\n${session.url}`)
+                    ephemeral(`**Beta invite generated for ${testerName}**\nEmail: ${email}\nCheckout link (expires in ${INVITE_EXPIRY_LABEL}):\n${session.url}`)
                 );
             } catch (err) {
                 console.error('Discord invite error:', err.message);
@@ -514,7 +517,7 @@ module.exports = async function handler(req, res) {
                     });
 
                     return res.status(200).json(
-                        ephemeral(`Approved + invited ${email}.\nInvite link (expires in 24h):\n${session.url}`)
+                        ephemeral(`Approved + invited ${email}.\nInvite link (expires in ${INVITE_EXPIRY_LABEL}):\n${session.url}`)
                     );
                 } catch (err) {
                     return res.status(200).json(ephemeral(`Error inviting entry: ${err.message}`));
@@ -652,7 +655,7 @@ module.exports = async function handler(req, res) {
                 });
 
                 return res.status(200).json(
-                    ephemeral(`Approved + invited ${email}.\nInvite link (expires in 24h):\n${session.url}`)
+                    ephemeral(`Approved + invited ${email}.\nInvite link (expires in ${INVITE_EXPIRY_LABEL}):\n${session.url}`)
                 );
             } catch (err) {
                 return res.status(200).json(ephemeral(`Error inviting entry: ${err.message}`));

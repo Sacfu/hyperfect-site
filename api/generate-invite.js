@@ -7,7 +7,7 @@
 //
 // Returns: { "url": "https://checkout.stripe.com/...", "sessionId": "cs_..." }
 //
-// The generated URL is one-time use and expires after 24 hours.
+// The generated URL is one-time use and expires in under 24 hours.
 // When the tester completes checkout, the webhook fires → license key generated → emailed.
 //
 // Environment Variables:
@@ -17,6 +17,8 @@
 //   BETA_PRICE_ID — price_xxx for the free beta product
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const INVITE_EXPIRY_SECONDS = 23 * 60 * 60;
+const INVITE_EXPIRY_LABEL = '23 hours';
 
 module.exports = async function handler(req, res) {
     if (req.method === 'OPTIONS') return res.status(200).end();
@@ -49,7 +51,7 @@ module.exports = async function handler(req, res) {
             customer_email: email,
             success_url: `${siteUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${siteUrl}/?checkout=cancelled`,
-            expires_at: Math.floor(Date.now() / 1000) + (24 * 60 * 60), // 24 hours
+            expires_at: Math.floor(Date.now() / 1000) + INVITE_EXPIRY_SECONDS,
             metadata: {
                 invite_for: name || email,
                 source: 'beta_invite',
@@ -60,7 +62,7 @@ module.exports = async function handler(req, res) {
             url: session.url,
             sessionId: session.id,
             email: email,
-            expiresIn: '24 hours',
+            expiresIn: INVITE_EXPIRY_LABEL,
         });
     } catch (err) {
         console.error('Generate invite error:', err.message);

@@ -84,6 +84,8 @@ const WAITLIST_STATUSES = new Set([
     'invited',
     'converted',
 ]);
+const INVITE_EXPIRY_SECONDS = 23 * 60 * 60;
+const INVITE_EXPIRY_LABEL = '23 hours';
 
 function setCors(res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -204,7 +206,7 @@ async function createInviteForCustomer(email, name, customerId) {
         customer_email: email,
         success_url: `${siteUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${siteUrl}/?checkout=cancelled`,
-        expires_at: Math.floor(Date.now() / 1000) + (72 * 60 * 60), // 72 hours
+        expires_at: Math.floor(Date.now() / 1000) + INVITE_EXPIRY_SECONDS,
         metadata: {
             source: 'waitlist_approval',
             invite_for: name || email,
@@ -216,7 +218,7 @@ async function createInviteForCustomer(email, name, customerId) {
         ok: true,
         invite_url: session.url,
         session_id: session.id,
-        expires_in: '72 hours',
+        expires_in: INVITE_EXPIRY_LABEL,
     };
 }
 
