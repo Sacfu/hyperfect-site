@@ -7,7 +7,7 @@
 // Admin (Authorization: Bearer <ADMIN_SECRET>):
 //   GET /api/waitlist?status=pending|approved|rejected|invited|converted|all&limit=50&cursor=cus_xxx
 //   PATCH /api/waitlist
-//   Body: { customer_id?, email?, status, notes?, send_invite? }
+//   Body: { customer_id?, email?, status, notes?, send_invite?, send_invite_email? }
 //
 // Data is persisted on Stripe customers via metadata.
 // This keeps costs low while providing a queue-style review workflow.
@@ -173,6 +173,9 @@ function mapWaitlistCustomer(customer) {
         updated_at: metadata.waitlist_updated_at || null,
         last_submitted_at: metadata.waitlist_last_submitted_at || null,
         invited_at: metadata.waitlist_invited_at || null,
+        invite_email_sent_at: metadata.waitlist_invite_email_sent_at || null,
+        invite_email_id: metadata.waitlist_invite_email_id || '',
+        invite_email_error: metadata.waitlist_invite_email_error || '',
         converted_at: metadata.waitlist_converted_at || null,
         license_key: metadata.license_key || '',
     };
@@ -220,6 +223,60 @@ async function createInviteForCustomer(email, name, customerId) {
         session_id: session.id,
         expires_in: INVITE_EXPIRY_LABEL,
     };
+}
+
+async function sendWaitlistInviteEmail({ email, name, inviteUrl, expiresIn }) {
+    const resendKey = String(process.env.RESEND_API_KEY || '').trim();
+    if (!resendKey) {
+        return { ok: false, error: 'RESEND_API_KEY not configured' };
+    }
+
+    const safeEmail = normalizeEmail(email);
+    const safeName = cleanText(name, 120) || 'there';
+    const safeInviteUrl = String(inviteUrl || '').trim();
+    if (!safeEmail || !safeInviteUrl) {
+        return { ok: false, error: 'Invite email is missing a required field' };
+    }
+
+    const fromEmail = String(
+        process.env.WAITLIST_INVITE_FROM || 'Nexus by Hyperfect <noreply@admin.hyperfect.dev>'
+    ).trim();
+
+    const response = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${resendKey}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            from: fromEmail,
+            to: [safeEmail],
+            subject: 'Your Nexus beta invite is ready',
+            html: `
+                <div style="font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; max-width: 560px; margin: 0 auto; padding: 24px; color: #0f172a;">
+                    <h2 style="margin: 0 0 12px;">Your Nexus invite is ready</h2>
+                    <p style="margin: 0 0 16px; color: #334155;">Hi ${safeName}, your waitlist spot has been approved. Use the link below to complete your beta checkout and receive your license.</p>
+                    <p style="margin: 0 0 20px;">
+                        <a href="${safeInviteUrl}" style="display: inline-block; padding: 12px 18px; border-radius: 999px; text-decoration: none; background: #2563eb; color: #ffffff; font-weight: 700;">Open invite</a>
+                    </p>
+                    <p style="margin: 0 0 12px; color: #475569;">This invite link expires in ${cleanText(expiresIn, 40) || INVITE_EXPIRY_LABEL}.</p>
+                    <p style="margin: 0; color: #64748b;">If the button does not work, paste this link into your browser:</p>
+                    <p style="margin: 8px 0 0; word-break: break-all; color: #1d4ed8;">${safeInviteUrl}</p>
+                </div>
+            `,
+        }),
+    });
+
+    if (!response.ok) {
+        const detail = await response.text().catch(() => `HTTP ${response.status}`);
+        return {
+            ok: false,
+            error: cleanText(`Failed to send invite email (${response.status}): ${detail}`, 200),
+        };
+    }
+
+    const data = await response.json().catch(() => ({}));
+    return { ok: true, id: cleanText(data?.id || '', 120) };
 }
 
 function buildWaitlistMetadataPatch(nextValues = {}) {
@@ -388,7 +445,8 @@ async function handleAdminUpdate(req, res) {
     const email = normalizeEmail(body.email);
     const requestedStatus = cleanText(body.status, 32).toLowerCase();
     const notes = cleanText(body.notes, 500);
-    const sendInvite = !!body.send_invite;
+    const sendInviteEmail = !!body.send_invite_email;
+    const sendInvite = !!body.send_invite || sendInviteEmail;
 
     if (!customerId && !email) {
         return res.status(400).json({ success: false, error: 'customer_id or email is required' });
@@ -422,6 +480,7 @@ async function handleAdminUpdate(req, res) {
     });
 
     let invite = null;
+    let inviteEmail = null;
     if (sendInvite) {
         if (!normalizeEmail(customer.email)) {
             return res.status(400).json({ success: false, error: 'Customer is missing an email; cannot generate invite' });
@@ -439,6 +498,23 @@ async function handleAdminUpdate(req, res) {
         invite = inviteResult;
         metadata.waitlist_status = 'invited';
         metadata.waitlist_invited_at = now;
+
+        if (sendInviteEmail) {
+            inviteEmail = await sendWaitlistInviteEmail({
+                email: normalizeEmail(customer.email),
+                name: previous.waitlist_name || customer.name || customer.email || '',
+                inviteUrl: inviteResult.invite_url,
+                expiresIn: inviteResult.expires_in,
+            });
+
+            if (inviteEmail.ok) {
+                metadata.waitlist_invite_email_sent_at = now;
+                metadata.waitlist_invite_email_id = inviteEmail.id || '';
+                metadata.waitlist_invite_email_error = '';
+            } else {
+                metadata.waitlist_invite_email_error = cleanText(inviteEmail.error, 200);
+            }
+        }
     }
 
     const updated = await stripe.customers.update(customer.id, { metadata });
@@ -446,6 +522,7 @@ async function handleAdminUpdate(req, res) {
         success: true,
         entry: mapWaitlistCustomer(updated),
         invite,
+        invite_email: inviteEmail,
     });
 }
 
