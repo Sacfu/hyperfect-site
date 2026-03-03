@@ -37,6 +37,21 @@
             justify-content: center;
             padding: 20px;
         }
+
+        @media (max-width: 768px) {
+            body {
+                background-image:
+                    radial-gradient(circle at 18% 12%, var(--page-aura-1), transparent 30%),
+                    radial-gradient(circle at 82% 10%, var(--page-aura-2), transparent 24%),
+                    radial-gradient(circle at 50% 24%, var(--page-aura-1), transparent 44%),
+                    radial-gradient(circle at -8% 24%, transparent 35.8%, var(--page-ring-1) 36.25%, transparent 36.7%),
+                    radial-gradient(circle at 108% 28%, transparent 24.4%, var(--page-ring-2) 24.85%, transparent 25.3%),
+                    radial-gradient(circle at 50% 104%, transparent 21.2%, var(--page-ring-3) 21.65%, transparent 22.1%),
+                    linear-gradient(135deg, var(--page-sheen) 0%, transparent 26%, transparent 74%, var(--page-sheen) 100%),
+                    linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+                background-attachment: scroll;
+            }
+        }
         .card {
             background: #12121a;
             border: 1px solid rgba(255,255,255,0.08);
