@@ -21,7 +21,6 @@
     <meta name="twitter:description" content="Local-first desktop operator for LinkedIn, Indeed, and ATS workflows with resumes, filters, and guardrails configured on your machine.">
     <meta name="twitter:image" content="https://hyperfect.dev/og-image.png?v=20260302b">
     <meta name="twitter:image:alt" content="Nexus by Hyperfect social preview showing the Command Center and the headline 'Set Up Your Job Search Once. Let Nexus Run It.'">
-    <!-- Google Analytics (GA4) — Replace G-8YDQ0S2021 with your Measurement ID from analytics.google.com -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8YDQ0S2021"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -29,53 +28,73 @@
         gtag('js', new Date());
         gtag('config', 'G-8YDQ0S2021');
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* ========================================
-           DESIGN SYSTEM & CSS CUSTOM PROPERTIES
-           ======================================== */
         :root {
-            /* Dark Mode (Default) */
-            --bg-primary: #09090b;
-            --bg-secondary: #0f0f12;
-            --bg-tertiary: #1a1a1f;
-            --page-aura-1: rgba(37, 99, 235, 0.08);
-            --page-aura-2: rgba(148, 163, 184, 0.045);
-            --page-ring-1: rgba(96, 165, 250, 0.055);
-            --page-ring-2: rgba(148, 163, 184, 0.038);
-            --page-ring-3: rgba(255, 255, 255, 0.022);
-            --page-sheen: rgba(255, 255, 255, 0.015);
-            --text-primary: #fafafa;
-            --text-secondary: #a1a1aa;
-            --text-tertiary: #71717a;
-            --accent: #2563eb;
-            --border: rgba(255, 255, 255, 0.08);
-            --glass-bg: rgba(255, 255, 255, 0.04);
-            --glass-border: rgba(255, 255, 255, 0.08);
+            --bg-primary: #07090d;
+            --bg-secondary: #0c1016;
+            --bg-tertiary: #141a23;
+            --bg-elevated: rgba(13, 17, 23, 0.84);
+            --surface-1: rgba(255, 255, 255, 0.05);
+            --surface-2: rgba(255, 255, 255, 0.035);
+            --surface-3: rgba(255, 255, 255, 0.022);
+            --surface-strong: rgba(13, 17, 23, 0.9);
+            --border: rgba(255, 255, 255, 0.11);
+            --border-soft: rgba(255, 255, 255, 0.07);
+            --text-primary: #f5f7fb;
+            --text-secondary: #b8c0ce;
+            --text-tertiary: #8892a5;
+            --accent: #4f7cff;
+            --accent-soft: rgba(79, 124, 255, 0.18);
+            --accent-strong: #7ea0ff;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --page-glow-1: rgba(79, 124, 255, 0.17);
+            --page-glow-2: rgba(148, 163, 184, 0.09);
+            --page-ring-1: rgba(90, 130, 255, 0.11);
+            --page-ring-2: rgba(255, 255, 255, 0.05);
+            --page-ring-3: rgba(112, 139, 255, 0.07);
+            --page-sheen: rgba(255, 255, 255, 0.022);
+            --shadow-lg: 0 30px 80px rgba(0, 0, 0, 0.38);
+            --shadow-md: 0 18px 40px rgba(0, 0, 0, 0.28);
+            --radius-xl: 30px;
+            --radius-lg: 24px;
+            --radius-md: 18px;
+            --radius-sm: 14px;
         }
 
         body.light-mode {
-            --bg-primary: #fafafa;
-            --bg-secondary: #f4f4f5;
-            --bg-tertiary: #e4e4e7;
-            --page-aura-1: rgba(37, 99, 235, 0.07);
-            --page-aura-2: rgba(148, 163, 184, 0.06);
-            --page-ring-1: rgba(37, 99, 235, 0.055);
-            --page-ring-2: rgba(100, 116, 139, 0.042);
-            --page-ring-3: rgba(15, 23, 42, 0.022);
-            --page-sheen: rgba(15, 23, 42, 0.016);
-            --text-primary: #18181b;
-            --text-secondary: #52525b;
-            --text-tertiary: #71717a;
-            --border: rgba(0, 0, 0, 0.08);
-            --glass-bg: rgba(0, 0, 0, 0.03);
-            --glass-border: rgba(0, 0, 0, 0.08);
+            --bg-primary: #f3f5f9;
+            --bg-secondary: #edf1f7;
+            --bg-tertiary: #dde6f2;
+            --bg-elevated: rgba(255, 255, 255, 0.84);
+            --surface-1: rgba(255, 255, 255, 0.72);
+            --surface-2: rgba(255, 255, 255, 0.52);
+            --surface-3: rgba(255, 255, 255, 0.34);
+            --surface-strong: rgba(255, 255, 255, 0.9);
+            --border: rgba(15, 23, 42, 0.11);
+            --border-soft: rgba(15, 23, 42, 0.07);
+            --text-primary: #111827;
+            --text-secondary: #475569;
+            --text-tertiary: #64748b;
+            --accent: #3867f5;
+            --accent-soft: rgba(56, 103, 245, 0.12);
+            --accent-strong: #1d4ed8;
+            --page-glow-1: rgba(79, 124, 255, 0.13);
+            --page-glow-2: rgba(148, 163, 184, 0.12);
+            --page-ring-1: rgba(79, 124, 255, 0.08);
+            --page-ring-2: rgba(30, 41, 59, 0.045);
+            --page-ring-3: rgba(79, 124, 255, 0.055);
+            --page-sheen: rgba(15, 23, 42, 0.018);
+            --shadow-lg: 0 20px 55px rgba(15, 23, 42, 0.08);
+            --shadow-md: 0 14px 30px rgba(15, 23, 42, 0.07);
         }
 
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         html {
@@ -83,289 +102,397 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Manrope', sans-serif;
+            color: var(--text-primary);
             background-color: var(--bg-primary);
             background-image:
-                radial-gradient(circle at 12% 12%, var(--page-aura-1), transparent 28%),
-                radial-gradient(circle at 88% 4%, var(--page-aura-2), transparent 24%),
-                radial-gradient(circle at -18% 12%, transparent 45.6%, var(--page-ring-1) 46.1%, transparent 46.6%),
-                radial-gradient(circle at 118% 18%, transparent 33.8%, var(--page-ring-2) 34.2%, transparent 34.6%),
-                radial-gradient(circle at 52% 118%, transparent 29.8%, var(--page-ring-3) 30.15%, transparent 30.5%),
-                linear-gradient(135deg, var(--page-sheen) 0%, transparent 34%, transparent 66%, var(--page-sheen) 100%),
+                radial-gradient(circle at 12% 14%, var(--page-glow-1), transparent 29%),
+                radial-gradient(circle at 84% 8%, var(--page-glow-2), transparent 24%),
+                radial-gradient(circle at -16% 16%, transparent 42%, var(--page-ring-1) 42.5%, transparent 43%),
+                radial-gradient(circle at 118% 22%, transparent 33%, var(--page-ring-2) 33.5%, transparent 34%),
+                radial-gradient(circle at 52% 112%, transparent 26%, var(--page-ring-3) 26.35%, transparent 26.7%),
+                linear-gradient(125deg, var(--page-sheen) 0%, transparent 30%, transparent 70%, var(--page-sheen) 100%),
                 linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
             background-attachment: fixed;
-            color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
-            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
 
-        @media (max-width: 768px) {
-            body {
-                background-image:
-                    radial-gradient(circle at 18% 12%, var(--page-aura-1), transparent 30%),
-                    radial-gradient(circle at 82% 10%, var(--page-aura-2), transparent 24%),
-                    radial-gradient(circle at 50% 24%, var(--page-aura-1), transparent 44%),
-                    radial-gradient(circle at -8% 24%, transparent 35.8%, var(--page-ring-1) 36.25%, transparent 36.7%),
-                    radial-gradient(circle at 108% 28%, transparent 24.4%, var(--page-ring-2) 24.85%, transparent 25.3%),
-                    radial-gradient(circle at 50% 104%, transparent 21.2%, var(--page-ring-3) 21.65%, transparent 22.1%),
-                    linear-gradient(135deg, var(--page-sheen) 0%, transparent 26%, transparent 74%, var(--page-sheen) 100%),
-                    linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-                background-attachment: scroll;
-            }
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(to bottom, rgba(7, 9, 13, 0.22), transparent 18%),
+                radial-gradient(circle at 50% 0%, rgba(79, 124, 255, 0.09), transparent 44%);
+            z-index: -1;
         }
 
-        /* ========================================
-           UTILITY CLASSES
-           ======================================== */
+        body.light-mode::before {
+            background:
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent 18%),
+                radial-gradient(circle at 50% 0%, rgba(56, 103, 245, 0.08), transparent 44%);
+        }
+
+        a {
+            color: inherit;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
         .container {
-            max-width: 1200px;
+            width: min(1240px, calc(100% - 32px));
             margin: 0 auto;
-            padding: 0 20px;
+        }
+
+        .mono {
+            font-family: 'IBM Plex Mono', monospace;
         }
 
         .fade-in {
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(24px);
         }
 
         .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 0.7s ease, transform 0.7s ease;
         }
 
-        /* ========================================
-           NAVIGATION
-           ======================================== */
         nav {
             position: sticky;
-            top: 0;
+            top: 16px;
             z-index: 100;
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--glass-border);
-            transition: all 0.3s;
+            padding: 16px 0 0;
         }
 
-        .nav-content {
+        .nav-shell {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 1rem 0;
+            justify-content: space-between;
+            gap: 18px;
+            min-height: 68px;
+            padding: 12px 18px 12px 20px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: var(--bg-elevated);
+            backdrop-filter: blur(18px);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
         }
 
         .logo {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 0.75rem;
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--text-primary);
+            gap: 12px;
             text-decoration: none;
+            color: var(--text-primary);
+            flex-shrink: 0;
         }
 
-        .logo-icon {
-            font-size: 1.5rem;
-            animation: pulse 2.5s ease-in-out infinite;
+        .logo-mark {
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
+            border: 1px solid rgba(79, 124, 255, 0.22);
+            background: linear-gradient(180deg, rgba(79, 124, 255, 0.18), rgba(79, 124, 255, 0.06));
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.65; }
+        .logo-mark img {
+            width: 21px;
+            height: 21px;
+        }
+
+        .logo-wordmark {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.14rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+        }
+
+        .logo-divider {
+            color: var(--text-tertiary);
+            font-weight: 500;
+        }
+
+        .logo-product {
+            color: var(--accent);
         }
 
         .nav-center {
             display: flex;
-            gap: 2.5rem;
             align-items: center;
+            gap: 1.6rem;
             list-style: none;
         }
 
         .nav-center a {
-            color: var(--text-secondary);
             text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: color 0.3s;
+            color: var(--text-secondary);
+            font-size: 0.94rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            transition: color 0.2s ease;
         }
 
         .nav-center a:hover {
-            color: var(--accent);
+            color: var(--text-primary);
         }
 
         .nav-right {
             display: flex;
-            gap: 1rem;
             align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
         }
 
-        .theme-toggle {
-            background: transparent;
+        .theme-toggle,
+        .nav-utility,
+        .cta-button,
+        .btn,
+        .form-submit,
+        .discord-login-btn,
+        .mini-link {
             border: 1px solid var(--border);
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
+            border-radius: 999px;
+            font-family: inherit;
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .theme-toggle,
+        .nav-utility {
+            width: 42px;
+            height: 42px;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
+            background: rgba(255, 255, 255, 0.035);
             color: var(--text-secondary);
-            transition: all 0.3s;
+            cursor: pointer;
         }
 
-        .theme-toggle:hover {
-            background: var(--glass-bg);
-            border-color: var(--accent);
+        .theme-toggle:hover,
+        .nav-utility:hover {
+            border-color: rgba(79, 124, 255, 0.3);
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .cta-button,
+        .btn,
+        .form-submit,
+        .discord-login-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 0.85rem 1.25rem;
+            background: transparent;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .cta-button,
+        .btn-primary,
+        .form-submit,
+        .discord-login-btn {
+            background: var(--accent);
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 18px 38px rgba(79, 124, 255, 0.24);
+        }
+
+        .cta-button:hover,
+        .btn:hover,
+        .form-submit:hover,
+        .discord-login-btn:hover,
+        .mini-link:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary,
+        .btn-tertiary,
+        .mini-link {
+            background: rgba(255, 255, 255, 0.035);
             color: var(--text-primary);
         }
 
-        .cta-button {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 0.7rem 1.75rem;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.3s;
+        .btn-tertiary,
+        .mini-link {
+            color: var(--text-secondary);
         }
 
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
-        }
-
-        /* Mobile Hamburger Menu */
         .hamburger {
             display: none;
-            background: none;
-            border: none;
+            width: 44px;
+            height: 44px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.035);
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            padding: 0.5rem;
             color: var(--text-primary);
         }
 
         .hamburger span {
             display: block;
-            width: 22px;
+            width: 18px;
             height: 2px;
+            margin: 2px 0;
+            border-radius: 999px;
             background: currentColor;
-            margin: 5px 0;
-            border-radius: 2px;
-            transition: all 0.3s;
+            transition: transform 0.2s ease, opacity 0.2s ease;
         }
 
         .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
+            transform: translateY(6px) rotate(45deg);
         }
+
         .hamburger.active span:nth-child(2) {
             opacity: 0;
         }
+
         .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
+            transform: translateY(-6px) rotate(-45deg);
         }
 
-        @media (max-width: 768px) {
-            .hamburger {
-                display: block;
-                order: 3;
-            }
-
-            .nav-center {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                flex-direction: column;
-                background: var(--bg-primary);
-                border-bottom: 1px solid var(--border);
-                padding: 1rem 20px;
-                gap: 0;
-            }
-
-            .nav-center.open {
-                display: flex;
-            }
-
-            .nav-center li {
-                list-style: none;
-            }
-
-            .nav-center a {
-                display: block;
-                padding: 0.75rem 0;
-                border-bottom: 1px solid var(--border);
-                font-size: 1rem;
-            }
-
-            .nav-center li:last-child a {
-                border-bottom: none;
-            }
-
-            .cta-button {
-                display: none;
-            }
-
-            nav .container {
-                position: relative;
-            }
+        main {
+            padding: 34px 0 80px;
         }
 
-        /* ========================================
-           HERO SECTION
-           ======================================== */
         .hero {
-            padding: 4rem 0 2rem;
+            padding: 56px 0 40px;
+        }
+
+        .hero-shell {
             position: relative;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+            gap: 28px;
+            align-items: stretch;
+        }
+
+        .hero-copy-panel,
+        .hero-stage-panel {
+            position: relative;
+            padding: 34px;
+            border-radius: var(--radius-xl);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
             overflow: hidden;
         }
 
-        .hero-content {
-            text-align: center;
+        .hero-copy-panel::before,
+        .hero-stage-panel::before,
+        .story-band::before,
+        .utility-card::before,
+        .final-rail::before,
+        .faq-item::before,
+        .contact-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 24%);
+            opacity: 0.7;
+        }
+
+        .hero-copy-panel::after {
+            content: "";
+            position: absolute;
+            width: 380px;
+            height: 380px;
+            right: -120px;
+            bottom: -140px;
+            border-radius: 999px;
+            background: radial-gradient(circle, rgba(79, 124, 255, 0.2), transparent 68%);
+            filter: blur(12px);
+            opacity: 0.9;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.55rem 0.9rem;
+            border: 1px solid rgba(79, 124, 255, 0.2);
+            border-radius: 999px;
+            background: rgba(79, 124, 255, 0.08);
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent-strong);
             position: relative;
             z-index: 1;
         }
 
-        .hero h1 {
-            font-size: clamp(2.5rem, 8vw, 4rem);
-            font-weight: 800;
-            line-height: 1.08;
-            margin-bottom: 1.5rem;
-            color: var(--text-primary);
-            letter-spacing: -0.02em;
+        .eyebrow-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 999px;
+            background: currentColor;
+            box-shadow: 0 0 14px currentColor;
         }
 
-        .hero h1 span {
+        .hero-copy-panel h1 {
+            margin-top: 22px;
+            max-width: 640px;
+            font-size: clamp(3rem, 5.8vw, 5.5rem);
+            line-height: 0.96;
+            letter-spacing: -0.06em;
+            font-weight: 800;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-copy-panel h1 span {
             display: block;
         }
 
-        .hero h1 span + span {
-            margin-top: 0.12em;
+        .hero-copy-panel h1 span + span {
+            margin-top: 10px;
         }
 
-        .hero .subheading {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
+        .hero-subheading {
+            margin-top: 22px;
             max-width: 620px;
-            margin: 0 auto 2rem;
-            line-height: 1.7;
-            font-weight: 400;
+            font-size: 1.18rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
         }
 
         .hero-guide-link {
-            margin: -0.9rem auto 1.2rem;
-            font-size: 0.92rem;
-            color: var(--text-secondary);
-            max-width: 680px;
+            margin-top: 18px;
+            max-width: 580px;
+            font-size: 0.98rem;
+            color: var(--text-tertiary);
+            position: relative;
+            z-index: 1;
         }
 
         .hero-guide-link a {
-            color: var(--accent);
+            color: var(--text-primary);
+            font-weight: 700;
             text-decoration: none;
-            font-weight: 600;
         }
 
         .hero-guide-link a:hover {
@@ -374,1787 +501,88 @@
 
         .button-group {
             display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-bottom: 1rem;
             flex-wrap: wrap;
-        }
-
-        .hero-access {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.85rem;
-            margin-bottom: 3rem;
-        }
-
-        .hero-access-copy {
-            font-size: 0.92rem;
-            color: var(--text-secondary);
-            text-align: center;
-        }
-
-        .hero-access-copy strong {
-            color: var(--text-primary);
-        }
-
-        .btn {
-            padding: 0.95rem 2.25rem;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: none;
-            text-decoration: none;
-            display: inline-block;
+            gap: 12px;
+            margin-top: 28px;
             position: relative;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(37, 99, 235, 0.35);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--text-primary);
-            border: 1.5px solid var(--border);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        .btn-secondary.disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .coming-soon-label {
-            font-size: 0.75rem;
-            color: var(--text-tertiary);
-            margin-top: 0.4rem;
-            font-weight: 500;
-        }
-
-        /* ========================================
-           INTERACTIVE APP MOCKUP
-           ======================================== */
-        .mockup-container {
-            max-width: 1020px;
-            margin: 0 auto;
-        }
-
-        .mockup-window {
-            background: linear-gradient(160deg, rgba(16, 18, 30, 0.94), rgba(11, 13, 22, 0.98));
-            border: 1px solid var(--glass-border);
-            border-radius: 18px;
-            overflow: hidden;
-            box-shadow: 0 36px 80px rgba(0, 0, 0, 0.42), 0 0 90px rgba(37, 99, 235, 0.11);
-            animation: slideUp 0.8s ease-out 0.2s both;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .window-chrome {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem 1rem;
-            background: var(--bg-tertiary);
-            border-bottom: 1px solid var(--glass-border);
-        }
-
-        .traffic-light {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .traffic-light.red { background: #ff5f56; }
-        .traffic-light.yellow { background: #ffbd2e; }
-        .traffic-light.green { background: #27c93f; }
-
-        .mockup-body {
-            display: grid;
-            grid-template-columns: 230px 1fr;
-            min-height: 455px;
-        }
-
-        .mockup-sidebar {
-            background: rgba(255, 255, 255, 0.02);
-            padding: 1.25rem 0.85rem;
-            border-right: 1px solid var(--glass-border);
-        }
-
-        .sidebar-item {
-            padding: 0.75rem 1rem;
-            margin-bottom: 0.5rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            transition: all 0.2s;
-            user-select: none;
-        }
-
-        .sidebar-item:hover {
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .sidebar-item.active {
-            background: linear-gradient(120deg, rgba(37, 99, 235, 0.22), rgba(37, 99, 235, 0.08));
-            color: #e9f0ff;
-            font-weight: 600;
-        }
-
-        .mockup-main {
-            padding: 1.35rem 1.4rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .mockup-content {
-            display: none;
-        }
-
-        .mockup-content.active {
-            display: block;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 0.7rem;
-        }
-
-        .stat-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            padding: 0.95rem;
-            border-radius: 10px;
-        }
-
-        .stat-label {
-            color: var(--text-tertiary);
-            font-size: 0.8rem;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .stat-value {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--accent);
-        }
-
-        .list-container {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .list-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.02);
-            padding: 1rem;
-            border-radius: 6px;
-            border: 1px solid var(--glass-border);
-            font-size: 0.9rem;
-        }
-
-        .row-company {
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .badge {
-            padding: 0.4rem 1rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        .badge-applied {
-            background: rgba(37, 99, 235, 0.15);
-            color: var(--accent);
-        }
-
-        .badge-interview {
-            background: rgba(34, 197, 94, 0.15);
-            color: #22c55e;
-        }
-
-        .badge-offer {
-            background: rgba(245, 158, 11, 0.15);
-            color: #f59e0b;
-        }
-
-        .task-item {
-            background: rgba(255, 255, 255, 0.02);
-            padding: 1rem;
-            border-radius: 6px;
-            border: 1px solid var(--glass-border);
-            margin-bottom: 0.5rem;
-        }
-
-        .task-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-        }
-
-        .task-name {
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .task-status {
-            font-size: 0.8rem;
-            color: var(--text-tertiary);
-        }
-
-        .task-description {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-
-        .profile-card {
-            background: rgba(255, 255, 255, 0.02);
-            padding: 1.25rem;
-            border-radius: 8px;
-            border: 1px solid var(--glass-border);
-        }
-
-        .profile-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid var(--glass-border);
-        }
-
-        .profile-row:last-child {
-            border-bottom: none;
-        }
-
-        .profile-label {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        .profile-value {
-            color: var(--text-primary);
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .settings-category {
-            background: rgba(255, 255, 255, 0.02);
-            padding: 1rem;
-            border-radius: 6px;
-            border: 1px solid var(--glass-border);
-            margin-bottom: 0.75rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .settings-name {
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .account-card {
-            background: rgba(255, 255, 255, 0.02);
-            padding: 1.25rem;
-            border-radius: 8px;
-            border: 1px solid var(--glass-border);
-            margin-bottom: 1rem;
-        }
-
-        .account-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .account-name {
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .account-status {
-            font-size: 0.8rem;
-            padding: 0.3rem 0.8rem;
-            border-radius: 4px;
-            background: rgba(34, 197, 94, 0.15);
-            color: #22c55e;
-        }
-
-        .mockup-panel {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border);
-            border-radius: 10px;
-            padding: 0.85rem;
-        }
-
-        .mockup-panel-title {
-            color: var(--text-tertiary);
-            font-size: 0.72rem;
-            text-transform: uppercase;
-            letter-spacing: 0.55px;
-            margin-bottom: 0.65rem;
-            font-weight: 600;
-        }
-
-        .status-strip {
-            display: flex;
-            gap: 0.45rem;
-            flex-wrap: wrap;
-        }
-
-        .status-pill {
-            border: 1px solid var(--glass-border);
-            border-radius: 999px;
-            font-size: 0.72rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            padding: 0.28rem 0.62rem;
-            background: rgba(255, 255, 255, 0.03);
-        }
-
-        .status-pill.connected {
-            border-color: rgba(34, 197, 94, 0.4);
-            color: #34d399;
-            background: rgba(16, 185, 129, 0.12);
-        }
-
-        .status-pill.warning {
-            border-color: rgba(245, 158, 11, 0.35);
-            color: #fbbf24;
-            background: rgba(245, 158, 11, 0.12);
-        }
-
-        .dashboard-layout {
-            display: grid;
-            grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-            gap: 0.75rem;
-            margin-top: 0.75rem;
-        }
-
-        .task-mini {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 0.6rem;
-            border: 1px solid var(--glass-border);
-            border-radius: 8px;
-            padding: 0.62rem 0.68rem;
-            margin-bottom: 0.5rem;
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .task-mini:last-child {
-            margin-bottom: 0;
-        }
-
-        .task-mini-title {
-            font-size: 0.82rem;
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-
-        .task-mini-meta {
-            font-size: 0.72rem;
-            color: var(--text-secondary);
-            margin-top: 0.14rem;
-        }
-
-        .score-chip {
-            font-size: 0.72rem;
-            font-weight: 700;
-            border-radius: 999px;
-            padding: 0.2rem 0.58rem;
-            color: #93c5fd;
-            border: 1px solid rgba(59, 130, 246, 0.35);
-            background: rgba(59, 130, 246, 0.14);
-            white-space: nowrap;
-        }
-
-        .log-list {
-            max-height: 196px;
-            overflow: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 0.45rem;
-            padding-right: 0.2rem;
-        }
-
-        .log-line {
-            font-size: 0.72rem;
-            color: #bac4d9;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-            line-height: 1.4;
-            background: rgba(10, 14, 24, 0.55);
-            border: 1px solid rgba(148, 163, 184, 0.18);
-            border-radius: 6px;
-            padding: 0.44rem 0.52rem;
-        }
-
-        .task-table {
-            display: flex;
-            flex-direction: column;
-            gap: 0.56rem;
-        }
-
-        .task-row {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) auto auto;
-            gap: 0.5rem;
-            align-items: center;
-            border: 1px solid var(--glass-border);
-            border-radius: 8px;
-            padding: 0.62rem 0.68rem;
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .task-row-main {
-            min-width: 0;
-        }
-
-        .task-row-name {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
-
-        .task-row-meta {
-            font-size: 0.71rem;
-            color: var(--text-secondary);
-            margin-top: 0.12rem;
-        }
-
-        .row-chip {
-            font-size: 0.68rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.28px;
-            border-radius: 999px;
-            border: 1px solid var(--glass-border);
-            padding: 0.2rem 0.52rem;
-            color: var(--text-secondary);
-            background: rgba(255, 255, 255, 0.03);
-        }
-
-        .row-chip.run {
-            color: #22c55e;
-            border-color: rgba(34, 197, 94, 0.42);
-            background: rgba(34, 197, 94, 0.12);
-        }
-
-        .row-chip.pause {
-            color: #fbbf24;
-            border-color: rgba(245, 158, 11, 0.42);
-            background: rgba(245, 158, 11, 0.12);
-        }
-
-        .kv-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 0.5rem 0.7rem;
-            margin-top: 0.5rem;
-        }
-
-        .kv-item {
-            border: 1px solid var(--glass-border);
-            border-radius: 8px;
-            padding: 0.52rem 0.6rem;
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .kv-label {
-            color: var(--text-tertiary);
-            font-size: 0.68rem;
-            margin-bottom: 0.24rem;
-            text-transform: uppercase;
-            letter-spacing: 0.22px;
-        }
-
-        .kv-value {
-            color: var(--text-primary);
-            font-size: 0.77rem;
-            font-weight: 600;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .account-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 0.6rem;
-        }
-
-        .account-mini {
-            border: 1px solid var(--glass-border);
-            border-radius: 8px;
-            padding: 0.62rem 0.7rem;
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .account-mini-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.6rem;
-            margin-bottom: 0.34rem;
-        }
-
-        .account-mini-name {
-            font-size: 0.8rem;
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-
-        .account-mini-meta {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-        }
-
-        .setting-mini {
-            border: 1px solid var(--glass-border);
-            border-radius: 8px;
-            padding: 0.65rem 0.72rem;
-            background: rgba(255, 255, 255, 0.02);
-            margin-bottom: 0.52rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 0.7rem;
-        }
-
-        .setting-mini:last-child {
-            margin-bottom: 0;
-        }
-
-        .setting-mini-label {
-            color: var(--text-primary);
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .setting-mini-value {
-            color: var(--text-secondary);
-            font-size: 0.74rem;
-        }
-
-        .trust-info {
-            text-align: center;
-            color: var(--text-tertiary);
-            font-size: 0.9rem;
-            margin-top: 2rem;
-            padding-top: 1rem;
-        }
-
-        .platforms {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-top: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .platform {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        /* Mobile mockup tabs (replaces hidden sidebar) */
-        .mockup-tabs {
-            display: none;
-            overflow-x: auto;
-            gap: 0;
-            border-bottom: 1px solid var(--glass-border);
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-        }
-
-        .mockup-tabs::-webkit-scrollbar {
-            display: none;
-        }
-
-        .mockup-tab {
-            padding: 0.6rem 1rem;
-            font-size: 0.8rem;
-            color: var(--text-tertiary);
-            cursor: pointer;
-            white-space: nowrap;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s;
-            background: none;
-            border-top: none;
-            border-left: none;
-            border-right: none;
-            font-family: 'Inter', sans-serif;
-            font-weight: 500;
-        }
-
-        .mockup-tab.active {
-            color: var(--accent);
-            border-bottom-color: var(--accent);
-        }
-
-        @media (max-width: 768px) {
-            .mockup-body {
-                grid-template-columns: 1fr;
-            }
-            .mockup-sidebar {
-                display: none;
-            }
-            .mockup-tabs {
-                display: flex;
-            }
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            .dashboard-layout {
-                grid-template-columns: 1fr;
-            }
-            .kv-grid {
-                grid-template-columns: 1fr;
-            }
-            .account-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* ========================================
-           FEATURES SECTION
-           ======================================== */
-        .features {
-            padding: 2rem 0 4rem;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: clamp(2rem, 6vw, 2.5rem);
-            font-weight: 800;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-            letter-spacing: -0.02em;
-        }
-
-        .section-subtitle {
-            text-align: center;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            font-size: 1rem;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 1.75rem;
-        }
-
-        .feature-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            padding: 2rem;
-            border-radius: 12px;
-            transition: all 0.3s;
-        }
-
-        .feature-card:hover {
-            background: rgba(37, 99, 235, 0.04);
-            border-color: var(--accent);
-            transform: translateY(-4px);
-        }
-
-        .feature-icon {
-            width: 48px;
-            height: 48px;
-            margin-bottom: 1.5rem;
-        }
-
-        .feature-icon svg {
-            width: 100%;
-            height: 100%;
-            stroke: var(--accent);
-            fill: none;
-            stroke-width: 1.5;
-        }
-
-        .feature-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-            color: var(--text-primary);
-        }
-
-        .feature-description {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        /* ========================================
-           HOW IT WORKS SECTION
-           ======================================== */
-        .how-it-works {
-            padding: 3rem 0;
-        }
-
-        .steps-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-            position: relative;
-        }
-
-        .step {
-            text-align: center;
-            position: relative;
-        }
-
-        .step-number {
-            width: 64px;
-            height: 64px;
-            background: var(--accent);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.75rem;
-            font-weight: 800;
-            margin: 0 auto 1.5rem;
-            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
-        }
-
-        .step-title {
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-            color: var(--text-primary);
-        }
-
-        .step-description {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        .step-connector {
-            position: absolute;
-            top: 32px;
-            right: -50px;
-            width: 40px;
-            height: 2px;
-            background: var(--border);
-            display: none;
-        }
-
-        @media (min-width: 768px) {
-            .step:not(:last-child) .step-connector {
-                display: block;
-            }
-        }
-
-        /* ========================================
-           OPERATOR TOUR + DEMO + SUPPORT SECTIONS
-           ======================================== */
-        .operator-tour {
-            margin-top: 2.2rem;
-        }
-
-        .tour-header {
-            display: flex;
-            align-items: end;
-            justify-content: space-between;
-            gap: 1rem;
-            margin-bottom: 1.2rem;
-        }
-
-        .tour-copy {
-            max-width: 660px;
-        }
-
-        .tour-label {
-            color: var(--accent);
-            font-size: 0.78rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.11em;
-            margin-bottom: 0.7rem;
-        }
-
-        .tour-heading {
-            font-size: 1.55rem;
-            line-height: 1.08;
-            margin-bottom: 0.45rem;
-            color: var(--text-primary);
-        }
-
-        .tour-intro {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            max-width: 46ch;
-        }
-
-        .tour-direction {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            padding: 0.7rem 1rem;
-            border-radius: 999px;
-            border: 1px solid var(--glass-border);
-            background: rgba(255, 255, 255, 0.03);
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            white-space: nowrap;
-        }
-
-        .tour-direction-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 999px;
-            background: linear-gradient(135deg, #60a5fa, #2563eb);
-            box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.12);
-        }
-
-        .tour-reel-wrap {
-            position: relative;
-        }
-
-        .tour-reel-wrap::before,
-        .tour-reel-wrap::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 1rem;
-            width: 72px;
-            pointer-events: none;
-            z-index: 2;
-        }
-
-        .tour-reel-wrap::before {
-            left: 0;
-            background: linear-gradient(90deg, rgba(4, 6, 12, 0.95), rgba(4, 6, 12, 0));
-        }
-
-        .tour-reel-wrap::after {
-            right: 0;
-            background: linear-gradient(270deg, rgba(4, 6, 12, 0.95), rgba(4, 6, 12, 0));
-        }
-
-        .tour-reel {
-            display: grid;
-            grid-auto-flow: column;
-            grid-auto-columns: minmax(320px, 78vw);
-            gap: 1rem;
-            overflow-x: auto;
-            padding: 0.2rem 0.4rem 1rem;
-            scroll-snap-type: x mandatory;
-            scroll-padding-left: 0.4rem;
-            overscroll-behavior-x: contain;
-            scrollbar-width: thin;
-            scrollbar-color: rgba(96, 165, 250, 0.55) rgba(255, 255, 255, 0.06);
-        }
-
-        .tour-reel::-webkit-scrollbar {
-            height: 10px;
-        }
-
-        .tour-reel::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.04);
-            border-radius: 999px;
-        }
-
-        .tour-reel::-webkit-scrollbar-thumb {
-            background: linear-gradient(90deg, rgba(96, 165, 250, 0.72), rgba(37, 99, 235, 0.72));
-            border-radius: 999px;
-        }
-
-        .tour-card {
-            position: relative;
-            min-height: 560px;
-            border-radius: 26px;
-            overflow: hidden;
-            border: 1px solid var(--glass-border);
-            background:
-                radial-gradient(circle at top right, rgba(37, 99, 235, 0.22), transparent 28%),
-                linear-gradient(180deg, rgba(8, 10, 18, 0.96), rgba(14, 16, 26, 0.98));
-            box-shadow: 0 18px 42px rgba(0, 0, 0, 0.3);
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-        }
-
-        .tour-card::after {
-            content: '';
-            position: absolute;
-            inset: auto 0 0;
-            height: 180px;
-            background: linear-gradient(180deg, rgba(3, 5, 10, 0), rgba(3, 5, 10, 0.82));
-            pointer-events: none;
             z-index: 1;
         }
 
-        .tour-card-head {
-            position: absolute;
-            top: 1rem;
-            left: 1rem;
-            right: 1rem;
+        .btn-secondary {
+            border-color: var(--border);
+        }
+
+        .btn-secondary:hover,
+        .btn-tertiary:hover,
+        .mini-link:hover {
+            border-color: rgba(79, 124, 255, 0.3);
+            background: rgba(79, 124, 255, 0.08);
+            color: var(--text-primary);
+        }
+
+        .hero-meta-row {
+            margin-top: 24px;
             display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 0.85rem;
-            z-index: 3;
-        }
-
-        .tour-card-meta {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.85rem;
-            padding: 0.85rem 0.95rem;
-            border-radius: 18px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(8, 10, 18, 0.7);
-            backdrop-filter: blur(16px);
-            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.24);
-        }
-
-        .tour-card-index {
-            width: 42px;
-            height: 42px;
-            border-radius: 14px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: #dbeafe;
-            border: 1px solid rgba(96, 165, 250, 0.34);
-            background: rgba(37, 99, 235, 0.18);
-        }
-
-        .tour-card-name {
-            display: block;
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 0.12rem;
-        }
-
-        .tour-card-file {
-            display: block;
-            color: var(--text-tertiary);
-            font-size: 0.8rem;
-        }
-
-        .tour-card-tag {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.7rem 0.95rem;
-            border-radius: 999px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(8, 10, 18, 0.72);
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-            font-weight: 600;
-            letter-spacing: 0.03em;
-            backdrop-filter: blur(16px);
-        }
-
-        .tour-media {
-            position: relative;
-            min-height: 560px;
-        }
-
-        .tour-image {
-            display: block;
-            width: 100%;
-            height: 100%;
-            min-height: 560px;
-            object-fit: cover;
-            object-position: top center;
-        }
-
-        .tour-placeholder {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            text-align: center;
-            background:
-                radial-gradient(circle at 14% 18%, rgba(96, 165, 250, 0.18), transparent 22%),
-                radial-gradient(circle at 82% 12%, rgba(148, 163, 184, 0.12), transparent 20%),
-                radial-gradient(circle at -12% 10%, transparent 46%, rgba(96, 165, 250, 0.14) 46.35%, transparent 46.7%),
-                linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, transparent 38%, transparent 64%, rgba(255, 255, 255, 0.02) 100%),
-                linear-gradient(180deg, rgba(7, 10, 18, 0.88), rgba(15, 23, 42, 0.92));
-        }
-
-        .tour-placeholder-copy {
-            max-width: 420px;
-        }
-
-        .tour-placeholder-kicker {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.76rem;
-            font-weight: 700;
-            letter-spacing: 0.11em;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 0.8rem;
-        }
-
-        .tour-placeholder-title {
-            font-size: 1.45rem;
-            line-height: 1.12;
-            color: var(--text-primary);
-            margin-bottom: 0.6rem;
-        }
-
-        .tour-placeholder-file {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.4rem 0.82rem;
-            border-radius: 999px;
-            border: 1px solid rgba(96, 165, 250, 0.26);
-            background: rgba(37, 99, 235, 0.12);
-            color: #bfdbfe;
-            font-size: 0.82rem;
-        }
-
-        .tour-card-progress {
-            position: absolute;
-            right: 1rem;
-            bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.45rem;
-            z-index: 3;
-        }
-
-        .tour-card-progress span {
-            display: block;
-            width: 22px;
-            height: 4px;
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.14);
-        }
-
-        .tour-card-progress-1 span:nth-child(-n + 1),
-        .tour-card-progress-2 span:nth-child(-n + 2),
-        .tour-card-progress-3 span:nth-child(-n + 3),
-        .tour-card-progress-4 span:nth-child(-n + 4) {
-            background: linear-gradient(90deg, #60a5fa, #2563eb);
-        }
-
-        .workflow-clips {
-            padding: 1.2rem 0 3rem;
-        }
-
-        .motion-shell {
-            position: relative;
-            margin-top: 1.3rem;
-        }
-
-        .motion-strip {
-            display: grid;
-            grid-template-columns: 1.2fr 0.95fr 0.95fr;
-            gap: 1rem;
-        }
-
-        .motion-card {
-            position: relative;
-            min-height: 320px;
-            border-radius: 24px;
-            overflow: hidden;
-            border: 1px solid var(--glass-border);
-            background:
-                radial-gradient(circle at top right, rgba(37, 99, 235, 0.18), transparent 32%),
-                linear-gradient(180deg, rgba(8, 10, 18, 0.96), rgba(14, 16, 26, 0.98));
-            box-shadow: 0 18px 42px rgba(0, 0, 0, 0.24);
-        }
-
-        .motion-card-head {
-            position: absolute;
-            top: 1rem;
-            left: 1rem;
-            right: 1rem;
-            z-index: 3;
-            display: flex;
-            justify-content: space-between;
-            gap: 0.8rem;
-        }
-
-        .motion-card-label,
-        .motion-card-file {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.6rem 0.85rem;
-            border-radius: 999px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(8, 10, 18, 0.72);
-            backdrop-filter: blur(14px);
-        }
-
-        .motion-card-label {
-            color: var(--text-primary);
-            font-size: 0.84rem;
-            font-weight: 700;
-        }
-
-        .motion-card-file {
-            color: var(--text-tertiary);
-            font-size: 0.78rem;
-        }
-
-        .demo-media-wrap {
-            position: relative;
-            min-height: 320px;
-        }
-
-        .demo-gif {
-            display: block;
-            width: 100%;
-            height: 100%;
-            min-height: 320px;
-            object-fit: cover;
-            object-position: center top;
-        }
-
-        .demo-placeholder {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem;
-            text-align: center;
-            color: var(--text-tertiary);
-            background:
-                radial-gradient(circle at 16% 18%, rgba(96, 165, 250, 0.14), transparent 22%),
-                radial-gradient(circle at 84% 14%, rgba(148, 163, 184, 0.1), transparent 18%),
-                radial-gradient(circle at 112% 18%, transparent 34%, rgba(148, 163, 184, 0.1) 34.35%, transparent 34.7%),
-                linear-gradient(135deg, rgba(255, 255, 255, 0.025) 0%, transparent 34%, transparent 68%, rgba(255, 255, 255, 0.015) 100%),
-                linear-gradient(160deg, rgba(8, 10, 18, 0.94), rgba(15, 23, 42, 0.96));
-        }
-
-        .demo-placeholder-copy {
-            max-width: 260px;
-        }
-
-        .demo-placeholder-copy strong {
-            display: block;
-            color: var(--text-primary);
-            font-size: 0.95rem;
-            margin-bottom: 0.45rem;
-        }
-
-        .demo-placeholder-copy span {
-            display: block;
-            color: var(--text-tertiary);
-            font-size: 0.82rem;
-        }
-
-        .motion-note {
-            margin-top: 1rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.55rem;
-            padding: 0.55rem 0.88rem;
-            border-radius: 999px;
-            border: 1px solid var(--glass-border);
-            background: rgba(255, 255, 255, 0.03);
-            color: var(--text-secondary);
-            font-size: 0.84rem;
-        }
-
-        @media (max-width: 980px) {
-            .tour-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .tour-reel {
-                grid-auto-columns: minmax(300px, 86vw);
-            }
-
-            .tour-card,
-            .tour-media,
-            .tour-image {
-                min-height: 500px;
-            }
-
-            .motion-strip {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .tour-reel-wrap::before,
-            .tour-reel-wrap::after {
-                width: 26px;
-            }
-
-            .tour-reel {
-                grid-auto-columns: minmax(260px, 88vw);
-                gap: 0.85rem;
-            }
-
-            .tour-heading {
-                font-size: 1.35rem;
-            }
-
-            .tour-card,
-            .tour-media,
-            .tour-image {
-                min-height: 380px;
-            }
-
-            .tour-card-head {
-                left: 0.8rem;
-                right: 0.8rem;
-            }
-
-            .tour-card-head {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .tour-card-meta {
-                width: 100%;
-            }
-
-            .tour-card-tag {
-                display: none;
-            }
-
-            .motion-card,
-            .demo-media-wrap,
-            .demo-gif {
-                min-height: 250px;
-            }
-
-            .motion-card-head {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-        }
-
-        .support-hub {
-            padding: 2.5rem 0 3rem;
-        }
-
-        .support-grid {
-            margin-top: 1.35rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1rem;
-        }
-
-        .support-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 1.2rem;
-        }
-
-        .support-card h3 {
-            font-size: 1rem;
-            color: var(--text-primary);
-            margin-bottom: 0.45rem;
-        }
-
-        .support-card p {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-bottom: 0.8rem;
-            line-height: 1.6;
-        }
-
-        .support-card a {
-            color: var(--accent);
-            font-size: 0.85rem;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .support-card a:hover {
-            text-decoration: underline;
-        }
-
-        /* ========================================
-           WAITLIST SECTION
-           ======================================== */
-        .waitlist {
-            padding: 3rem 0;
-        }
-
-        .waitlist-content {
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .waitlist-title {
-            text-align: center;
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 0.75rem;
-            color: var(--text-primary);
-        }
-
-        .waitlist-subtitle {
-            text-align: center;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            font-size: 1rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.6rem;
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: var(--text-primary);
-        }
-
-        .form-input,
-        .form-textarea {
-            width: 100%;
-            padding: 0.9rem 1rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.04);
-            color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.95rem;
-            transition: all 0.3s;
-        }
-
-        body.light-mode .form-input,
-        body.light-mode .form-textarea {
-            background: white;
-        }
-
-        .form-input:focus,
-        .form-textarea:focus {
-            outline: none;
-            border-color: var(--accent);
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        body.light-mode .form-input:focus,
-        body.light-mode .form-textarea:focus {
-            background: white;
-        }
-
-        .form-textarea {
-            resize: none;
-            min-height: 100px;
-        }
-
-        .form-submit {
-            width: 100%;
-            padding: 1rem;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .form-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(37, 99, 235, 0.35);
-        }
-
-        .form-privacy {
-            text-align: center;
-            margin-top: 1.5rem;
-            font-size: 0.85rem;
-            color: var(--text-tertiary);
-        }
-
-        .form-consent {
-            display: flex;
-            align-items: flex-start;
+            flex-wrap: wrap;
             gap: 10px;
-            margin: 0.25rem 0 0.75rem 0;
-            text-align: left;
+            position: relative;
+            z-index: 1;
         }
 
-        .form-consent input {
-            margin-top: 3px;
-            flex-shrink: 0;
-        }
-
-        .form-consent label {
-            font-size: 0.85rem;
+        .meta-pill {
+            padding: 0.65rem 0.95rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-soft);
             color: var(--text-secondary);
-            line-height: 1.4;
+            font-size: 0.84rem;
+            font-weight: 600;
         }
 
-        .form-consent a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        .form-consent a:hover {
-            text-decoration: underline;
-        }
-
-        .turnstile-wrap {
+        .hero-access-card {
+            position: relative;
+            z-index: 1;
+            margin-top: 26px;
+            padding: 18px;
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-soft);
             display: flex;
-            justify-content: center;
-            margin-bottom: 16px;
+            flex-direction: column;
+            gap: 14px;
+            max-width: 520px;
         }
 
-        #turnstile-widget {
-            min-height: 66px;
-        }
-
-        .success-message {
-            background: rgba(34, 197, 94, 0.1);
-            border: 1px solid rgba(34, 197, 94, 0.3);
-            padding: 2rem;
-            border-radius: 12px;
-            text-align: center;
-            color: #22c55e;
-            margin-bottom: 2rem;
-            display: none;
-        }
-
-        .success-message.show {
-            display: block;
-        }
-
-        /* ========================================
-           FAQ SECTION
-           ======================================== */
-        .faq {
-            padding: 3rem 0;
-        }
-
-        .faq-container {
-            max-width: 700px;
-            margin: 3rem auto 0;
-        }
-
-        .faq-item {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            overflow: hidden;
-        }
-
-        .faq-header {
-            padding: 1.5rem;
-            cursor: pointer;
+        .hero-access-label {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s;
-            user-select: none;
+            gap: 14px;
+            align-items: flex-start;
         }
 
-        .faq-header:hover {
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .faq-question {
-            font-weight: 600;
-            color: var(--text-primary);
-            flex: 1;
-            text-align: left;
-        }
-
-        .faq-toggle {
-            margin-left: 1rem;
-            color: var(--accent);
-            font-size: 1.25rem;
-            transition: transform 0.3s;
-            font-weight: 600;
-        }
-
-        .faq-item.open .faq-toggle {
-            transform: rotate(45deg);
-        }
-
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            padding: 0 1.5rem;
-            transition: max-height 0.3s ease-out;
-        }
-
-        .faq-item.open .faq-answer {
-            max-height: 400px;
-            padding: 1.5rem;
-        }
-
-        .faq-text {
-            color: var(--text-secondary);
-            line-height: 1.7;
-            font-size: 0.95rem;
-        }
-
-        /* ========================================
-           CONTACT SECTION
-           ======================================== */
-        .contact {
-            padding: 3rem 0;
-        }
-
-        .contact-content {
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .contact-title {
-            text-align: center;
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 0.75rem;
-            color: var(--text-primary);
-        }
-
-        .contact-subtitle {
-            text-align: center;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            font-size: 1rem;
-        }
-
-        .email-fallback {
-            text-align: center;
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border);
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        .email-fallback a {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .email-fallback a:hover {
-            text-decoration: underline;
-        }
-
-        /* ========================================
-           FOOTER
-           ======================================== */
-        footer {
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--glass-border);
-            padding: 3rem 0 2rem;
-            margin-top: 4rem;
-            transition: all 0.3s;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 3rem;
-            margin-bottom: 3rem;
-        }
-
-        .footer-section h3 {
-            color: var(--text-primary);
-            margin-bottom: 1.25rem;
-            font-weight: 700;
-            font-size: 0.95rem;
-        }
-
-        .footer-section ul {
-            list-style: none;
-        }
-
-        .footer-section a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.3s;
+        .hero-access-copy strong {
             display: block;
-            margin-bottom: 0.75rem;
+            font-size: 0.96rem;
+            letter-spacing: -0.02em;
         }
 
-        .footer-section a:hover {
-            color: var(--accent);
-        }
-
-        .footer-tagline {
+        .hero-access-copy span {
+            display: block;
+            margin-top: 4px;
             color: var(--text-secondary);
             font-size: 0.9rem;
-            margin-top: 0.75rem;
         }
 
-        .footer-divider {
-            border-top: 1px solid var(--glass-border);
-            padding-top: 2rem;
-            margin-top: 2rem;
-            text-align: center;
-        }
-
-        .footer-copy {
-            color: var(--text-tertiary);
-            font-size: 0.85rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-disclaimer {
-            color: var(--text-tertiary);
-            font-size: 0.8rem;
-            margin-top: 1rem;
-        }
-
-        /* ========================================
-           RESPONSIVE DESIGN
-           ======================================== */
-        @media (max-width: 768px) {
-            .hero {
-                padding: 4rem 0 2rem;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .section-title {
-                font-size: 1.75rem;
-            }
-
-            .button-group {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .steps-row {
-                gap: 2rem;
-            }
-
-            .step-connector {
-                display: none !important;
-            }
-
-            .footer-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 0 16px;
-            }
-
-            .hero h1 {
-                font-size: 1.75rem;
-            }
-
-            .section-title {
-                font-size: 1.5rem;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-                gap: 1.25rem;
-            }
-
-            .feature-card {
-                padding: 1.5rem;
-            }
-
-            .mockup-main {
-                padding: 1.5rem;
-            }
-        }
-
-        /* ========================================
-           HERO DISCORD AUTH (inline with buttons)
-           ======================================== */
         .hero-auth {
             display: none;
         }
 
         .hero-auth.active {
-            display: flex;
-            align-items: center;
+            display: block;
         }
 
         .discord-login-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            padding: 0.95rem 2rem;
-            background: #5865F2;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Inter', sans-serif;
-            text-decoration: none;
-        }
-
-        .discord-login-btn:hover {
-            background: #4752C4;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(88, 101, 242, 0.35);
+            width: fit-content;
         }
 
         .discord-login-btn svg {
@@ -2165,253 +593,1017 @@
         .hero-user-row {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .hero-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: 2px solid var(--accent);
+            width: 42px;
+            height: 42px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
         }
 
         .btn-download {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.95rem 2rem;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Inter', sans-serif;
-            text-decoration: none;
-        }
-
-        .btn-download:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(37, 99, 235, 0.35);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--border-soft);
+            min-height: 48px;
         }
 
         .hero-logout {
-            background: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 999px;
             border: 1px solid var(--border);
-            color: var(--text-tertiary);
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-secondary);
             cursor: pointer;
-            font-size: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .hero-stage-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .stage-kicker {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 18px;
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+        }
+
+        .stage-kicker strong {
+            color: var(--text-primary);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .stage-kicker .mono {
+            font-size: 0.76rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .asset-frame {
+            position: relative;
+            overflow: hidden;
+            min-height: 510px;
+            border-radius: 26px;
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015)),
+                rgba(7, 9, 13, 0.9);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .frame-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .frame-dots {
+            display: flex;
+            gap: 7px;
+        }
+
+        .frame-dots span {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .frame-title {
+            color: var(--text-primary);
+            font-size: 0.92rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .frame-status {
+            padding: 0.42rem 0.7rem;
+            border-radius: 999px;
+            background: rgba(79, 124, 255, 0.14);
+            color: #c9d7ff;
+            font-size: 0.74rem;
+            font-weight: 700;
+        }
+
+        .asset-image {
+            width: 100%;
+            height: calc(100% - 60px);
+            object-fit: cover;
+        }
+
+        .asset-placeholder {
+            position: absolute;
+            inset: 60px 0 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s;
-            font-family: 'Inter', sans-serif;
+            text-align: left;
+            padding: 36px;
+            background:
+                radial-gradient(circle at 50% 16%, rgba(79, 124, 255, 0.2), transparent 34%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 24%);
         }
 
-        .hero-logout:hover {
-            border-color: #ef4444;
-            color: #ef4444;
+        .asset-placeholder-copy {
+            max-width: 320px;
         }
 
-        /* ========================================
-           BRANDING & PRODUCT BADGE
-           ======================================== */
-        .logo-divider {
-            color: var(--text-tertiary);
-            margin: 0 0.35rem;
-            font-weight: 400;
-        }
-
-        .logo-product {
-            color: var(--accent);
-            font-weight: 600;
-        }
-
-        .product-badge {
+        .asset-placeholder-kicker {
             display: inline-block;
-            padding: 0.4rem 1.25rem;
-            border: 1px solid var(--glass-border);
+            padding: 0.45rem 0.75rem;
             border-radius: 999px;
+            background: rgba(79, 124, 255, 0.12);
+            border: 1px solid rgba(79, 124, 255, 0.18);
+            color: #b9c9ff;
+            font-size: 0.78rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+
+        .asset-placeholder h3 {
+            font-size: 2rem;
+            line-height: 1.02;
+            letter-spacing: -0.05em;
+        }
+
+        .asset-placeholder p {
+            margin-top: 12px;
+            color: var(--text-secondary);
+        }
+
+        .asset-file {
+            margin-top: 14px;
+            color: var(--text-tertiary);
             font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            background: var(--glass-bg);
-            letter-spacing: 0.02em;
         }
 
-        .product-badge strong {
-            color: var(--accent);
-            font-weight: 600;
-        }
-
-        /* ========================================
-           MOCKUP TOOLBAR
-           ======================================== */
-        .mockup-toolbar {
+        .stage-foot {
+            margin-top: 16px;
             display: flex;
-            gap: 0.5rem;
-            padding: 0.6rem 1rem;
-            border-bottom: 1px solid var(--glass-border);
-            background: rgba(0, 0, 0, 0.08);
-            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .toolbar-btn {
-            padding: 0.35rem 0.75rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            cursor: pointer;
-            border: 1px solid var(--glass-border);
-            background: var(--glass-bg);
+        .stage-foot .meta-pill {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .proof-bar {
+            padding-top: 16px;
+        }
+
+        .proof-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .proof-card {
+            position: relative;
+            padding: 18px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-soft);
+            background: rgba(255, 255, 255, 0.035);
+            min-height: 132px;
+            overflow: hidden;
+        }
+
+        .proof-card .mono {
+            font-size: 0.73rem;
+            color: var(--text-tertiary);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .proof-card h3 {
+            margin-top: 16px;
+            font-size: 1.1rem;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+        }
+
+        .proof-card p {
+            margin-top: 8px;
             color: var(--text-secondary);
-            transition: all 0.2s;
-            font-family: 'Inter', sans-serif;
+            font-size: 0.92rem;
+        }
+
+        .story-section {
+            padding: 76px 0 16px;
+        }
+
+        .section-heading {
+            max-width: 760px;
+            margin-bottom: 26px;
+        }
+
+        .section-heading .eyebrow {
+            margin-bottom: 14px;
+        }
+
+        .section-heading h2 {
+            font-size: clamp(2.2rem, 4vw, 3.5rem);
+            line-height: 1.02;
+            letter-spacing: -0.05em;
+        }
+
+        .section-heading p {
+            margin-top: 16px;
+            max-width: 680px;
+            color: var(--text-secondary);
+            font-size: 1.04rem;
+        }
+
+        .story-stack {
+            display: grid;
+            gap: 18px;
+        }
+
+        .story-band {
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: minmax(0, 0.44fr) minmax(0, 0.56fr);
+            gap: 18px;
+            align-items: stretch;
+            padding: 22px;
+            border-radius: var(--radius-xl);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+        }
+
+        .story-band.reverse {
+            grid-template-columns: minmax(0, 0.56fr) minmax(0, 0.44fr);
+        }
+
+        .story-band.reverse .story-copy {
+            order: 2;
+        }
+
+        .story-band.reverse .story-media {
+            order: 1;
+        }
+
+        .story-copy {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 14px;
+        }
+
+        .story-copy h3 {
+            margin-top: 14px;
+            font-size: clamp(1.8rem, 3vw, 2.8rem);
+            line-height: 1.02;
+            letter-spacing: -0.05em;
+        }
+
+        .story-copy p {
+            margin-top: 16px;
+            max-width: 420px;
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .story-points {
+            margin-top: 18px;
+            display: grid;
+            gap: 10px;
+        }
+
+        .story-point {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            color: var(--text-secondary);
+            font-size: 0.94rem;
+        }
+
+        .story-point strong {
+            display: block;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            margin-bottom: 2px;
+        }
+
+        .story-point-dot {
+            width: 8px;
+            height: 8px;
+            margin-top: 8px;
+            border-radius: 999px;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+            flex-shrink: 0;
+        }
+
+        .story-actions {
+            margin-top: 22px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .story-media .asset-frame {
+            min-height: 450px;
+        }
+
+        .system-rail {
+            padding: 76px 0 16px;
+        }
+
+        .system-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .utility-card,
+        .contact-card,
+        .faq-item,
+        .final-rail,
+        .waitlist-card,
+        .final-checklist {
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.022));
+            box-shadow: var(--shadow-md);
+        }
+
+        .utility-card {
+            padding: 22px;
+        }
+
+        .utility-card h3 {
+            margin-top: 14px;
+            font-size: 1.26rem;
+            letter-spacing: -0.03em;
+        }
+
+        .utility-card p {
+            margin-top: 10px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .utility-card .mini-link {
+            margin-top: 18px;
+            width: fit-content;
+            padding: 0.8rem 1rem;
             display: inline-flex;
             align-items: center;
-            gap: 0.35rem;
+            justify-content: center;
         }
 
-        .toolbar-btn:hover {
-            background: rgba(255, 255, 255, 0.08);
-            color: var(--text-primary);
+        .support-hub {
+            padding: 76px 0 16px;
         }
 
-        .toolbar-btn.btn-start {
-            background: rgba(34, 197, 94, 0.12);
-            color: #22c55e;
-            border-color: rgba(34, 197, 94, 0.25);
+        .support-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
         }
 
-        .toolbar-btn.btn-start:hover {
-            background: rgba(34, 197, 94, 0.2);
+        .support-card {
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-soft);
+            background: rgba(255, 255, 255, 0.032);
+            padding: 18px;
         }
 
-        .toolbar-btn.btn-stop {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-            border-color: rgba(239, 68, 68, 0.2);
-        }
-
-        .toolbar-btn.btn-stop:hover {
-            background: rgba(239, 68, 68, 0.18);
-        }
-
-        .toolbar-btn.btn-pause {
-            background: rgba(245, 158, 11, 0.1);
-            color: #f59e0b;
-            border-color: rgba(245, 158, 11, 0.2);
-        }
-
-        .toolbar-btn.btn-pause:hover {
-            background: rgba(245, 158, 11, 0.18);
-        }
-
-        .toolbar-spacer {
-            flex: 1;
-        }
-
-        .toolbar-status {
-            font-size: 0.7rem;
+        .support-card .mono {
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
             color: var(--text-tertiary);
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
         }
 
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #22c55e;
-            animation: pulse 2s ease-in-out infinite;
+        .support-card h3 {
+            margin-top: 14px;
+            font-size: 1.02rem;
+            letter-spacing: -0.03em;
         }
 
-        /* ========================================
-           FORM ERROR STATE
-           ======================================== */
+        .support-card p {
+            margin-top: 8px;
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+        }
+
+        .support-card a {
+            display: inline-block;
+            margin-top: 16px;
+            color: var(--text-primary);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .support-card a:hover {
+            text-decoration: underline;
+        }
+
+        .waitlist {
+            padding: 76px 0 16px;
+        }
+
+        .final-shell {
+            display: grid;
+            grid-template-columns: minmax(0, 0.56fr) minmax(0, 0.44fr);
+            gap: 18px;
+            align-items: start;
+        }
+
+        .waitlist-card,
+        .final-rail {
+            padding: 24px;
+        }
+
+        .waitlist-card .eyebrow,
+        .final-rail .eyebrow,
+        .contact-card .eyebrow {
+            margin-bottom: 14px;
+        }
+
+        .waitlist-title,
+        .contact-title {
+            font-size: clamp(2rem, 3.6vw, 3rem);
+            line-height: 1.02;
+            letter-spacing: -0.05em;
+        }
+
+        .waitlist-subtitle,
+        .contact-subtitle {
+            margin-top: 14px;
+            color: var(--text-secondary);
+            max-width: 620px;
+            font-size: 1rem;
+        }
+
+        .success-message,
         .error-message {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            padding: 1rem;
-            border-radius: 8px;
-            text-align: center;
-            color: #ef4444;
-            margin-bottom: 1rem;
             display: none;
-            font-size: 0.9rem;
+            margin-top: 20px;
+            padding: 0.95rem 1rem;
+            border-radius: 16px;
+            font-size: 0.94rem;
         }
 
+        .success-message.show,
         .error-message.show {
             display: block;
         }
 
-        .form-submit:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none !important;
-            box-shadow: none !important;
+        .success-message {
+            background: rgba(34, 197, 94, 0.12);
+            border: 1px solid rgba(34, 197, 94, 0.18);
+            color: #d3f9dd;
         }
 
-        /* ========================================
-           ANIMATIONS & TRANSITIONS
-           ======================================== */
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
+        .error-message {
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.18);
+            color: #fecaca;
+        }
+
+        .form-grid {
+            margin-top: 24px;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-primary);
+            padding: 0.92rem 1rem;
+            font: inherit;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: rgba(79, 124, 255, 0.42);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .form-textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        .form-consent {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-top: 4px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .form-consent input {
+            margin-top: 5px;
+        }
+
+        .form-consent a,
+        .form-privacy a,
+        .faq-text a,
+        .error-message a,
+        .email-fallback a {
+            color: var(--text-primary);
+            text-decoration: underline;
+        }
+
+        .turnstile-wrap {
+            grid-column: 1 / -1;
+            padding-top: 6px;
+        }
+
+        .form-submit {
+            margin-top: 6px;
+            width: fit-content;
+            min-width: 170px;
+            padding-inline: 1.4rem;
+        }
+
+        .form-privacy {
+            margin-top: 16px;
+            color: var(--text-tertiary);
+            font-size: 0.88rem;
+        }
+
+        .final-checklist {
+            margin-top: 18px;
+            padding: 20px;
+        }
+
+        .final-checklist h3 {
+            font-size: 1.12rem;
+            letter-spacing: -0.03em;
+        }
+
+        .checklist-items {
+            margin-top: 16px;
+            display: grid;
+            gap: 12px;
+        }
+
+        .checklist-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            color: var(--text-secondary);
+            font-size: 0.93rem;
+        }
+
+        .checkmark {
+            width: 22px;
+            height: 22px;
+            border-radius: 999px;
+            background: rgba(34, 197, 94, 0.15);
+            color: #9ae6b4;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        .contact {
+            padding: 20px 0 16px;
+        }
+
+        .contact-card {
+            padding: 24px;
+        }
+
+        .contact-grid {
+            margin-top: 22px;
+            display: grid;
+            gap: 16px;
+        }
+
+        .email-fallback {
+            margin-top: 18px;
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+        }
+
+        .faq {
+            padding: 76px 0 16px;
+        }
+
+        .faq-container {
+            display: grid;
+            gap: 14px;
+        }
+
+        .faq-item {
+            padding: 0;
+        }
+
+        .faq-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 22px 24px;
+            cursor: pointer;
+        }
+
+        .faq-question {
+            font-size: 1.04rem;
+            letter-spacing: -0.03em;
+        }
+
+        .faq-toggle {
+            color: var(--text-tertiary);
+            font-size: 1.3rem;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 220px;
+        }
+
+        .faq-item.open .faq-toggle {
+            transform: rotate(45deg);
+        }
+
+        .faq-text {
+            padding: 0 24px 22px;
+            color: var(--text-secondary);
+            font-size: 0.96rem;
+        }
+
+        footer {
+            padding: 72px 0 34px;
+        }
+
+        .footer-shell {
+            padding: 28px;
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--border);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
+            box-shadow: var(--shadow-md);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.4fr repeat(3, minmax(0, 1fr));
+            gap: 26px;
+        }
+
+        .footer-section h3 {
+            font-size: 0.86rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-tertiary);
+        }
+
+        .footer-tagline {
+            margin-top: 14px;
+            max-width: 340px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            margin-top: 12px;
+            display: grid;
+            gap: 9px;
+        }
+
+        .footer-section a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.94rem;
+        }
+
+        .footer-section a:hover {
+            color: var(--text-primary);
+        }
+
+        .footer-divider {
+            margin-top: 26px;
+            padding-top: 18px;
+            border-top: 1px solid var(--border-soft);
+        }
+
+        .footer-copy {
+            color: var(--text-tertiary);
+            font-size: 0.88rem;
+            cursor: default;
+            width: fit-content;
+        }
+
+        .footer-disclaimer {
+            margin-top: 12px;
+            color: var(--text-tertiary);
+            font-size: 0.82rem;
+            max-width: 860px;
+        }
+
+        #admin-link {
+            display: none;
+            margin-top: 8px;
+            font-size: 0.74rem;
+            color: var(--text-tertiary);
+            text-decoration: none;
+            opacity: 0.65;
+        }
+
+        @media (max-width: 1120px) {
+            .nav-shell {
+                border-radius: 24px;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+
+            .nav-center {
+                gap: 1rem;
+            }
+
+            .hero-shell,
+            .final-shell,
+            .story-band,
+            .story-band.reverse {
+                grid-template-columns: 1fr;
+            }
+
+            .story-band.reverse .story-copy,
+            .story-band.reverse .story-media {
+                order: initial;
+            }
+
+            .proof-grid,
+            .system-grid,
+            .support-grid,
+            .footer-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 820px) {
+            body {
+                background-image:
+                    radial-gradient(circle at 18% 12%, var(--page-glow-1), transparent 30%),
+                    radial-gradient(circle at 82% 10%, var(--page-glow-2), transparent 24%),
+                    radial-gradient(circle at 50% 24%, var(--page-glow-1), transparent 44%),
+                    radial-gradient(circle at -8% 24%, transparent 35.8%, var(--page-ring-1) 36.25%, transparent 36.7%),
+                    radial-gradient(circle at 108% 28%, transparent 24.4%, var(--page-ring-2) 24.85%, transparent 25.3%),
+                    radial-gradient(circle at 50% 104%, transparent 21.2%, var(--page-ring-3) 21.65%, transparent 22.1%),
+                    linear-gradient(135deg, var(--page-sheen) 0%, transparent 26%, transparent 74%, var(--page-sheen) 100%),
+                    linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+                background-attachment: scroll;
+            }
+
+            nav {
+                top: 10px;
+            }
+
+            .nav-shell {
+                position: relative;
+                min-height: 64px;
+                border-radius: 22px;
+                padding-inline: 14px;
+            }
+
+            .hamburger {
+                display: inline-flex;
+            }
+
+            .nav-center {
+                position: absolute;
+                top: calc(100% + 10px);
+                left: 0;
+                right: 0;
+                display: none;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                padding: 10px 14px 16px;
+                background: var(--bg-elevated);
+                border: 1px solid var(--border);
+                border-radius: 24px;
+                box-shadow: var(--shadow-md);
+            }
+
+            .nav-center.open {
+                display: flex;
+            }
+
+            .nav-center a {
+                padding: 0.9rem 0.4rem;
+                border-bottom: 1px solid var(--border-soft);
+            }
+
+            .nav-center li:last-child a {
+                border-bottom: none;
+            }
+
+            .nav-right {
+                gap: 8px;
+            }
+
+            .nav-right .cta-button {
+                display: none;
+            }
+
+            .proof-grid,
+            .system-grid,
+            .support-grid,
+            .footer-grid,
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero,
+            .story-section,
+            .support-hub,
+            .system-rail,
+            .waitlist,
+            .faq {
+                padding-top: 56px;
+            }
+
+            .hero-copy-panel,
+            .hero-stage-panel,
+            .story-band,
+            .waitlist-card,
+            .final-rail,
+            .contact-card {
+                padding: 22px;
+            }
+
+            .asset-frame,
+            .story-media .asset-frame {
+                min-height: 360px;
+            }
+
+            .hero-copy-panel h1 {
+                font-size: clamp(2.4rem, 12vw, 4.2rem);
+            }
+
+            .hero-subheading {
+                font-size: 1rem;
+            }
+
+            .button-group,
+            .story-actions,
+            .hero-user-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn,
+            .form-submit,
+            .cta-button,
+            .discord-login-btn,
+            .mini-link {
+                width: 100%;
+            }
+
+            .hero-user-row .hero-avatar,
+            .hero-user-row .hero-logout {
+                align-self: flex-start;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .container {
+                width: min(1240px, calc(100% - 20px));
+            }
+
+            .logo-wordmark {
+                gap: 6px;
+                font-size: 1.02rem;
+            }
+
+            .logo-mark {
+                width: 36px;
+                height: 36px;
+            }
+
+            .theme-toggle,
+            .nav-utility,
+            .hamburger {
+                width: 40px;
+                height: 40px;
+            }
+
+            .hero-shell,
+            .proof-grid,
+            .story-stack,
+            .system-grid,
+            .support-grid,
+            .faq-container {
+                gap: 12px;
+            }
+
+            .section-heading h2,
+            .waitlist-title,
+            .contact-title {
+                font-size: 2rem;
+            }
+
+            .asset-frame,
+            .story-media .asset-frame {
+                min-height: 300px;
+            }
+
+            .frame-title {
+                font-size: 0.84rem;
+            }
+
+            .frame-status {
+                display: none;
             }
         }
     </style>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 </head>
 <body>
-    <!-- ========================================
-         NAVIGATION
-         ======================================== -->
     <nav>
         <div class="container">
-            <div class="nav-content">
+            <div class="nav-shell">
                 <a href="/" class="logo" aria-label="Hyperfect Nexus - Home">
-                    <span>Hyperfect</span><span class="logo-divider">/</span><span class="logo-product">Nexus</span>
+                    <span class="logo-mark"><img src="assets/brand/app-icon.png" alt=""></span>
+                    <span class="logo-wordmark"><span>Hyperfect</span><span class="logo-divider">/</span><span class="logo-product">Nexus</span></span>
                 </a>
+
                 <ul class="nav-center">
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#how-it-works">How It Works</a></li>
-                    <li><a href="#demo-gallery">Demos</a></li>
+                    <li><a href="#demo-gallery">Product</a></li>
+                    <li><a href="#support-hub">Workflow</a></li>
                     <li><a href="/getting-started">Setup Guide</a></li>
                     <li><a href="/license-dashboard">Manage License</a></li>
                     <li><a href="#faq">FAQ</a></li>
                 </ul>
+
                 <div class="nav-right">
                     <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
                         <span></span>
                         <span></span>
                         <span></span>
                     </button>
-                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark mode">
                         <svg id="sunIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="5"/>
-                            <line x1="12" y1="1" x2="12" y2="3"/>
-                            <line x1="12" y1="21" x2="12" y2="23"/>
-                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                            <line x1="1" y1="12" x2="3" y2="12"/>
-                            <line x1="21" y1="12" x2="23" y2="12"/>
-                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                            <circle cx="12" cy="12" r="4.5"/>
+                            <line x1="12" y1="2" x2="12" y2="4"/>
+                            <line x1="12" y1="20" x2="12" y2="22"/>
+                            <line x1="4.9" y1="4.9" x2="6.3" y2="6.3"/>
+                            <line x1="17.7" y1="17.7" x2="19.1" y2="19.1"/>
+                            <line x1="2" y1="12" x2="4" y2="12"/>
+                            <line x1="20" y1="12" x2="22" y2="12"/>
+                            <line x1="4.9" y1="19.1" x2="6.3" y2="17.7"/>
+                            <line x1="17.7" y1="6.3" x2="19.1" y2="4.9"/>
                         </svg>
-                        <svg id="moonIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
-                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                        <svg id="moonIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+                            <path d="M20 15.4A8.5 8.5 0 1 1 8.6 4a7 7 0 0 0 11.4 11.4z"/>
                         </svg>
                     </button>
                     <button class="cta-button" onclick="document.getElementById('waitlist').scrollIntoView({ behavior: 'smooth' })">Join Waitlist</button>
@@ -2420,651 +1612,520 @@
         </div>
     </nav>
 
-    <!-- ========================================
-         HERO SECTION
-         ======================================== -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content fade-in">
-                <div class="product-badge">Closed beta for <strong>local-first</strong> job search automation</div>
-                <h1><span>Set Up Your Job Search Once.</span><span>Let Nexus Run It.</span></h1>
-                <p class="subheading">Nexus is a desktop job search operator for LinkedIn, Indeed, and external ATS flows. You define the roles, resumes, and guardrails. Nexus handles the repeat work locally on your machine.</p>
-                <p class="hero-guide-link">See the full setup before you join. The <a href="/getting-started">setup guide</a> walks through install, sign-in, resumes, and search configuration.</p>
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-shell fade-in">
+                    <div class="hero-copy-panel">
+                        <div class="eyebrow mono"><span class="eyebrow-dot"></span>Local-first desktop operator</div>
+                        <h1><span>Set Up Your Job Search Once.</span><span>Let Nexus Run It.</span></h1>
+                        <p class="hero-subheading">Nexus turns your job search into a repeatable operating system. Configure resumes, filters, sign-ins, and guardrails once, then run LinkedIn, Indeed, and ATS workflows from your own machine.</p>
+                        <p class="hero-guide-link">Need the full path first? The <a href="/getting-started">setup guide</a> walks through install, licensing, runtime setup, and the first search from end to end.</p>
 
-                <div class="button-group">
-                    <button class="btn btn-primary" onclick="document.getElementById('waitlist').scrollIntoView({ behavior: 'smooth' })">Join Waitlist</button>
-                    <a class="btn btn-secondary" href="/getting-started">See Setup Guide</a>
-                </div>
-
-                <div class="hero-access">
-                    <div class="hero-access-copy"><strong>Already approved for beta?</strong> Use Discord to unlock your download.</div>
-                    <div id="hero-logged-out" class="hero-auth active">
-                        <button class="discord-login-btn" id="discord-login-btn">
-                            <svg role="img" viewBox="0 0 24 24" fill="currentColor" aria-label="Discord"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
-                            Unlock with Discord
-                        </button>
-                    </div>
-
-                    <div id="hero-logged-in" class="hero-auth">
-                        <div class="hero-user-row">
-                            <img id="discord-avatar" src="" alt="Avatar" class="hero-avatar">
-                            <a class="btn btn-download" id="download-link" href="#">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                                Download for macOS
-                            </a>
-                            <button class="hero-logout" id="discord-logout" title="Sign out">&#10005;</button>
+                        <div class="button-group">
+                            <button class="btn btn-primary" onclick="document.getElementById('waitlist').scrollIntoView({ behavior: 'smooth' })">Join Waitlist</button>
+                            <a class="btn btn-secondary" href="/getting-started">Open Setup Guide</a>
                         </div>
-                    </div>
-                </div>
 
-                <div class="operator-tour fade-in" id="demo-gallery">
-                    <div class="tour-header">
-                        <div class="tour-copy">
-                            <div class="tour-label">Command Center Reel</div>
-                            <h3 class="tour-heading">Scroll through the product instead of clicking through text.</h3>
-                            <p class="tour-intro">This section is built to let the UI do the talking. Drop real screenshots into the reel and keep the copy out of the way.</p>
+                        <div class="hero-meta-row">
+                            <div class="meta-pill">LinkedIn + Indeed + ATS flows</div>
+                            <div class="meta-pill">Resumes and reviews stay local</div>
+                            <div class="meta-pill">Structured search runs, not one-off prompts</div>
                         </div>
-                        <div class="tour-direction"><span class="tour-direction-dot"></span>Scroll or swipe the reel</div>
-                    </div>
 
-                    <div class="tour-reel-wrap">
-                        <div class="tour-reel">
-                            <article class="tour-card">
-                                <div class="tour-card-head">
-                                    <div class="tour-card-meta">
-                                        <span class="tour-card-index">01</span>
-                                        <span>
-                                            <span class="tour-card-name">Command Center</span>
-                                            <span class="tour-card-file">assets/screenshots/command-center.png</span>
-                                        </span>
-                                    </div>
-                                    <span class="tour-card-tag">Primary hero shot</span>
+                        <div class="hero-access-card">
+                            <div class="hero-access-label">
+                                <div class="hero-access-copy">
+                                    <strong>Already approved for beta?</strong>
+                                    <span>Use Discord to unlock your Nexus download and verify server access.</span>
                                 </div>
-                                <div class="tour-media">
-                                    <img
-                                        class="tour-image"
-                                        src="assets/screenshots/command-center.png"
-                                        alt="Nexus Command Center screenshot"
-                                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                                    >
-                                    <div class="tour-placeholder" style="display:none;">
-                                        <div class="tour-placeholder-copy">
-                                            <span class="tour-placeholder-kicker">Drop screenshot</span>
-                                            <h4 class="tour-placeholder-title">Command Center</h4>
-                                            <div class="tour-placeholder-file">assets/screenshots/command-center.png</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tour-card-progress tour-card-progress-1" aria-hidden="true">
-                                    <span></span><span></span><span></span><span></span>
-                                </div>
-                            </article>
+                            </div>
 
-                            <article class="tour-card">
-                                <div class="tour-card-head">
-                                    <div class="tour-card-meta">
-                                        <span class="tour-card-index">02</span>
-                                        <span>
-                                            <span class="tour-card-name">Create Search</span>
-                                            <span class="tour-card-file">assets/screenshots/create-search.png</span>
-                                        </span>
-                                    </div>
-                                    <span class="tour-card-tag">Clean launch flow</span>
-                                </div>
-                                <div class="tour-media">
-                                    <img
-                                        class="tour-image"
-                                        src="assets/screenshots/create-search.png"
-                                        alt="Nexus create search screenshot"
-                                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                                    >
-                                    <div class="tour-placeholder" style="display:none;">
-                                        <div class="tour-placeholder-copy">
-                                            <span class="tour-placeholder-kicker">Drop screenshot</span>
-                                            <h4 class="tour-placeholder-title">Create Search</h4>
-                                            <div class="tour-placeholder-file">assets/screenshots/create-search.png</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tour-card-progress tour-card-progress-2" aria-hidden="true">
-                                    <span></span><span></span><span></span><span></span>
-                                </div>
-                            </article>
+                            <div id="hero-logged-out" class="hero-auth active">
+                                <button class="discord-login-btn" id="discord-login-btn">
+                                    <svg role="img" viewBox="0 0 24 24" fill="currentColor" aria-label="Discord"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
+                                    Unlock with Discord
+                                </button>
+                            </div>
 
-                            <article class="tour-card">
-                                <div class="tour-card-head">
-                                    <div class="tour-card-meta">
-                                        <span class="tour-card-index">03</span>
-                                        <span>
-                                            <span class="tour-card-name">Resume Library</span>
-                                            <span class="tour-card-file">assets/screenshots/resume-library.png</span>
-                                        </span>
-                                    </div>
-                                    <span class="tour-card-tag">Dummy data only</span>
+                            <div id="hero-logged-in" class="hero-auth">
+                                <div class="hero-user-row">
+                                    <img id="discord-avatar" src="" alt="Avatar" class="hero-avatar">
+                                    <a class="btn btn-download" id="download-link" href="#">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                        Download Nexus
+                                    </a>
+                                    <button class="hero-logout" id="discord-logout" title="Sign out">&#10005;</button>
                                 </div>
-                                <div class="tour-media">
-                                    <img
-                                        class="tour-image"
-                                        src="assets/screenshots/resume-library.png"
-                                        alt="Nexus resume library screenshot"
-                                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                                    >
-                                    <div class="tour-placeholder" style="display:none;">
-                                        <div class="tour-placeholder-copy">
-                                            <span class="tour-placeholder-kicker">Drop screenshot</span>
-                                            <h4 class="tour-placeholder-title">Resume Library</h4>
-                                            <div class="tour-placeholder-file">assets/screenshots/resume-library.png</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tour-card-progress tour-card-progress-3" aria-hidden="true">
-                                    <span></span><span></span><span></span><span></span>
-                                </div>
-                            </article>
-
-                            <article class="tour-card">
-                                <div class="tour-card-head">
-                                    <div class="tour-card-meta">
-                                        <span class="tour-card-index">04</span>
-                                        <span>
-                                            <span class="tour-card-name">License Center</span>
-                                            <span class="tour-card-file">assets/screenshots/license-center.png</span>
-                                        </span>
-                                    </div>
-                                    <span class="tour-card-tag">Trust layer</span>
-                                </div>
-                                <div class="tour-media">
-                                    <img
-                                        class="tour-image"
-                                        src="assets/screenshots/license-center.png"
-                                        alt="Nexus license management screenshot"
-                                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                                    >
-                                    <div class="tour-placeholder" style="display:none;">
-                                        <div class="tour-placeholder-copy">
-                                            <span class="tour-placeholder-kicker">Drop screenshot</span>
-                                            <h4 class="tour-placeholder-title">License Center</h4>
-                                            <div class="tour-placeholder-file">assets/screenshots/license-center.png</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tour-card-progress tour-card-progress-4" aria-hidden="true">
-                                    <span></span><span></span><span></span><span></span>
-                                </div>
-                            </article>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Platform Support Info -->
-                    <div class="trust-info">
-                        <div>Works with:</div>
-                        <div class="platforms">
-                            <span class="platform">LinkedIn</span>
-                            <span class="platform">Indeed</span>
-                            <span class="platform">Glassdoor</span>
-                            <span class="platform">Greenhouse</span>
-                            <span class="platform">Lever</span>
-                            <span class="platform">Workday</span>
+                    <div class="hero-stage-panel">
+                        <div class="stage-kicker">
+                            <strong>Command Center</strong>
+                            <span class="mono">Live operator view</span>
+                        </div>
+
+                        <div class="asset-frame">
+                            <div class="frame-topbar">
+                                <div class="frame-dots"><span></span><span></span><span></span></div>
+                                <div class="frame-title">Nexus desktop</div>
+                                <div class="frame-status">Local run</div>
+                            </div>
+                            <img class="asset-image" src="assets/screenshots/command-center.png" alt="Nexus Command Center screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="asset-placeholder" style="display:none;">
+                                <div class="asset-placeholder-copy">
+                                    <span class="asset-placeholder-kicker mono">Hero screenshot</span>
+                                    <h3>Command Center</h3>
+                                    <p>Drop in the latest command center capture here. This hero frame is built to carry the page visually without relying on dense copy.</p>
+                                    <div class="asset-file mono">assets/screenshots/command-center.png</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="stage-foot">
+                            <div class="meta-pill">Search queue</div>
+                            <div class="meta-pill">Resume routing</div>
+                            <div class="meta-pill">Reviewable logs</div>
+                            <div class="meta-pill">License-aware workspace</div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- ========================================
-         FEATURES SECTION
-         ======================================== -->
-    <section class="features" id="features">
-        <div class="container">
-            <h2 class="section-title fade-in">Everything You Need to Land Your Next Role</h2>
-
-            <div class="features-grid">
-                <div class="feature-card fade-in">
-                    <div class="feature-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M12 2L15.09 8.26H21.77L16.84 12.45L18.94 18.71L12 14.52L5.06 18.71L7.16 12.45L2.23 8.26H8.91L12 2Z"/>
-                        </svg>
-                    </div>
-                    <h3 class="feature-title">AI-Powered Applications</h3>
-                    <p class="feature-description">Reads job descriptions, matches your resume, and fills out every form field intelligently.</p>
-                </div>
-
-                <div class="feature-card fade-in">
-                    <div class="feature-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="10"/>
-                            <path d="M12 6V12L16 14"/>
-                        </svg>
-                    </div>
-                    <h3 class="feature-title">Multi-Platform Support</h3>
-                    <p class="feature-description">Apply across LinkedIn, Indeed, and external ATS systems like Greenhouse and Workday.</p>
-                </div>
-
-                <div class="feature-card fade-in">
-                    <div class="feature-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                        </svg>
-                    </div>
-                    <h3 class="feature-title">Smart Job Matching</h3>
-                    <p class="feature-description">Set your minimum match score. Nexus skips irrelevant jobs and only applies where you're a fit.</p>
-                </div>
-
-                <div class="feature-card fade-in">
-                    <div class="feature-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24">
-                            <rect x="3" y="3" width="18" height="18" rx="2"/>
-                            <path d="M9 3v18M15 3v18M3 9h18M3 15h18"/>
-                        </svg>
-                    </div>
-                    <h3 class="feature-title">Real-Time Dashboard</h3>
-                    <p class="feature-description">Watch applications happen live. Track success rates, view logs, and manage campaigns.</p>
-                </div>
-
-                <div class="feature-card fade-in">
-                    <div class="feature-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                            <polyline points="14 2 14 8 20 8"/>
-                            <line x1="12" y1="13" x2="12" y2="17"/>
-                            <line x1="10" y1="15" x2="14" y2="15"/>
-                        </svg>
-                    </div>
-                    <h3 class="feature-title">Resume Intelligence</h3>
-                    <p class="feature-description">Upload multiple resumes. Nexus picks the best one for each application automatically.</p>
-                </div>
-
-                <div class="feature-card fade-in">
-                    <div class="feature-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
-                            <polyline points="10 17 14 13 10 9"/>
-                        </svg>
-                    </div>
-                    <h3 class="feature-title">Privacy First</h3>
-                    <p class="feature-description">Everything runs locally on your computer. Your data never leaves your machine.</p>
+        <section class="proof-bar">
+            <div class="container">
+                <div class="proof-grid fade-in">
+                    <article class="proof-card">
+                        <div class="mono">Run model</div>
+                        <h3>Setup once. Then operate in deliberate passes.</h3>
+                        <p>Nexus is built for repeatable searches, not single ad hoc clicks.</p>
+                    </article>
+                    <article class="proof-card">
+                        <div class="mono">Trust layer</div>
+                        <h3>Your resumes and sessions stay on your machine.</h3>
+                        <p>License checks are lightweight. The operator remains local-first by design.</p>
+                    </article>
+                    <article class="proof-card">
+                        <div class="mono">Review path</div>
+                        <h3>Every search can be inspected before you let it run.</h3>
+                        <p>Guardrails, queues, and logs stay visible instead of hidden behind magic.</p>
+                    </article>
+                    <article class="proof-card">
+                        <div class="mono">Coverage</div>
+                        <h3>LinkedIn, Indeed, and external ATS flows in one workspace.</h3>
+                        <p>One tool for search creation, resume routing, and follow-through.</p>
+                    </article>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- ========================================
-         HOW IT WORKS SECTION
-         ======================================== -->
-    <section class="how-it-works" id="how-it-works">
-        <div class="container">
-            <h2 class="section-title fade-in">How It Works</h2>
-
-            <div class="steps-row">
-                <div class="step fade-in">
-                    <div class="step-number">1</div>
-                    <h3 class="step-title">Upload Your Resume</h3>
-                    <p class="step-description">Add your resume and configure your job preferences.</p>
-                    <div class="step-connector"></div>
+        <section class="story-section" id="demo-gallery">
+            <div class="container">
+                <div class="section-heading fade-in">
+                    <div class="eyebrow mono"><span class="eyebrow-dot"></span>Screenshot-led product tour</div>
+                    <h2>The site should feel like the product, not a separate marketing costume.</h2>
+                    <p>Large, honest frames do the heavy lifting here. Keep the captions short. Let the application UI prove the workflow.</p>
                 </div>
 
-                <div class="step fade-in">
-                    <div class="step-number">2</div>
-                    <h3 class="step-title">Create a Search</h3>
-                    <p class="step-description">Choose platform, keywords, location, and filters.</p>
-                    <div class="step-connector"></div>
-                </div>
-
-                <div class="step fade-in">
-                    <div class="step-number">3</div>
-                    <h3 class="step-title">Let Nexus Work</h3>
-                    <p class="step-description">Sit back while Nexus applies and tracks everything in real-time.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========================================
-         DEMO GALLERY
-         ======================================== -->
-    <section class="workflow-clips" id="workflow-clips">
-        <div class="container">
-            <h2 class="section-title fade-in">Motion Passes</h2>
-            <p class="section-subtitle fade-in">Optional once the reel is sharp. Keep these short, readable, and real.</p>
-            <div class="motion-note fade-in">Nice to have, not required. If the stills are stronger, keep the placeholders.</div>
-
-            <div class="motion-shell fade-in">
-                <div class="motion-strip">
-                    <article class="motion-card">
-                        <div class="motion-card-head">
-                            <span class="motion-card-label">Create Search</span>
-                            <span class="motion-card-file">assets/demos/create-search.gif</span>
+                <div class="story-stack">
+                    <article class="story-band fade-in">
+                        <div class="story-copy">
+                            <div class="eyebrow mono"><span class="eyebrow-dot"></span>01 Command center</div>
+                            <h3>See the full operating surface before you ever install.</h3>
+                            <p>The command center is the anchor. It shows whether the product feels composed, reviewable, and real. That is what the homepage should foreground.</p>
+                            <div class="story-points">
+                                <div class="story-point"><span class="story-point-dot"></span><div><strong>Clear status over vague magic</strong> Users should be able to tell what is ready, blocked, or running without guessing.</div></div>
+                                <div class="story-point"><span class="story-point-dot"></span><div><strong>One workspace, several passes</strong> Search setup, resume routing, logs, and license status belong in the same visual system.</div></div>
+                            </div>
+                            <div class="story-actions">
+                                <a class="btn btn-secondary" href="/getting-started">See setup guide</a>
+                            </div>
                         </div>
-                        <div class="demo-media-wrap">
-                            <img
-                                class="demo-gif"
-                                src="assets/demos/create-search.gif"
-                                alt="Creating and launching a search in Nexus"
-                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                            >
-                            <div class="demo-placeholder" style="display:none;">
-                                <div class="demo-placeholder-copy">
-                                    <strong>Add GIF</strong>
-                                    <span>assets/demos/create-search.gif</span>
+
+                        <div class="story-media">
+                            <div class="asset-frame">
+                                <div class="frame-topbar">
+                                    <div class="frame-dots"><span></span><span></span><span></span></div>
+                                    <div class="frame-title">Command Center</div>
+                                    <div class="frame-status">Primary view</div>
+                                </div>
+                                <img class="asset-image" src="assets/screenshots/command-center.png" alt="Nexus Command Center screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="asset-placeholder" style="display:none;">
+                                    <div class="asset-placeholder-copy">
+                                        <span class="asset-placeholder-kicker mono">Add screenshot</span>
+                                        <h3>Command Center</h3>
+                                        <p>Use the final in-app dashboard here. Avoid personal data. Keep the surface calm and legible.</p>
+                                        <div class="asset-file mono">assets/screenshots/command-center.png</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </article>
 
-                    <article class="motion-card">
-                        <div class="motion-card-head">
-                            <span class="motion-card-label">Live Run</span>
-                            <span class="motion-card-file">assets/demos/live-run.gif</span>
+                    <article class="story-band reverse fade-in">
+                        <div class="story-copy">
+                            <div class="eyebrow mono"><span class="eyebrow-dot"></span>02 Create searches</div>
+                            <h3>Build a search flow that looks deliberate, not over-explained.</h3>
+                            <p>The page should show how Nexus starts a run: inputs, review, and guardrails. Use the screenshot to communicate the interface discipline rather than burying it in a long feature checklist.</p>
+                            <div class="story-points">
+                                <div class="story-point"><span class="story-point-dot"></span><div><strong>Simple first pass</strong> A strong setup screen should read clearly from a distance in a screenshot.</div></div>
+                                <div class="story-point"><span class="story-point-dot"></span><div><strong>Advanced controls are still present</strong> They can exist without dominating the first visual impression.</div></div>
+                            </div>
+                            <div class="story-actions">
+                                <button class="btn btn-tertiary" onclick="document.getElementById('waitlist').scrollIntoView({ behavior: 'smooth' })">Get early access</button>
+                            </div>
                         </div>
-                        <div class="demo-media-wrap">
-                            <img
-                                class="demo-gif"
-                                src="assets/demos/live-run.gif"
-                                alt="Live application workflow and logs in Nexus"
-                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                            >
-                            <div class="demo-placeholder" style="display:none;">
-                                <div class="demo-placeholder-copy">
-                                    <strong>Add GIF</strong>
-                                    <span>assets/demos/live-run.gif</span>
+
+                        <div class="story-media">
+                            <div class="asset-frame">
+                                <div class="frame-topbar">
+                                    <div class="frame-dots"><span></span><span></span><span></span></div>
+                                    <div class="frame-title">Create Search</div>
+                                    <div class="frame-status">Launch flow</div>
+                                </div>
+                                <img class="asset-image" src="assets/screenshots/create-search.png" alt="Nexus create search screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="asset-placeholder" style="display:none;">
+                                    <div class="asset-placeholder-copy">
+                                        <span class="asset-placeholder-kicker mono">Add screenshot</span>
+                                        <h3>Create Search</h3>
+                                        <p>Drop the cleaner, newer create-search flow here. This band should feel instructional through the UI itself.</p>
+                                        <div class="asset-file mono">assets/screenshots/create-search.png</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </article>
 
-                    <article class="motion-card">
-                        <div class="motion-card-head">
-                            <span class="motion-card-label">Search Review</span>
-                            <span class="motion-card-file">assets/demos/search-review.gif</span>
+                    <article class="story-band fade-in">
+                        <div class="story-copy">
+                            <div class="eyebrow mono"><span class="eyebrow-dot"></span>03 Resumes + licenses</div>
+                            <h3>Show the practical trust layer: resumes, license management, and review state.</h3>
+                            <p>The product feels more credible when the site acknowledges the operational details. Resume routing and license management are part of the product, not awkward appendix pages.</p>
+                            <div class="story-points">
+                                <div class="story-point"><span class="story-point-dot"></span><div><strong>Dummy data only</strong> Keep screenshot content professional and generic so the frame is usable everywhere.</div></div>
+                                <div class="story-point"><span class="story-point-dot"></span><div><strong>Keep the portal in the same visual family</strong> The site should make license operations feel intentional, not bolted on.</div></div>
+                            </div>
+                            <div class="story-actions">
+                                <a class="btn btn-secondary" href="/license-dashboard">Open license portal</a>
+                            </div>
                         </div>
-                        <div class="demo-media-wrap">
-                            <img
-                                class="demo-gif"
-                                src="assets/demos/search-review.gif"
-                                alt="Reviewing and editing search settings in Nexus"
-                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                            >
-                            <div class="demo-placeholder" style="display:none;">
-                                <div class="demo-placeholder-copy">
-                                    <strong>Add GIF</strong>
-                                    <span>assets/demos/search-review.gif</span>
+
+                        <div class="story-media">
+                            <div class="asset-frame">
+                                <div class="frame-topbar">
+                                    <div class="frame-dots"><span></span><span></span><span></span></div>
+                                    <div class="frame-title">Resumes + License</div>
+                                    <div class="frame-status">Trust layer</div>
+                                </div>
+                                <img class="asset-image" src="assets/screenshots/resume-library.png" alt="Nexus resume library screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="asset-placeholder" style="display:none;">
+                                    <div class="asset-placeholder-copy">
+                                        <span class="asset-placeholder-kicker mono">Add screenshot</span>
+                                        <h3>Resume Library</h3>
+                                        <p>Use the cleaned-up resumes screen here, then add a license-center capture in the next pass if that reads better.</p>
+                                        <div class="asset-file mono">assets/screenshots/resume-library.png</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </article>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- ========================================
-         SUPPORT HUB
-         ======================================== -->
-    <section class="support-hub" id="support-hub">
-        <div class="container">
-            <h2 class="section-title fade-in">Setup + Support Hub</h2>
-            <p class="section-subtitle fade-in">A proper operator playbook for new users, not just marketing FAQ.</p>
-
-            <div class="support-grid">
-                <article class="support-card fade-in">
-                    <h3>Start-to-End Setup Guide</h3>
-                    <p>Install Nexus, activate license, connect sessions, configure defaults, and launch your first search.</p>
-                    <a href="/getting-started">Open guide</a>
-                </article>
-                <article class="support-card fade-in">
-                    <h3>AI Model Setup</h3>
-                    <p>Built-in models work out of the box. Or connect LM Studio, Ollama, OpenAI, or Anthropic.</p>
-                    <a href="/getting-started#llm-setup">Jump to LLM setup</a>
-                </article>
-                <article class="support-card fade-in">
-                    <h3>Troubleshooting Playbook</h3>
-                    <p>Common issues: no login detected, LLM connection failures, captcha handling, and easy apply rate limits.</p>
-                    <a href="/getting-started#troubleshooting">View troubleshooting</a>
-                </article>
-                <article class="support-card fade-in">
-                    <h3>Power User Workflow</h3>
-                    <p>Bot-style operating rhythm: queue strategy, safe throttling, quality controls, and post-run review loops.</p>
-                    <a href="/getting-started#power-workflow">View workflow</a>
-                </article>
+        <section class="system-rail">
+            <div class="container">
+                <div class="system-grid fade-in">
+                    <article class="utility-card">
+                        <div class="eyebrow mono"><span class="eyebrow-dot"></span>Runtime</div>
+                        <h3>Use the built-in runtime or connect your own models.</h3>
+                        <p>Nexus supports the built-in engine and external runtimes like LM Studio, Ollama, OpenAI, and Anthropic. The setup guide covers the exact wiring.</p>
+                        <a class="mini-link" href="/getting-started#llm-setup">Runtime setup</a>
+                    </article>
+                    <article class="utility-card">
+                        <div class="eyebrow mono"><span class="eyebrow-dot"></span>Control</div>
+                        <h3>Review queues, logs, and blockers before a run moves forward.</h3>
+                        <p>The operator should show its work. Search prep, resume choice, sign-in state, and follow-up checks stay visible instead of hidden.</p>
+                        <a class="mini-link" href="/getting-started#power-workflow">Operations guide</a>
+                    </article>
+                    <article class="utility-card">
+                        <div class="eyebrow mono"><span class="eyebrow-dot"></span>License</div>
+                        <h3>Manage access, verify by Discord or email, and reset machine locks cleanly.</h3>
+                        <p>The license dashboard is a first-class utility surface. Keep it visually aligned with the product, not off to the side.</p>
+                        <a class="mini-link" href="/license-dashboard">Manage license</a>
+                    </article>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- ========================================
-         WAITLIST SECTION
-         ======================================== -->
-    <section class="waitlist" id="waitlist">
-        <div class="container">
-            <div class="waitlist-content">
-                <h2 class="waitlist-title fade-in">Join the Waitlist</h2>
-                <p class="waitlist-subtitle fade-in">Be the first to know when Nexus launches. Early access spots are limited.</p>
-
-                <div class="success-message" id="waitlist-success">
-                    <strong>You're on the waitlist.</strong> We'll review applications and email you when you're approved.
+        <section class="support-hub" id="support-hub">
+            <div class="container">
+                <div class="section-heading fade-in">
+                    <div class="eyebrow mono"><span class="eyebrow-dot"></span>Support + access</div>
+                    <h2>Keep the conversion path practical.</h2>
+                    <p>Setup, license management, Discord access, and troubleshooting are part of the product story. They should be close at hand, not buried below generic marketing filler.</p>
                 </div>
 
-                <div class="error-message" id="waitlist-error">
-                    Something went wrong. Please try again or email us at <a href="mailto:Hyperfectllc@gmail.com" style="color: #ef4444; text-decoration: underline;">Hyperfectllc@gmail.com</a>
+                <div class="support-grid fade-in">
+                    <article class="support-card">
+                        <div class="mono">Guide</div>
+                        <h3>Full setup walkthrough</h3>
+                        <p>Install Nexus, activate your key, sign in to job sites, configure the runtime, and launch a first search.</p>
+                        <a href="/getting-started">Open guide</a>
+                    </article>
+                    <article class="support-card">
+                        <div class="mono">License</div>
+                        <h3>Manage or recover access</h3>
+                        <p>Verify by Discord or email, find linked licenses, and reset machine locks when you need to move devices.</p>
+                        <a href="/license-dashboard">Open portal</a>
+                    </article>
+                    <article class="support-card">
+                        <div class="mono">Discord</div>
+                        <h3>Approved beta users download through Discord</h3>
+                        <p>If you already have access, Discord is the fastest path to verify server membership and unlock the app.</p>
+                        <a href="https://discord.gg/Ynvcw6Dts4" target="_blank" rel="noopener noreferrer">Join Discord</a>
+                    </article>
+                    <article class="support-card">
+                        <div class="mono">Troubleshooting</div>
+                        <h3>Fix blockers without guessing</h3>
+                        <p>We document missing logins, model connection issues, captcha handling, and safe operating patterns in one place.</p>
+                        <a href="/getting-started#troubleshooting">Troubleshooting</a>
+                    </article>
                 </div>
-
-                <form id="waitlist-form" class="fade-in">
-                    <div class="form-group">
-                        <label class="form-label" for="waitlist-name">Full Name *</label>
-                        <input type="text" id="waitlist-name" class="form-input" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="waitlist-email">Email Address *</label>
-                        <input type="email" id="waitlist-email" class="form-input" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="waitlist-message">Why are you interested in Nexus?</label>
-                        <textarea id="waitlist-message" class="form-textarea" placeholder="Tell us about your job search..."></textarea>
-                    </div>
-
-                    <div class="form-consent">
-                        <input type="checkbox" id="waitlist-consent" required>
-                        <label for="waitlist-consent">
-                            I agree to receive waitlist and launch updates from Hyperfect and acknowledge the
-                            <a href="privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
-                        </label>
-                    </div>
-
-                    <div class="turnstile-wrap">
-                        <div id="turnstile-widget" aria-label="Spam protection"></div>
-                    </div>
-                    <input type="hidden" id="turnstile-token" name="turnstile_token" value="">
-
-                    <button type="submit" class="form-submit">Join Waitlist</button>
-                </form>
-
-                <p class="form-privacy">We respect your privacy. No spam, ever.</p>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- ========================================
-         FAQ SECTION
-         ======================================== -->
-    <section class="faq" id="faq">
-        <div class="container">
-            <h2 class="section-title fade-in">Frequently Asked Questions</h2>
+        <section class="waitlist" id="waitlist">
+            <div class="container">
+                <div class="final-shell">
+                    <div class="waitlist-card fade-in">
+                        <div class="eyebrow mono"><span class="eyebrow-dot"></span>Closed beta access</div>
+                        <h2 class="waitlist-title">Join the waitlist for the next Nexus cohort.</h2>
+                        <p class="waitlist-subtitle">We are still letting users in deliberately. Tell us what role you are targeting and how you plan to use Nexus. If you are a fit, we will email you when your access is ready.</p>
 
-            <div class="faq-container">
-                <div class="faq-item fade-in">
-                    <div class="faq-header" onclick="toggleFaq(this)">
-                        <h3 class="faq-question">Is there a full setup guide for new users?</h3>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p class="faq-text">Yes. We ship a full setup and operations guide that covers install, license activation, AI model setup, search configuration, and troubleshooting. Open <a href="/getting-started" style="color: var(--accent);">Getting Started</a> for the complete walkthrough.</p>
-                    </div>
-                </div>
+                        <div class="success-message" id="waitlist-success">
+                            <strong>You're on the waitlist.</strong> We will review applications and email you when you are approved.
+                        </div>
 
-                <div class="faq-item fade-in">
-                    <div class="faq-header" onclick="toggleFaq(this)">
-                        <h3 class="faq-question">Do I need to keep my computer on?</h3>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p class="faq-text">Yes, Nexus runs on your local machine as a desktop application. Your computer needs to stay on for continuous applications. However, you can set scheduled automation windows so it only runs during specific times. This also keeps your data completely private—everything stays on your device.</p>
-                    </div>
-                </div>
+                        <div class="error-message" id="waitlist-error">
+                            Something went wrong. Please try again or email us at <a href="mailto:Hyperfectllc@gmail.com">Hyperfectllc@gmail.com</a>.
+                        </div>
 
-                <div class="faq-item fade-in">
-                    <div class="faq-header" onclick="toggleFaq(this)">
-                        <h3 class="faq-question">What AI models does it support?</h3>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p class="faq-text">Nexus ships with a built-in AI engine — no external tools needed. Just download a model from Settings and you're ready to go. You can also connect LM Studio, OpenAI (GPT-4), Anthropic Claude, or Ollama for maximum flexibility.</p>
-                    </div>
-                </div>
+                        <form id="waitlist-form" class="contact-grid">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label" for="waitlist-name">Full Name *</label>
+                                    <input type="text" id="waitlist-name" class="form-input" required>
+                                </div>
 
-                <div class="faq-item fade-in">
-                    <div class="faq-header" onclick="toggleFaq(this)">
-                        <h3 class="faq-question">Is my data sent anywhere?</h3>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p class="faq-text">No. Everything runs locally on your machine by default. Your resume, job preferences, and application history never leave your computer. The only communication is a periodic license verification ping. If you use an external LLM (OpenAI, Claude), only the job description gets sent to process—your personal data remains private.</p>
-                    </div>
-                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="waitlist-email">Email Address *</label>
+                                    <input type="email" id="waitlist-email" class="form-input" required>
+                                </div>
 
-                <div class="faq-item fade-in">
-                    <div class="faq-header" onclick="toggleFaq(this)">
-                        <h3 class="faq-question">What platforms are supported?</h3>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p class="faq-text">Nexus currently supports LinkedIn, Indeed, and Glassdoor. It also integrates with external ATS systems like Greenhouse, Lever, Workday, and BambooHR. We're continuously adding platform support based on user demand.</p>
-                    </div>
-                </div>
+                                <div class="form-group full">
+                                    <label class="form-label" for="waitlist-message">Why are you interested in Nexus?</label>
+                                    <textarea id="waitlist-message" class="form-textarea" placeholder="Tell us about your search, workflow, or what is currently broken in your process."></textarea>
+                                </div>
 
-                <div class="faq-item fade-in">
-                    <div class="faq-header" onclick="toggleFaq(this)">
-                        <h3 class="faq-question">When will Nexus be available?</h3>
-                        <span class="faq-toggle">+</span>
+                                <div class="form-consent">
+                                    <input type="checkbox" id="waitlist-consent" required>
+                                    <label for="waitlist-consent">I agree to receive waitlist and launch updates from Hyperfect and acknowledge the <a href="privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</label>
+                                </div>
+
+                                <div class="turnstile-wrap">
+                                    <div id="turnstile-widget" aria-label="Spam protection"></div>
+                                </div>
+                                <input type="hidden" id="turnstile-token" name="turnstile_token" value="">
+                            </div>
+
+                            <button type="submit" class="form-submit">Join Waitlist</button>
+                        </form>
+
+                        <p class="form-privacy">No spam. No generic drip sequence. Just beta and launch updates.</p>
                     </div>
-                    <div class="faq-answer">
-                        <p class="faq-text">We're currently in closed beta. Join the waitlist to get early access as soon as Nexus becomes available. Early access participants will get special pricing and priority support.</p>
+
+                    <div class="final-rail fade-in">
+                        <div class="eyebrow mono"><span class="eyebrow-dot"></span>What happens next</div>
+                        <div class="waitlist-subtitle" style="margin-top:0;">The access path is straightforward once you are approved.</div>
+
+                        <div class="final-checklist">
+                            <h3>Launch path</h3>
+                            <div class="checklist-items">
+                                <div class="checklist-item"><span class="checkmark">1</span><div>Join the waitlist and tell us how you plan to operate Nexus.</div></div>
+                                <div class="checklist-item"><span class="checkmark">2</span><div>Use Discord if you are already approved, or verify your key through the license portal.</div></div>
+                                <div class="checklist-item"><span class="checkmark">3</span><div>Follow the setup guide to install, sign in, connect the runtime, and launch your first search.</div></div>
+                            </div>
+                        </div>
+
+                        <div class="story-actions" style="margin-top:18px;">
+                            <a class="btn btn-secondary" href="/license-dashboard">Manage License</a>
+                            <a class="btn btn-tertiary" href="/getting-started">Read Setup Guide</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- ========================================
-         CONTACT SECTION
-         ======================================== -->
-    <section class="contact" id="contact">
-        <div class="container">
-            <div class="contact-content">
-                <h2 class="contact-title fade-in">Get in Touch</h2>
-                <p class="contact-subtitle fade-in">Questions, feedback, or partnership inquiries? We'd love to hear from you.</p>
-
-                <div class="success-message" id="contact-success">
-                    <strong>Message sent!</strong> We'll get back to you soon.
+        <section class="faq" id="faq">
+            <div class="container">
+                <div class="section-heading fade-in">
+                    <div class="eyebrow mono"><span class="eyebrow-dot"></span>FAQ</div>
+                    <h2>Questions users actually ask before they trust a local operator.</h2>
                 </div>
 
-                <div class="error-message" id="contact-error">
-                    Something went wrong. Please try again or email us at <a href="mailto:Hyperfectllc@gmail.com" style="color: #ef4444; text-decoration: underline;">Hyperfectllc@gmail.com</a>
-                </div>
-
-                <form id="contact-form" class="fade-in">
-                    <div class="form-group">
-                        <label class="form-label" for="contact-name">Name *</label>
-                        <input type="text" id="contact-name" class="form-input" required>
+                <div class="faq-container">
+                    <div class="faq-item fade-in">
+                        <div class="faq-header" onclick="toggleFaq(this)">
+                            <h3 class="faq-question">Is there a complete setup guide for new users?</h3>
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p class="faq-text">Yes. The <a href="/getting-started">setup guide</a> covers install, license activation, AI runtime setup, job-site sign-in, search configuration, and troubleshooting.</p>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="form-label" for="contact-email">Email *</label>
-                        <input type="email" id="contact-email" class="form-input" required>
+                    <div class="faq-item fade-in">
+                        <div class="faq-header" onclick="toggleFaq(this)">
+                            <h3 class="faq-question">Do I need to keep my computer on while Nexus runs?</h3>
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p class="faq-text">Yes. Nexus is a desktop operator that runs locally on your machine. That is also why your resumes, history, and configuration stay private by default.</p>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="form-label" for="contact-message">Message *</label>
-                        <textarea id="contact-message" class="form-textarea" required></textarea>
+                    <div class="faq-item fade-in">
+                        <div class="faq-header" onclick="toggleFaq(this)">
+                            <h3 class="faq-question">What models can I use with Nexus?</h3>
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p class="faq-text">Nexus can use the built-in runtime or connect to LM Studio, Ollama, OpenAI, and Anthropic. The guide includes the exact setup flow for each option.</p>
+                        </div>
                     </div>
 
-                    <button type="submit" class="form-submit">Send Message</button>
-                </form>
+                    <div class="faq-item fade-in">
+                        <div class="faq-header" onclick="toggleFaq(this)">
+                            <h3 class="faq-question">Does my data leave my computer?</h3>
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p class="faq-text">By default, no. Nexus runs locally and keeps your resumes, preferences, and application history on your device. If you choose an external model provider, only the job description is sent for processing.</p>
+                        </div>
+                    </div>
 
-                <div class="email-fallback">
-                    Or email us directly at <a href="mailto:Hyperfectllc@gmail.com">Hyperfectllc@gmail.com</a>
+                    <div class="faq-item fade-in">
+                        <div class="faq-header" onclick="toggleFaq(this)">
+                            <h3 class="faq-question">How do beta users download the app?</h3>
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p class="faq-text">Approved users can sign in with Discord on this page to unlock the download, or manage their key directly through the <a href="/license-dashboard">license portal</a>.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- ========================================
-         FOOTER
-         ======================================== -->
+        <section class="contact" id="contact">
+            <div class="container">
+                <div class="contact-card fade-in">
+                    <div class="eyebrow mono"><span class="eyebrow-dot"></span>Direct contact</div>
+                    <h2 class="contact-title">Need to reach us directly?</h2>
+                    <p class="contact-subtitle">Use the form if you have a partnership question, a beta issue, or a licensing problem that is not resolved in the portal.</p>
+
+                    <div class="success-message" id="contact-success">
+                        <strong>Message sent.</strong> We will get back to you soon.
+                    </div>
+
+                    <div class="error-message" id="contact-error">
+                        Something went wrong. Please try again or email us at <a href="mailto:Hyperfectllc@gmail.com">Hyperfectllc@gmail.com</a>.
+                    </div>
+
+                    <form id="contact-form" class="contact-grid">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label" for="contact-name">Name *</label>
+                                <input type="text" id="contact-name" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="contact-email">Email *</label>
+                                <input type="email" id="contact-email" class="form-input" required>
+                            </div>
+                            <div class="form-group full">
+                                <label class="form-label" for="contact-message">Message *</label>
+                                <textarea id="contact-message" class="form-textarea" required></textarea>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="form-submit">Send Message</button>
+                    </form>
+
+                    <div class="email-fallback">Or email us directly at <a href="mailto:Hyperfectllc@gmail.com">Hyperfectllc@gmail.com</a>.</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
     <footer>
         <div class="container">
-            <div class="footer-grid">
-                <div class="footer-section">
-                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
-                        <h3 style="margin: 0; font-size: 0.95rem;">Hyperfect<span style="color: var(--text-tertiary); margin: 0 0.25rem; font-weight: 400">/</span><span style="color: var(--accent)">Nexus</span></h3>
+            <div class="footer-shell">
+                <div class="footer-grid">
+                    <div class="footer-section">
+                        <div class="logo-wordmark"><span>Hyperfect</span><span class="logo-divider">/</span><span class="logo-product">Nexus</span></div>
+                        <p class="footer-tagline">A local-first desktop operator for structured job search workflows across LinkedIn, Indeed, and external ATS systems.</p>
                     </div>
-                    <p class="footer-tagline">Nexus is the flagship product of Hyperfect LLC — building intelligent automation tools for job seekers.</p>
+                    <div class="footer-section">
+                        <h3>Product</h3>
+                        <ul>
+                            <li><a href="#demo-gallery">Product tour</a></li>
+                            <li><a href="#support-hub">Workflow</a></li>
+                            <li><a href="#waitlist">Join waitlist</a></li>
+                            <li><a href="/license-dashboard">Manage license</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Resources</h3>
+                        <ul>
+                            <li><a href="/getting-started">Setup guide</a></li>
+                            <li><a href="#faq">FAQ</a></li>
+                            <li><a href="#contact">Contact</a></li>
+                            <li><a href="mailto:Hyperfectllc@gmail.com">Hyperfectllc@gmail.com</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Legal</h3>
+                        <ul>
+                            <li><a href="terms.html">Terms of Service</a></li>
+                            <li><a href="privacy.html">Privacy Policy</a></li>
+                        </ul>
+                    </div>
                 </div>
 
-                <div class="footer-section">
-                    <h3>Product</h3>
-                    <ul>
-                        <li><a href="#features">Features</a></li>
-                        <li><a href="#how-it-works">How It Works</a></li>
-                        <li><a href="#demo-gallery">Demos</a></li>
-                        <li><a href="/getting-started">Setup Guide</a></li>
-                        <li><a href="/license-dashboard">Manage License</a></li>
-                        <li><a href="#faq">FAQ</a></li>
-                        <li><a href="#waitlist">Join Waitlist</a></li>
-                    </ul>
+                <div class="footer-divider">
+                    <p class="footer-copy" id="footer-copy">&copy; 2026 Hyperfect LLC. All rights reserved.</p>
+                    <p class="footer-disclaimer">Nexus is a product of Hyperfect LLC. Not affiliated with LinkedIn, Indeed, Glassdoor, Greenhouse, Lever, BambooHR, or Workday. Use responsibly and in accordance with each platform's terms of service.</p>
+                    <a id="admin-link" href="/waitlist-admin">Admin</a>
                 </div>
-
-                <div class="footer-section">
-                    <h3>Company</h3>
-                    <ul>
-                        <li><a href="#contact">Contact</a></li>
-                        <li><a href="mailto:Hyperfectllc@gmail.com">Hyperfectllc@gmail.com</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h3>Legal</h3>
-                    <ul>
-                        <li><a href="terms.html">Terms of Service</a></li>
-                        <li><a href="privacy.html">Privacy Policy</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="footer-divider">
-                <p class="footer-copy" id="footer-copy" style="cursor: default;">&copy; 2026 Hyperfect LLC. All rights reserved.</p>
-                <p class="footer-disclaimer">Nexus is a product of Hyperfect LLC. Not affiliated with LinkedIn, Indeed, Glassdoor, Greenhouse, Lever, or Workday. Use responsibly and in accordance with each platform's terms of service.</p>
-                <a id="admin-link" href="/waitlist-admin" style="display:none; font-size: 0.7rem; color: var(--text-tertiary); text-decoration: none; margin-top: 4px; opacity: 0.5;">Admin</a>
             </div>
         </div>
     </footer>
 
-    <!-- ========================================
-         JAVASCRIPT
-         ======================================== -->
     <script>
-        // ========== Configuration ==========
-        // Waitlist API (stored as structured queue in Stripe customer metadata)
         const WAITLIST_ENDPOINT = '/api/waitlist';
-        // Contact form still uses FormSubmit for direct messages.
         const FORM_ENDPOINT = 'https://formsubmit.co/ajax/Hyperfectllc@gmail.com';
+        const TURNSTILE_SITE_KEY = '0x4AAAAAACjj_SKWDCu0mvTQ';
 
-        // ========== Theme Toggle ==========
         const themeToggle = document.getElementById('themeToggle');
         const sunIcon = document.getElementById('sunIcon');
         const moonIcon = document.getElementById('moonIcon');
-        const TURNSTILE_SITE_KEY = '0x4AAAAAACjj_SKWDCu0mvTQ';
+        const hamburger = document.getElementById('hamburger');
+        const navCenter = document.querySelector('.nav-center');
+
         let turnstileWidgetId = null;
         let turnstileRenderAttempts = 0;
 
@@ -3123,6 +2184,7 @@
                 sunIcon.style.display = 'block';
                 moonIcon.style.display = 'none';
             }
+
             localStorage.setItem('theme', theme);
 
             if (turnstileWidgetId || window.turnstile?.render) {
@@ -3135,38 +2197,33 @@
             setTheme(currentTheme === 'light' ? 'dark' : 'light');
         });
 
-        // ========== Scroll Fade-In Animation ==========
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
+            entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
                     observer.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        }, { threshold: 0.12, rootMargin: '0px 0px -70px 0px' });
 
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
 
-        // ========== FAQ Accordion ==========
         function toggleFaq(header) {
             header.parentElement.classList.toggle('open');
         }
 
-        // ========== Turnstile Callback ==========
         window.onTurnstileVerify = function(token) {
             document.getElementById('turnstile-token').value = token;
         };
 
         scheduleTurnstileRender();
 
-        // ========== Waitlist Form Handling ==========
         async function submitWaitlistForm(formData, formEl, successEl, errorEl) {
             const submitBtn = formEl.querySelector('.form-submit');
             const originalText = submitBtn.textContent;
             submitBtn.textContent = 'Sending...';
             submitBtn.disabled = true;
 
-            // Hide any previous messages
             if (errorEl) errorEl.classList.remove('show');
             if (successEl) successEl.classList.remove('show');
 
@@ -3188,7 +2245,7 @@
                 } else {
                     throw new Error(result.error || 'Submission failed');
                 }
-            } catch (err) {
+            } catch (_) {
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
                 if (errorEl) {
@@ -3198,10 +2255,6 @@
             }
         }
 
-        // ========== Contact Form Handling (FormSubmit.co) ==========
-        // NOTE: FormSubmit.co requires email activation on first submission.
-        // The very first form submit sends a confirmation email to Hyperfectllc@gmail.com.
-        // You MUST click the link in that email before forms will work.
         async function submitContactForm(formData, formEl, successEl, errorEl) {
             const submitBtn = formEl.querySelector('.form-submit');
             const originalText = submitBtn.textContent;
@@ -3221,7 +2274,6 @@
                     body: JSON.stringify(formData)
                 });
 
-                // FormSubmit returns HTML (not JSON) if email isn't confirmed yet.
                 const contentType = response.headers.get('content-type') || '';
                 if (!contentType.includes('application/json')) {
                     formEl.style.display = 'none';
@@ -3238,7 +2290,7 @@
                 } else {
                     throw new Error('Submission failed');
                 }
-            } catch (err) {
+            } catch (_) {
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
                 if (errorEl) {
@@ -3272,13 +2324,6 @@
             }, this, document.getElementById('contact-success'), document.getElementById('contact-error'));
         });
 
-        // ========== Discord OAuth (Hero Inline) ==========
-        // To set up Discord OAuth:
-        // 1. Go to https://discord.com/developers/applications
-        // 2. Create a new application
-        // 3. Go to OAuth2 > General
-        // 4. Add redirect: https://hyperfect.dev (your domain)
-        // 5. Copy Client ID below
         const DISCORD_CLIENT_ID = '1472604757687275723';
         const DISCORD_REDIRECT_URI = window.location.origin + '/';
         const DISCORD_INVITE = 'https://discord.gg/Ynvcw6Dts4';
@@ -3331,7 +2376,7 @@
             if (storedUser && storedToken) {
                 try {
                     showLoggedIn(JSON.parse(storedUser), storedToken);
-                } catch (e) {
+                } catch (_) {
                     localStorage.removeItem('discord_user');
                     localStorage.removeItem('discord_token');
                 }
@@ -3357,14 +2402,13 @@
             document.getElementById('hero-logged-in').classList.add('active');
             document.getElementById('discord-avatar').src = user.avatar
                 ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=56`
-                : `https://cdn.discordapp.com/embed/avatars/${parseInt(user.discriminator || '0') % 5}.png`;
+                : `https://cdn.discordapp.com/embed/avatars/${parseInt(user.discriminator || '0', 10) % 5}.png`;
 
             const downloadBtn = document.getElementById('download-link');
             downloadBtn.textContent = 'Checking access...';
             downloadBtn.href = '#';
             downloadBtn.style.opacity = '0.6';
 
-            // Check server membership via our API
             try {
                 const res = await fetch('/api/download', {
                     method: 'POST',
@@ -3372,19 +2416,19 @@
                     body: JSON.stringify({
                         accessToken: token,
                         platform: navigator.platform.includes('Mac') ? 'mac-arm64'
-                                : navigator.platform.includes('Win') ? 'win' : 'linux'
+                            : navigator.platform.includes('Win') ? 'win'
+                            : 'linux'
                     })
                 });
                 const data = await res.json();
 
                 if (res.ok && data.downloadUrl) {
-                    // User is in the server — show download
                     downloadBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download Nexus';
                     downloadBtn.href = data.downloadUrl;
                     downloadBtn.style.opacity = '1';
+                    downloadBtn.style.background = '';
                 } else if (data.error === 'not_member') {
-                    // User not in server — show join prompt
-                    downloadBtn.innerHTML = 'Join Discord to Download';
+                    downloadBtn.textContent = 'Join Discord to Download';
                     downloadBtn.href = data.invite || DISCORD_INVITE;
                     downloadBtn.target = '_blank';
                     downloadBtn.style.opacity = '1';
@@ -3393,9 +2437,8 @@
                     downloadBtn.textContent = 'Download unavailable';
                     downloadBtn.style.opacity = '0.5';
                 }
-            } catch (err) {
-                // API error — fallback to join Discord
-                downloadBtn.innerHTML = 'Join Discord to Download';
+            } catch (_) {
+                downloadBtn.textContent = 'Join Discord to Download';
                 downloadBtn.href = DISCORD_INVITE;
                 downloadBtn.target = '_blank';
                 downloadBtn.style.opacity = '1';
@@ -3420,48 +2463,40 @@
             document.getElementById('hero-logged-out').classList.add('active');
         });
 
-        // ========== Mobile Hamburger Menu ==========
-        const hamburger = document.getElementById('hamburger');
-        const navCenter = document.querySelector('.nav-center');
-
         hamburger.addEventListener('click', () => {
             hamburger.classList.toggle('active');
             navCenter.classList.toggle('open');
         });
 
-        // Close mobile menu when a link is clicked
-        navCenter.querySelectorAll('a').forEach(link => {
+        navCenter.querySelectorAll('a').forEach((link) => {
             link.addEventListener('click', () => {
                 hamburger.classList.remove('active');
                 navCenter.classList.remove('open');
             });
         });
 
-        // ========== Admin Link (5-click reveal) ==========
         (function() {
-            let clicks = 0, timer = null;
-            const el = document.getElementById('footer-copy');
-            const link = document.getElementById('admin-link');
-            if (el && link) {
-                el.addEventListener('click', function() {
-                    clicks++;
-                    clearTimeout(timer);
-                    timer = setTimeout(function() { clicks = 0; }, 1500);
-                    if (clicks >= 5) {
-                        link.style.display = 'inline-block';
-                        clicks = 0;
-                    }
-                });
-            }
+            let clicks = 0;
+            let timer = null;
+            const footerCopy = document.getElementById('footer-copy');
+            const adminLink = document.getElementById('admin-link');
+            if (!footerCopy || !adminLink) return;
+
+            footerCopy.addEventListener('click', () => {
+                clicks += 1;
+                clearTimeout(timer);
+                timer = window.setTimeout(() => { clicks = 0; }, 1500);
+                if (clicks >= 5) {
+                    adminLink.style.display = 'inline-block';
+                    clicks = 0;
+                }
+            });
         })();
 
-        // ========== Initialize ==========
         initializeTheme();
         initDiscordAuth();
     </script>
-    <!-- Vercel Analytics -->
     <script defer src="/_vercel/insights/script.js"></script>
-    <!-- Vercel Web Vitals -->
     <script defer src="/_vercel/speed-insights/script.js"></script>
 </body>
 </html>
