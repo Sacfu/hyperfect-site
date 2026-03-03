@@ -3283,13 +3283,45 @@
         const DISCORD_REDIRECT_URI = window.location.origin + '/';
         const DISCORD_INVITE = 'https://discord.gg/Ynvcw6Dts4';
 
+        function parseDiscordState(rawState) {
+            if (!rawState) return null;
+            try {
+                const parsed = JSON.parse(rawState);
+                if (!parsed || typeof parsed !== 'object') return null;
+
+                const returnPath = typeof parsed.returnPath === 'string' ? parsed.returnPath.trim() : '';
+                const tokenKey = typeof parsed.tokenKey === 'string' ? parsed.tokenKey.trim() : '';
+
+                return {
+                    returnPath: returnPath.startsWith('/') ? returnPath : '',
+                    tokenKey: tokenKey || '',
+                };
+            } catch {
+                return null;
+            }
+        }
+
+        function storeDiscordCallbackToken(accessToken, rawState) {
+            localStorage.setItem('discord_token', accessToken);
+            const oauthState = parseDiscordState(rawState);
+            if (oauthState?.tokenKey && oauthState.tokenKey !== 'discord_token') {
+                localStorage.setItem(oauthState.tokenKey, accessToken);
+            }
+            return oauthState;
+        }
+
         function initDiscordAuth() {
             const fragment = new URLSearchParams(window.location.hash.slice(1));
             const accessToken = fragment.get('access_token');
+            const state = fragment.get('state');
 
             if (accessToken) {
                 window.history.replaceState({}, document.title, window.location.pathname);
-                localStorage.setItem('discord_token', accessToken);
+                const oauthState = storeDiscordCallbackToken(accessToken, state);
+                if (oauthState?.returnPath && oauthState.returnPath !== window.location.pathname) {
+                    window.location.replace(`${window.location.origin}${oauthState.returnPath}`);
+                    return;
+                }
                 fetchDiscordUser(accessToken);
                 return;
             }

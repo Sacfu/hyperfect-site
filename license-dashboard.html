@@ -661,6 +661,7 @@
     const API = '/api/license-portal';
     const DISCORD_CLIENT_ID = '1472604757687275723';
     const DISCORD_SCOPE = 'identify';
+    const DISCORD_REDIRECT_URI = `${window.location.origin}/`;
     const TOKEN_KEY = 'nexus_license_portal_token';
     const DISCORD_TOKEN_KEY = 'nexus_license_portal_discord_token';
 
@@ -712,6 +713,13 @@
     function setDiscordToken(token) {
       if (token) localStorage.setItem(DISCORD_TOKEN_KEY, token);
       else localStorage.removeItem(DISCORD_TOKEN_KEY);
+    }
+
+    function buildDiscordState() {
+      return JSON.stringify({
+        returnPath: window.location.pathname,
+        tokenKey: DISCORD_TOKEN_KEY,
+      });
     }
 
     function parseDiscordTokenFromHash() {
@@ -810,9 +818,10 @@
     function startDiscordLogin() {
       const params = new URLSearchParams({
         client_id: DISCORD_CLIENT_ID,
-        redirect_uri: `${window.location.origin}${window.location.pathname}`,
+        redirect_uri: DISCORD_REDIRECT_URI,
         response_type: 'token',
         scope: DISCORD_SCOPE,
+        state: buildDiscordState(),
       });
       window.location.href = `https://discord.com/api/oauth2/authorize?${params.toString()}`;
     }
