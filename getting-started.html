@@ -582,21 +582,25 @@
             color: #d6f8df;
         }
 
-        .screenshot-slot {
+        .guide-shot {
             margin-top: 18px;
-            min-height: 180px;
+            overflow: hidden;
             border-radius: var(--radius-md);
-            border: 1px dashed rgba(79, 124, 255, 0.22);
-            background:
-                radial-gradient(circle at 50% 20%, rgba(79, 124, 255, 0.14), transparent 32%),
-                rgba(255, 255, 255, 0.02);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 24px;
+            border: 1px solid var(--border-soft);
+            background: rgba(255, 255, 255, 0.025);
+            box-shadow: var(--shadow-md);
+        }
+
+        .guide-shot img {
+            width: 100%;
+            display: block;
+            background: rgba(3, 6, 12, 0.88);
+        }
+
+        .guide-shot figcaption {
+            padding: 12px 14px 14px;
             color: var(--text-tertiary);
-            font-size: 0.92rem;
+            font-size: 0.9rem;
         }
 
         .inline {
@@ -873,7 +877,10 @@
                         <li>If activation fails: verify internet connectivity and retry once.</li>
                     </ol>
                     <div class="callout success">Once activated, Nexus stores local license state and periodically verifies in the background.</div>
-                    <div class="screenshot-slot">Add screenshot: activation screen + successful activation state.</div>
+                    <figure class="guide-shot">
+                        <img src="assets/screenshots/nexus-activation-screen.png" alt="Nexus activation screen requesting a license key" loading="lazy">
+                        <figcaption>Activation happens before the full workspace opens. Once the key verifies, Nexus unlocks the full desktop app.</figcaption>
+                    </figure>
                 </section>
 
                 <section class="card" id="llm-setup">
@@ -927,6 +934,10 @@
                         <li>Refresh status inside Nexus until each shows connected.</li>
                     </ol>
                     <div class="callout">If search start says “no login detected” but Command Center looks connected, refresh session status once before starting.</div>
+                    <figure class="guide-shot">
+                        <img src="assets/screenshots/accounts-and-sessions.png" alt="Nexus Accounts and Sessions page showing LinkedIn, Indeed, and Glassdoor session controls" loading="lazy">
+                        <figcaption>Keep at least one active session per platform you plan to automate before launching a search.</figcaption>
+                    </figure>
                 </section>
 
                 <section class="card" id="profiles">
@@ -938,6 +949,10 @@
                         <li>If available in your build, set demographic defaults carefully.</li>
                     </ol>
                     <p>For consistent outcomes, keep one primary resume per search and avoid switching mid-run.</p>
+                    <figure class="guide-shot">
+                        <img src="assets/screenshots/Upload-Resume.png" alt="Nexus Resumes page with multiple uploaded resumes available for searches" loading="lazy">
+                        <figcaption>Upload your core resume set once, then attach the right file to each search instead of swapping files mid-run.</figcaption>
+                    </figure>
                 </section>
 
                 <section class="card" id="tasks">
@@ -959,7 +974,10 @@
                         <li>Leave advanced options collapsed until the first stable run.</li>
                         <li>Keep Discord webhook notifications on for run completion and module gaps.</li>
                     </ul>
-                    <div class="screenshot-slot">Add screenshot: Create Search modal with recommended defaults.</div>
+                    <figure class="guide-shot">
+                        <img src="assets/screenshots/create-search.png" alt="Nexus Create Search flow with recommended defaults for a first search" loading="lazy">
+                        <figcaption>For the first pass, stick to the default search recipe, one resume, and a modest daily budget until the workflow proves itself.</figcaption>
+                    </figure>
                 </section>
 
                 <section class="card" id="run-review">

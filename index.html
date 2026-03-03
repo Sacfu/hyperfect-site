@@ -922,6 +922,57 @@
             min-height: 450px;
         }
 
+        .motion-section {
+            padding: 76px 0 16px;
+        }
+
+        .motion-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .motion-card {
+            position: relative;
+            overflow: hidden;
+            padding: 22px;
+            border-radius: var(--radius-xl);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+        }
+
+        .motion-card .eyebrow {
+            margin-bottom: 14px;
+        }
+
+        .motion-card h3 {
+            font-size: clamp(1.5rem, 2.5vw, 2.3rem);
+            line-height: 1.04;
+            letter-spacing: -0.05em;
+        }
+
+        .motion-card p {
+            margin-top: 12px;
+            max-width: 520px;
+            color: var(--text-secondary);
+            font-size: 0.98rem;
+        }
+
+        .motion-card .asset-frame {
+            margin-top: 18px;
+            min-height: 420px;
+        }
+
+        .motion-card.portrait .asset-frame {
+            min-height: 560px;
+        }
+
+        .motion-card.portrait .asset-image {
+            object-position: center top;
+        }
+
         .system-rail {
             padding: 76px 0 16px;
         }
@@ -1383,7 +1434,8 @@
             .proof-grid,
             .system-grid,
             .support-grid,
-            .footer-grid {
+            .footer-grid,
+            .motion-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
         }
@@ -1458,12 +1510,14 @@
             .system-grid,
             .support-grid,
             .footer-grid,
+            .motion-grid,
             .form-grid {
                 grid-template-columns: 1fr;
             }
 
             .hero,
             .story-section,
+            .motion-section,
             .support-hub,
             .system-rail,
             .waitlist,
@@ -1673,13 +1727,12 @@
                                 <div class="frame-title">Nexus desktop</div>
                                 <div class="frame-status">Local run</div>
                             </div>
-                            <img class="asset-image" src="assets/screenshots/command-center.png" alt="Nexus Command Center screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <img class="asset-image" src="assets/screenshots/command-center.png" alt="Nexus Command Center dashboard showing setup checklist, system readiness, and task operations" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                             <div class="asset-placeholder" style="display:none;">
                                 <div class="asset-placeholder-copy">
-                                    <span class="asset-placeholder-kicker mono">Hero screenshot</span>
+                                    <span class="asset-placeholder-kicker mono">Nexus view</span>
                                     <h3>Command Center</h3>
-                                    <p>Drop in the latest command center capture here. This hero frame is built to carry the page visually without relying on dense copy.</p>
-                                    <div class="asset-file mono">assets/screenshots/command-center.png</div>
+                                    <p>Command Center brings setup, readiness checks, and live search operations into one local workspace.</p>
                                 </div>
                             </div>
                         </div>
@@ -1725,57 +1778,23 @@
         <section class="story-section" id="demo-gallery">
             <div class="container">
                 <div class="section-heading fade-in">
-                    <div class="eyebrow mono"><span class="eyebrow-dot"></span>Screenshot-led product tour</div>
-                    <h2>The site should feel like the product, not a separate marketing costume.</h2>
-                    <p>Large, honest frames do the heavy lifting here. Keep the captions short. Let the application UI prove the workflow.</p>
+                    <div class="eyebrow mono"><span class="eyebrow-dot"></span>Product walkthrough</div>
+                    <h2>See how Nexus is set up, launched, and kept under control.</h2>
+                    <p>These are the real screens you use: create a search, review active runs, and keep resumes organized inside one local workspace.</p>
                 </div>
 
                 <div class="story-stack">
-                    <article class="story-band fade-in">
-                        <div class="story-copy">
-                            <div class="eyebrow mono"><span class="eyebrow-dot"></span>01 Command center</div>
-                            <h3>See the full operating surface before you ever install.</h3>
-                            <p>The command center is the anchor. It shows whether the product feels composed, reviewable, and real. That is what the homepage should foreground.</p>
-                            <div class="story-points">
-                                <div class="story-point"><span class="story-point-dot"></span><div><strong>Clear status over vague magic</strong> Users should be able to tell what is ready, blocked, or running without guessing.</div></div>
-                                <div class="story-point"><span class="story-point-dot"></span><div><strong>One workspace, several passes</strong> Search setup, resume routing, logs, and license status belong in the same visual system.</div></div>
-                            </div>
-                            <div class="story-actions">
-                                <a class="btn btn-secondary" href="/getting-started">See setup guide</a>
-                            </div>
-                        </div>
-
-                        <div class="story-media">
-                            <div class="asset-frame">
-                                <div class="frame-topbar">
-                                    <div class="frame-dots"><span></span><span></span><span></span></div>
-                                    <div class="frame-title">Command Center</div>
-                                    <div class="frame-status">Primary view</div>
-                                </div>
-                                <img class="asset-image" src="assets/screenshots/command-center.png" alt="Nexus Command Center screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div class="asset-placeholder" style="display:none;">
-                                    <div class="asset-placeholder-copy">
-                                        <span class="asset-placeholder-kicker mono">Add screenshot</span>
-                                        <h3>Command Center</h3>
-                                        <p>Use the final in-app dashboard here. Avoid personal data. Keep the surface calm and legible.</p>
-                                        <div class="asset-file mono">assets/screenshots/command-center.png</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-
                     <article class="story-band reverse fade-in">
                         <div class="story-copy">
-                            <div class="eyebrow mono"><span class="eyebrow-dot"></span>02 Create searches</div>
-                            <h3>Build a search flow that looks deliberate, not over-explained.</h3>
-                            <p>The page should show how Nexus starts a run: inputs, review, and guardrails. Use the screenshot to communicate the interface discipline rather than burying it in a long feature checklist.</p>
+                            <div class="eyebrow mono"><span class="eyebrow-dot"></span>01 Create searches</div>
+                            <h3>Start every run from a search builder that stays focused.</h3>
+                            <p>Choose platform, keyword, location, resume, and pacing in one pass. Advanced controls are there when you need them, but the default path stays fast and readable.</p>
                             <div class="story-points">
-                                <div class="story-point"><span class="story-point-dot"></span><div><strong>Simple first pass</strong> A strong setup screen should read clearly from a distance in a screenshot.</div></div>
-                                <div class="story-point"><span class="story-point-dot"></span><div><strong>Advanced controls are still present</strong> They can exist without dominating the first visual impression.</div></div>
+                                <div class="story-point"><span class="story-point-dot"></span><div><strong>Clear defaults for first runs</strong> The recommended path is visible immediately, so you can launch a careful first pass without guesswork.</div></div>
+                                <div class="story-point"><span class="story-point-dot"></span><div><strong>Platform-aware pacing</strong> Search style, retries, cooldowns, and resume choice all live inside the same launch flow.</div></div>
                             </div>
                             <div class="story-actions">
-                                <button class="btn btn-tertiary" onclick="document.getElementById('waitlist').scrollIntoView({ behavior: 'smooth' })">Get early access</button>
+                                <a class="btn btn-secondary" href="/getting-started#tasks">See launch setup</a>
                             </div>
                         </div>
 
@@ -1786,13 +1805,12 @@
                                     <div class="frame-title">Create Search</div>
                                     <div class="frame-status">Launch flow</div>
                                 </div>
-                                <img class="asset-image" src="assets/screenshots/create-search.png" alt="Nexus create search screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <img class="asset-image" src="assets/screenshots/create-search.png" alt="Nexus Create Search modal with platform, location, resume, and pacing options" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <div class="asset-placeholder" style="display:none;">
                                     <div class="asset-placeholder-copy">
-                                        <span class="asset-placeholder-kicker mono">Add screenshot</span>
+                                        <span class="asset-placeholder-kicker mono">Nexus view</span>
                                         <h3>Create Search</h3>
-                                        <p>Drop the cleaner, newer create-search flow here. This band should feel instructional through the UI itself.</p>
-                                        <div class="asset-file mono">assets/screenshots/create-search.png</div>
+                                        <p>Build a search with clear defaults, platform controls, and the right resume attached from the start.</p>
                                     </div>
                                 </div>
                             </div>
@@ -1801,15 +1819,15 @@
 
                     <article class="story-band fade-in">
                         <div class="story-copy">
-                            <div class="eyebrow mono"><span class="eyebrow-dot"></span>03 Resumes + licenses</div>
-                            <h3>Show the practical trust layer: resumes, license management, and review state.</h3>
-                            <p>The product feels more credible when the site acknowledges the operational details. Resume routing and license management are part of the product, not awkward appendix pages.</p>
+                            <div class="eyebrow mono"><span class="eyebrow-dot"></span>02 Search queue</div>
+                            <h3>Track live searches, outcomes, and restarts without losing context.</h3>
+                            <p>Every search keeps its own status, resume, platform, and results. You can see what finished, what is waiting, and what needs intervention at a glance.</p>
                             <div class="story-points">
-                                <div class="story-point"><span class="story-point-dot"></span><div><strong>Dummy data only</strong> Keep screenshot content professional and generic so the frame is usable everywhere.</div></div>
-                                <div class="story-point"><span class="story-point-dot"></span><div><strong>Keep the portal in the same visual family</strong> The site should make license operations feel intentional, not bolted on.</div></div>
+                                <div class="story-point"><span class="story-point-dot"></span><div><strong>Visible outcomes</strong> Applied, skipped, and failed counts stay attached to the search instead of buried in logs.</div></div>
+                                <div class="story-point"><span class="story-point-dot"></span><div><strong>Open or restart in place</strong> You can inspect a search, resume it, or stop it without jumping across screens.</div></div>
                             </div>
                             <div class="story-actions">
-                                <a class="btn btn-secondary" href="/license-dashboard">Open license portal</a>
+                                <a class="btn btn-secondary" href="/getting-started#run-review">See review flow</a>
                             </div>
                         </div>
 
@@ -1817,17 +1835,101 @@
                             <div class="asset-frame">
                                 <div class="frame-topbar">
                                     <div class="frame-dots"><span></span><span></span><span></span></div>
-                                    <div class="frame-title">Resumes + License</div>
-                                    <div class="frame-status">Trust layer</div>
+                                    <div class="frame-title">Searches</div>
+                                    <div class="frame-status">Run queue</div>
                                 </div>
-                                <img class="asset-image" src="assets/screenshots/resume-library.png" alt="Nexus resume library screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <img class="asset-image" src="assets/screenshots/tasks-screen.png" alt="Nexus Searches page with active and completed search workflows" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <div class="asset-placeholder" style="display:none;">
                                     <div class="asset-placeholder-copy">
-                                        <span class="asset-placeholder-kicker mono">Add screenshot</span>
-                                        <h3>Resume Library</h3>
-                                        <p>Use the cleaned-up resumes screen here, then add a license-center capture in the next pass if that reads better.</p>
-                                        <div class="asset-file mono">assets/screenshots/resume-library.png</div>
+                                        <span class="asset-placeholder-kicker mono">Nexus view</span>
+                                        <h3>Search Queue</h3>
+                                        <p>See every active and completed search in one queue, with quick access to inspect, restart, or stop each run.</p>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="story-band fade-in">
+                        <div class="story-copy">
+                            <div class="eyebrow mono"><span class="eyebrow-dot"></span>03 Resume library</div>
+                            <h3>Keep multiple resumes ready and route the right one into each search.</h3>
+                            <p>Nexus stores your core resume set locally, keeps match history visible, and makes it easy to choose the right file for each workflow without hunting through folders.</p>
+                            <div class="story-points">
+                                <div class="story-point"><span class="story-point-dot"></span><div><strong>Upload once, reuse everywhere</strong> Assign a tailored resume to each search without duplicating files across machines.</div></div>
+                                <div class="story-point"><span class="story-point-dot"></span><div><strong>Local-first trust</strong> Resume files stay on your machine while Nexus tracks which file each search is using.</div></div>
+                            </div>
+                            <div class="story-actions">
+                                <a class="btn btn-secondary" href="/getting-started#profiles">Set up resumes</a>
+                            </div>
+                        </div>
+
+                        <div class="story-media">
+                            <div class="asset-frame">
+                                <div class="frame-topbar">
+                                    <div class="frame-dots"><span></span><span></span><span></span></div>
+                                    <div class="frame-title">Resumes</div>
+                                    <div class="frame-status">Local library</div>
+                                </div>
+                                <img class="asset-image" src="assets/screenshots/Upload-Resume.png" alt="Nexus resume library with multiple uploaded resumes ready for search workflows" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="asset-placeholder" style="display:none;">
+                                    <div class="asset-placeholder-copy">
+                                        <span class="asset-placeholder-kicker mono">Nexus view</span>
+                                        <h3>Resume Library</h3>
+                                        <p>Keep a clean set of resumes ready, then attach the right file to each search without leaving the workspace.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="motion-section">
+            <div class="container">
+                <div class="section-heading fade-in">
+                    <div class="eyebrow mono"><span class="eyebrow-dot"></span>In motion</div>
+                    <h2>Short clips for the moments that matter.</h2>
+                    <p>Open a live search, inspect the details, and step through a handoff without losing the surrounding context.</p>
+                </div>
+
+                <div class="motion-grid">
+                    <article class="motion-card fade-in">
+                        <div class="eyebrow mono"><span class="eyebrow-dot"></span>Task detail</div>
+                        <h3>Open an active search and inspect its state without leaving the queue.</h3>
+                        <div class="asset-frame">
+                            <div class="frame-topbar">
+                                <div class="frame-dots"><span></span><span></span><span></span></div>
+                                <div class="frame-title">Open Task</div>
+                                <div class="frame-status">Detailed review</div>
+                            </div>
+                            <img class="asset-image" src="assets/demos/open-task-details.gif" alt="Animated Nexus demo opening a task and reviewing run details" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="asset-placeholder" style="display:none;">
+                                <div class="asset-placeholder-copy">
+                                    <span class="asset-placeholder-kicker mono">Nexus clip</span>
+                                    <h3>Task Detail</h3>
+                                    <p>Inspect an active search, check progress, and jump into the next action from the same queue.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="motion-card portrait fade-in">
+                        <div class="eyebrow mono"><span class="eyebrow-dot"></span>External apply</div>
+                        <h3>See a live handoff when a run reaches an application step.</h3>
+                        <div class="asset-frame">
+                            <div class="frame-topbar">
+                                <div class="frame-dots"><span></span><span></span><span></span></div>
+                                <div class="frame-title">Live Apply</div>
+                                <div class="frame-status">Edge-case view</div>
+                            </div>
+                            <img class="asset-image" src="assets/demos/watch-applying-live.gif" alt="Animated Nexus demo showing a live application step on LinkedIn" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="asset-placeholder" style="display:none;">
+                                <div class="asset-placeholder-copy">
+                                    <span class="asset-placeholder-kicker mono">Nexus clip</span>
+                                    <h3>Live Apply</h3>
+                                    <p>Watch an application handoff as Nexus moves from search results into a real form step.</p>
                                 </div>
                             </div>
                         </div>
@@ -1848,13 +1950,13 @@
                     <article class="utility-card">
                         <div class="eyebrow mono"><span class="eyebrow-dot"></span>Control</div>
                         <h3>Review queues, logs, and blockers before a run moves forward.</h3>
-                        <p>The operator should show its work. Search prep, resume choice, sign-in state, and follow-up checks stay visible instead of hidden.</p>
+                        <p>Search prep, resume choice, sign-in state, and follow-up checks stay visible so you can intervene before a run drifts.</p>
                         <a class="mini-link" href="/getting-started#power-workflow">Operations guide</a>
                     </article>
                     <article class="utility-card">
                         <div class="eyebrow mono"><span class="eyebrow-dot"></span>License</div>
                         <h3>Manage access, verify by Discord or email, and reset machine locks cleanly.</h3>
-                        <p>The license dashboard is a first-class utility surface. Keep it visually aligned with the product, not off to the side.</p>
+                        <p>Verify ownership, recover access, and move Nexus to a new machine without waiting on a manual support handoff.</p>
                         <a class="mini-link" href="/license-dashboard">Manage license</a>
                     </article>
                 </div>
@@ -1865,8 +1967,8 @@
             <div class="container">
                 <div class="section-heading fade-in">
                     <div class="eyebrow mono"><span class="eyebrow-dot"></span>Support + access</div>
-                    <h2>Keep the conversion path practical.</h2>
-                    <p>Setup, license management, Discord access, and troubleshooting are part of the product story. They should be close at hand, not buried below generic marketing filler.</p>
+                    <h2>Get set up, recover access, and troubleshoot without hunting around.</h2>
+                    <p>The guide, license tools, Discord access, and recovery steps are all close at hand so the operational parts of Nexus stay as deliberate as the product itself.</p>
                 </div>
 
                 <div class="support-grid fade-in">
@@ -1928,7 +2030,7 @@
 
                                 <div class="form-group full">
                                     <label class="form-label" for="waitlist-message">Why are you interested in Nexus?</label>
-                                    <textarea id="waitlist-message" class="form-textarea" placeholder="Tell us about your search, workflow, or what is currently broken in your process."></textarea>
+                                    <textarea id="waitlist-message" class="form-textarea" placeholder="Tell us about your role, search targets, and the workflow you want Nexus to handle."></textarea>
                                 </div>
 
                                 <div class="form-consent">
