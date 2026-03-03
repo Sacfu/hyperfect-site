@@ -6,50 +6,65 @@
     <title>Nexus Setup Guide | Hyperfect</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <meta name="description" content="Complete Nexus setup guide: install, license activation, AI runtime setup, first search configuration, and troubleshooting.">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-primary: #09090b;
-            --bg-secondary: #0f0f12;
-            --bg-tertiary: #1a1a1f;
-            --bg-card: rgba(255, 255, 255, 0.04);
-            --page-aura-1: rgba(37, 99, 235, 0.08);
-            --page-aura-2: rgba(148, 163, 184, 0.045);
-            --page-ring-1: rgba(96, 165, 250, 0.055);
-            --page-ring-2: rgba(148, 163, 184, 0.038);
-            --page-ring-3: rgba(255, 255, 255, 0.022);
-            --page-sheen: rgba(255, 255, 255, 0.015);
-            --text-primary: #fafafa;
-            --text-secondary: #a1a1aa;
-            --text-tertiary: #71717a;
-            --text-muted: #71717a;
-            --accent: #2563eb;
-            --border: rgba(255, 255, 255, 0.08);
-            --glass-bg: rgba(255, 255, 255, 0.04);
-            --glass-border: rgba(255, 255, 255, 0.08);
+            --bg-primary: #07090d;
+            --bg-secondary: #0c1016;
+            --bg-tertiary: #141a23;
+            --bg-elevated: rgba(13, 17, 23, 0.84);
+            --surface-1: rgba(255, 255, 255, 0.05);
+            --surface-2: rgba(255, 255, 255, 0.035);
+            --surface-3: rgba(255, 255, 255, 0.022);
+            --border: rgba(255, 255, 255, 0.11);
+            --border-soft: rgba(255, 255, 255, 0.07);
+            --text-primary: #f5f7fb;
+            --text-secondary: #b8c0ce;
+            --text-tertiary: #8892a5;
+            --accent: #4f7cff;
+            --accent-soft: rgba(79, 124, 255, 0.18);
+            --accent-strong: #7ea0ff;
             --success: #22c55e;
             --warning: #f59e0b;
             --danger: #ef4444;
+            --page-glow-1: rgba(79, 124, 255, 0.17);
+            --page-glow-2: rgba(148, 163, 184, 0.09);
+            --page-ring-1: rgba(90, 130, 255, 0.11);
+            --page-ring-2: rgba(255, 255, 255, 0.05);
+            --page-ring-3: rgba(112, 139, 255, 0.07);
+            --page-sheen: rgba(255, 255, 255, 0.022);
+            --shadow-lg: 0 30px 80px rgba(0, 0, 0, 0.38);
+            --shadow-md: 0 18px 40px rgba(0, 0, 0, 0.28);
+            --radius-xl: 30px;
+            --radius-lg: 24px;
+            --radius-md: 18px;
+            --radius-sm: 14px;
         }
 
         body.light-mode {
-            --bg-primary: #fafafa;
-            --bg-secondary: #f4f4f5;
-            --bg-tertiary: #e4e4e7;
-            --bg-card: rgba(0, 0, 0, 0.03);
-            --page-aura-1: rgba(37, 99, 235, 0.07);
-            --page-aura-2: rgba(148, 163, 184, 0.06);
-            --page-ring-1: rgba(37, 99, 235, 0.055);
-            --page-ring-2: rgba(100, 116, 139, 0.042);
-            --page-ring-3: rgba(15, 23, 42, 0.022);
-            --page-sheen: rgba(15, 23, 42, 0.016);
-            --text-primary: #18181b;
-            --text-secondary: #52525b;
-            --text-tertiary: #71717a;
-            --text-muted: #71717a;
-            --border: rgba(0, 0, 0, 0.08);
-            --glass-bg: rgba(0, 0, 0, 0.03);
-            --glass-border: rgba(0, 0, 0, 0.08);
+            --bg-primary: #f3f5f9;
+            --bg-secondary: #edf1f7;
+            --bg-tertiary: #dde6f2;
+            --bg-elevated: rgba(255, 255, 255, 0.84);
+            --surface-1: rgba(255, 255, 255, 0.72);
+            --surface-2: rgba(255, 255, 255, 0.52);
+            --surface-3: rgba(255, 255, 255, 0.34);
+            --border: rgba(15, 23, 42, 0.11);
+            --border-soft: rgba(15, 23, 42, 0.07);
+            --text-primary: #111827;
+            --text-secondary: #475569;
+            --text-tertiary: #64748b;
+            --accent: #3867f5;
+            --accent-soft: rgba(56, 103, 245, 0.12);
+            --accent-strong: #1d4ed8;
+            --page-glow-1: rgba(79, 124, 255, 0.13);
+            --page-glow-2: rgba(148, 163, 184, 0.12);
+            --page-ring-1: rgba(79, 124, 255, 0.08);
+            --page-ring-2: rgba(30, 41, 59, 0.045);
+            --page-ring-3: rgba(79, 124, 255, 0.055);
+            --page-sheen: rgba(15, 23, 42, 0.018);
+            --shadow-lg: 0 20px 55px rgba(15, 23, 42, 0.08);
+            --shadow-md: 0 14px 30px rgba(15, 23, 42, 0.07);
         }
 
         * {
@@ -63,194 +78,209 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Manrope', sans-serif;
+            color: var(--text-primary);
             background-color: var(--bg-primary);
             background-image:
-                radial-gradient(circle at 12% 12%, var(--page-aura-1), transparent 28%),
-                radial-gradient(circle at 88% 4%, var(--page-aura-2), transparent 24%),
-                radial-gradient(circle at -18% 12%, transparent 45.6%, var(--page-ring-1) 46.1%, transparent 46.6%),
-                radial-gradient(circle at 118% 18%, transparent 33.8%, var(--page-ring-2) 34.2%, transparent 34.6%),
-                radial-gradient(circle at 52% 118%, transparent 29.8%, var(--page-ring-3) 30.15%, transparent 30.5%),
-                linear-gradient(135deg, var(--page-sheen) 0%, transparent 34%, transparent 66%, var(--page-sheen) 100%),
+                radial-gradient(circle at 12% 14%, var(--page-glow-1), transparent 29%),
+                radial-gradient(circle at 84% 8%, var(--page-glow-2), transparent 24%),
+                radial-gradient(circle at -16% 16%, transparent 42%, var(--page-ring-1) 42.5%, transparent 43%),
+                radial-gradient(circle at 118% 22%, transparent 33%, var(--page-ring-2) 33.5%, transparent 34%),
+                radial-gradient(circle at 52% 112%, transparent 26%, var(--page-ring-3) 26.35%, transparent 26.7%),
+                linear-gradient(125deg, var(--page-sheen) 0%, transparent 30%, transparent 70%, var(--page-sheen) 100%),
                 linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
             background-attachment: fixed;
-            color: var(--text-primary);
             line-height: 1.65;
-            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
 
-        @media (max-width: 768px) {
-            body {
-                background-image:
-                    radial-gradient(circle at 18% 12%, var(--page-aura-1), transparent 30%),
-                    radial-gradient(circle at 82% 10%, var(--page-aura-2), transparent 24%),
-                    radial-gradient(circle at 50% 24%, var(--page-aura-1), transparent 44%),
-                    radial-gradient(circle at -8% 24%, transparent 35.8%, var(--page-ring-1) 36.25%, transparent 36.7%),
-                    radial-gradient(circle at 108% 28%, transparent 24.4%, var(--page-ring-2) 24.85%, transparent 25.3%),
-                    radial-gradient(circle at 50% 104%, transparent 21.2%, var(--page-ring-3) 21.65%, transparent 22.1%),
-                    linear-gradient(135deg, var(--page-sheen) 0%, transparent 26%, transparent 74%, var(--page-sheen) 100%),
-                    linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-                background-attachment: scroll;
-            }
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(to bottom, rgba(7, 9, 13, 0.22), transparent 18%),
+                radial-gradient(circle at 50% 0%, rgba(79, 124, 255, 0.09), transparent 44%);
+            z-index: -1;
+        }
+
+        body.light-mode::before {
+            background:
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent 18%),
+                radial-gradient(circle at 50% 0%, rgba(56, 103, 245, 0.08), transparent 44%);
         }
 
         .container {
-            max-width: 1200px;
+            width: min(1240px, calc(100% - 32px));
             margin: 0 auto;
-            padding: 0 20px;
+        }
+
+        .mono {
+            font-family: 'IBM Plex Mono', monospace;
         }
 
         nav {
             position: sticky;
-            top: 0;
+            top: 16px;
             z-index: 100;
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--glass-border);
-            transition: all 0.3s;
+            padding: 16px 0 0;
         }
 
-        .nav-content {
+        .nav-shell {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 1rem 0;
+            gap: 18px;
+            min-height: 68px;
+            padding: 12px 18px 12px 20px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: var(--bg-elevated);
+            backdrop-filter: blur(18px);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
         }
 
         .logo {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 0.75rem;
-            color: var(--text-primary);
+            gap: 12px;
             text-decoration: none;
-            font-weight: 700;
-            font-size: 1.25rem;
+            color: var(--text-primary);
+            flex-shrink: 0;
+        }
+
+        .logo-mark {
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
+            border: 1px solid rgba(79, 124, 255, 0.22);
+            background: linear-gradient(180deg, rgba(79, 124, 255, 0.18), rgba(79, 124, 255, 0.06));
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        }
+
+        .logo-mark img {
+            width: 21px;
+            height: 21px;
+        }
+
+        .logo-wordmark {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.14rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
         }
 
         .logo-divider {
             color: var(--text-tertiary);
-            font-weight: 400;
+            font-weight: 500;
         }
 
         .logo-product {
             color: var(--accent);
-            font-weight: 600;
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 0.85rem;
         }
 
         .nav-center {
             display: flex;
             align-items: center;
-            gap: 2.5rem;
+            gap: 1.6rem;
             list-style: none;
         }
 
         .nav-center a {
-            color: var(--text-secondary);
             text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: color 0.3s;
+            color: var(--text-secondary);
+            font-size: 0.94rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            transition: color 0.2s ease;
         }
 
         .nav-center a:hover,
         .nav-center a.active {
-            color: var(--accent);
-        }
-
-        .logo,
-        .nav-center a,
-        .btn,
-        .cta-button,
-        .theme-toggle {
-            line-height: 1;
-        }
-
-        .theme-toggle {
-            background: transparent;
-            border: 1px solid var(--border);
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
-            transition: all 0.3s;
-        }
-
-        .theme-toggle:hover {
-            background: var(--glass-bg);
-            border-color: var(--accent);
             color: var(--text-primary);
         }
 
-        .btn {
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .theme-toggle,
+        .cta-button {
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            font-family: inherit;
+            font-weight: 700;
+            transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .theme-toggle {
+            width: 42px;
+            height: 42px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 0.7rem 1.1rem;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background: transparent;
-            color: var(--text-primary);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.92rem;
-            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.035);
+            color: var(--text-secondary);
+            cursor: pointer;
         }
 
-        .btn:hover {
-            background: var(--glass-bg);
-            border-color: var(--accent);
+        .theme-toggle:hover {
+            border-color: rgba(79, 124, 255, 0.3);
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.06);
         }
 
         .cta-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.85rem 1.25rem;
             background: var(--accent);
-            border-color: var(--accent);
+            border-color: transparent;
             color: white;
-            border: none;
-            padding: 0.7rem 1.75rem;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
             text-decoration: none;
-            transition: all 0.3s;
+            box-shadow: 0 18px 38px rgba(79, 124, 255, 0.24);
         }
 
         .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
+            transform: translateY(-1px);
         }
 
         .hamburger {
             display: none;
-            background: none;
-            border: none;
+            width: 44px;
+            height: 44px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.035);
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            padding: 0.5rem;
             color: var(--text-primary);
         }
 
         .hamburger span {
             display: block;
-            width: 22px;
+            width: 18px;
             height: 2px;
+            margin: 2px 0;
+            border-radius: 999px;
             background: currentColor;
-            margin: 5px 0;
-            border-radius: 2px;
-            transition: all 0.3s;
+            transition: transform 0.2s ease, opacity 0.2s ease;
         }
 
         .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
+            transform: translateY(6px) rotate(45deg);
         }
 
         .hamburger.active span:nth-child(2) {
@@ -258,286 +288,469 @@
         }
 
         .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
+            transform: translateY(-6px) rotate(-45deg);
+        }
+
+        main {
+            padding: 34px 0 80px;
         }
 
         .hero {
-            padding: 44px 0 22px;
+            padding: 56px 0 24px;
+        }
+
+        .hero-shell {
+            display: grid;
+            grid-template-columns: minmax(0, 0.68fr) minmax(0, 0.32fr);
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .hero-copy-panel,
+        .hero-side-panel,
+        .toc-shell,
+        .card,
+        .footer-shell {
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
+            box-shadow: var(--shadow-md);
+        }
+
+        .hero-copy-panel,
+        .hero-side-panel,
+        .card,
+        .footer-shell {
+            padding: 24px;
+        }
+
+        .hero-copy-panel::before,
+        .hero-side-panel::before,
+        .toc-shell::before,
+        .card::before,
+        .footer-shell::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 24%);
+            opacity: 0.7;
+        }
+
+        .hero-copy-panel::after {
+            content: "";
+            position: absolute;
+            width: 360px;
+            height: 360px;
+            right: -120px;
+            bottom: -150px;
+            border-radius: 999px;
+            background: radial-gradient(circle, rgba(79, 124, 255, 0.22), transparent 68%);
+            filter: blur(12px);
+            opacity: 0.9;
         }
 
         .eyebrow {
-            color: #93c5fd;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.55rem 0.9rem;
+            border: 1px solid rgba(79, 124, 255, 0.2);
+            border-radius: 999px;
+            background: rgba(79, 124, 255, 0.08);
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
-            letter-spacing: 0.11em;
-            font-size: 0.75rem;
-            font-weight: 700;
-            margin-bottom: 11px;
+            color: var(--accent-strong);
+            position: relative;
+            z-index: 1;
         }
 
-        h1 {
-            font-size: clamp(1.9rem, 3.7vw, 2.8rem);
-            line-height: 1.15;
-            margin-bottom: 11px;
-            letter-spacing: -0.02em;
+        .eyebrow-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 999px;
+            background: currentColor;
+            box-shadow: 0 0 14px currentColor;
         }
 
-        .hero p {
-            color: var(--text-secondary);
+        .hero-copy-panel h1 {
+            margin-top: 18px;
             max-width: 760px;
-            font-size: 1rem;
+            font-size: clamp(2.6rem, 4.8vw, 4.6rem);
+            line-height: 0.98;
+            letter-spacing: -0.055em;
+            font-weight: 800;
+            position: relative;
+            z-index: 1;
         }
 
-        .layout {
-            display: grid;
-            grid-template-columns: 260px minmax(0, 1fr);
-            gap: 18px;
-            margin: 22px 0 60px;
-        }
-
-        .toc {
-            position: sticky;
-            top: 86px;
-            align-self: start;
-            border: 1px solid var(--border);
-            background: var(--bg-card);
-            border-radius: 14px;
-            padding: 14px;
-        }
-
-        .toc h2 {
-            font-size: 0.9rem;
-            margin-bottom: 10px;
+        .hero-copy-panel p {
+            margin-top: 18px;
+            max-width: 720px;
             color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            font-size: 1.03rem;
+            position: relative;
+            z-index: 1;
         }
 
-        .toc a {
-            display: block;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.9rem;
-            padding: 7px 0;
-        }
-
-        .toc a:hover {
-            color: var(--accent);
-        }
-
-        .content {
-            min-width: 0;
+        .hero-meta {
+            margin-top: 20px;
             display: flex;
-            flex-direction: column;
-            gap: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
         }
 
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 18px;
-        }
-
-        h2 {
-            font-size: 1.25rem;
-            margin-bottom: 8px;
-            letter-spacing: -0.01em;
-        }
-
-        h3 {
-            font-size: 1rem;
-            margin: 12px 0 8px;
-            color: #dbeafe;
-        }
-
-        p {
+        .meta-pill {
+            padding: 0.65rem 0.95rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-soft);
             color: var(--text-secondary);
-            font-size: 0.95rem;
-            margin-bottom: 10px;
+            font-size: 0.84rem;
+            font-weight: 600;
         }
 
-        ol, ul {
-            padding-left: 18px;
-            margin: 8px 0 12px;
-            color: var(--text-secondary);
+        .hero-side-panel h2 {
+            font-size: 1.1rem;
+            letter-spacing: -0.03em;
         }
 
-        li {
-            margin-bottom: 7px;
-            font-size: 0.94rem;
-        }
-
-        code {
-            background: rgba(30, 41, 59, 0.6);
-            border: 1px solid rgba(148, 163, 184, 0.2);
-            color: #bfdbfe;
-            padding: 2px 6px;
-            border-radius: 6px;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-            font-size: 0.88rem;
-        }
-
-        .callout {
-            border-left: 3px solid var(--accent);
-            background: rgba(59, 130, 246, 0.12);
-            border-radius: 0 10px 10px 0;
-            padding: 12px;
-            margin: 10px 0 14px;
-            color: #dbeafe;
-            font-size: 0.9rem;
-        }
-
-        .callout.warning {
-            border-left-color: var(--warning);
-            background: rgba(245, 158, 11, 0.14);
-            color: #fde68a;
-        }
-
-        .callout.success {
-            border-left-color: var(--success);
-            background: rgba(34, 197, 94, 0.14);
-            color: #bbf7d0;
-        }
-
-        .grid-2 {
+        .quick-stack {
+            margin-top: 16px;
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 12px;
         }
 
-        .mini {
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.02);
+        .quick-item {
+            padding: 14px 16px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-soft);
+            background: rgba(255, 255, 255, 0.032);
         }
 
-        .mini h4 {
+        .quick-item strong {
+            display: block;
+            font-size: 0.94rem;
+            margin-bottom: 4px;
+        }
+
+        .quick-item span {
+            color: var(--text-secondary);
             font-size: 0.9rem;
-            margin-bottom: 6px;
+        }
+
+        .hero-side-actions {
+            margin-top: 18px;
+            display: grid;
+            gap: 10px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 0.84rem 1.1rem;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.035);
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 700;
+            transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            border-color: rgba(79, 124, 255, 0.3);
+            background: rgba(79, 124, 255, 0.08);
+        }
+
+        .docs-layout {
+            display: grid;
+            grid-template-columns: 280px minmax(0, 1fr);
+            gap: 18px;
+            align-items: start;
+        }
+
+        .toc-shell {
+            padding: 20px;
+            position: sticky;
+            top: 104px;
+        }
+
+        .toc-shell h2 {
+            font-size: 1rem;
+            letter-spacing: -0.03em;
+        }
+
+        .toc-links {
+            margin-top: 16px;
+            display: grid;
+            gap: 8px;
+        }
+
+        .toc-links a {
+            display: block;
+            padding: 0.76rem 0.8rem;
+            border-radius: 14px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.92rem;
+            font-weight: 600;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .toc-links a:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.045);
+        }
+
+        .toc-note {
+            margin-top: 16px;
+            color: var(--text-tertiary);
+            font-size: 0.88rem;
+        }
+
+        .content {
+            display: grid;
+            gap: 16px;
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            letter-spacing: -0.04em;
+            margin-bottom: 12px;
+        }
+
+        .card h3 {
+            margin-top: 18px;
+            margin-bottom: 8px;
+            font-size: 1.02rem;
+            letter-spacing: -0.03em;
+        }
+
+        .card p,
+        .card li {
+            color: var(--text-secondary);
+            font-size: 0.98rem;
+        }
+
+        .card p + p {
+            margin-top: 12px;
+        }
+
+        .card ul,
+        .card ol {
+            margin: 12px 0 0 20px;
+            display: grid;
+            gap: 8px;
+        }
+
+        .card code {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.88em;
+            padding: 0.15rem 0.35rem;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
             color: var(--text-primary);
         }
 
-        .mini p {
-            margin: 0;
-            font-size: 0.87rem;
+        .card strong {
+            color: var(--text-primary);
+        }
+
+        .callout {
+            margin-top: 18px;
+            padding: 14px 16px;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(79, 124, 255, 0.2);
+            background: rgba(79, 124, 255, 0.08);
+            color: #d9e4ff;
+            font-size: 0.94rem;
+        }
+
+        .callout.success {
+            border-color: rgba(34, 197, 94, 0.18);
+            background: rgba(34, 197, 94, 0.12);
+            color: #d6f8df;
         }
 
         .screenshot-slot {
-            border: 1px dashed rgba(148, 163, 184, 0.5);
-            border-radius: 10px;
-            min-height: 140px;
+            margin-top: 18px;
+            min-height: 180px;
+            border-radius: var(--radius-md);
+            border: 1px dashed rgba(79, 124, 255, 0.22);
+            background:
+                radial-gradient(circle at 50% 20%, rgba(79, 124, 255, 0.14), transparent 32%),
+                rgba(255, 255, 255, 0.02);
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            color: var(--text-muted);
-            font-size: 0.86rem;
-            padding: 16px;
-            margin-top: 10px;
-            background: var(--glass-bg);
+            padding: 24px;
+            color: var(--text-tertiary);
+            font-size: 0.92rem;
         }
 
-        .footer {
-            padding: 18px 0 36px;
-        }
-
-        .footer-divider {
-            border-top: 1px solid var(--border);
-            padding-top: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            align-items: center;
-            text-align: center;
-        }
-
-        .footer-copy {
-            color: var(--text-muted);
-            font-size: 0.84rem;
-        }
-
-        .footer-note {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            max-width: 760px;
-        }
-
-        a.inline {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        a.inline:hover {
+        .inline {
+            color: var(--text-primary);
+            font-weight: 700;
             text-decoration: underline;
         }
 
-        @media (max-width: 980px) {
-            .layout {
+        footer {
+            padding: 28px 0 34px;
+        }
+
+        .footer-shell {
+            padding: 24px;
+        }
+
+        .footer-copy {
+            color: var(--text-tertiary);
+            font-size: 0.88rem;
+            cursor: default;
+            width: fit-content;
+        }
+
+        .footer-note {
+            margin-top: 10px;
+            color: var(--text-tertiary);
+            font-size: 0.84rem;
+            max-width: 820px;
+        }
+
+        #admin-link {
+            display: none;
+            margin-top: 8px;
+            font-size: 0.74rem;
+            color: var(--text-tertiary);
+            text-decoration: none;
+            opacity: 0.65;
+        }
+
+        @media (max-width: 1120px) {
+            .hero-shell,
+            .docs-layout {
                 grid-template-columns: 1fr;
             }
 
-            .toc {
+            .toc-shell {
                 position: static;
-            }
-
-            .grid-2 {
-                grid-template-columns: 1fr;
             }
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 820px) {
+            body {
+                background-image:
+                    radial-gradient(circle at 18% 12%, var(--page-glow-1), transparent 30%),
+                    radial-gradient(circle at 82% 10%, var(--page-glow-2), transparent 24%),
+                    radial-gradient(circle at 50% 24%, var(--page-glow-1), transparent 44%),
+                    radial-gradient(circle at -8% 24%, transparent 35.8%, var(--page-ring-1) 36.25%, transparent 36.7%),
+                    radial-gradient(circle at 108% 28%, transparent 24.4%, var(--page-ring-2) 24.85%, transparent 25.3%),
+                    radial-gradient(circle at 50% 104%, transparent 21.2%, var(--page-ring-3) 21.65%, transparent 22.1%),
+                    linear-gradient(135deg, var(--page-sheen) 0%, transparent 26%, transparent 74%, var(--page-sheen) 100%),
+                    linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+                background-attachment: scroll;
+            }
+
+            nav {
+                top: 10px;
+            }
+
+            .nav-shell {
+                position: relative;
+                min-height: 64px;
+                border-radius: 22px;
+                padding-inline: 14px;
+            }
+
             .hamburger {
-                display: block;
-                order: 3;
+                display: inline-flex;
             }
 
             .nav-center {
-                display: none;
                 position: absolute;
-                top: 100%;
+                top: calc(100% + 10px);
                 left: 0;
                 right: 0;
+                display: none;
                 flex-direction: column;
-                background: var(--bg-primary);
-                border-bottom: 1px solid var(--border);
-                padding: 1rem 20px;
+                align-items: stretch;
                 gap: 0;
+                padding: 10px 14px 16px;
+                background: var(--bg-elevated);
+                border: 1px solid var(--border);
+                border-radius: 24px;
+                box-shadow: var(--shadow-md);
             }
 
             .nav-center.open {
                 display: flex;
             }
 
-            .nav-center li {
-                list-style: none;
-            }
-
             .nav-center a {
-                display: block;
-                padding: 0.75rem 0;
-                border-bottom: 1px solid var(--border);
-                font-size: 1rem;
+                padding: 0.9rem 0.4rem;
+                border-bottom: 1px solid var(--border-soft);
             }
 
             .nav-center li:last-child a {
                 border-bottom: none;
             }
 
-            .btn {
+            .nav-right .cta-button {
                 display: none;
             }
 
-            .nav-right {
-                gap: 0.6rem;
+            main {
+                padding-top: 20px;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .container {
+                width: min(1240px, calc(100% - 20px));
             }
 
-            .cta-button {
-                padding: 0.7rem 1rem;
+            .logo-wordmark {
+                gap: 6px;
+                font-size: 1.02rem;
             }
 
-            nav .container {
-                position: relative;
+            .logo-mark {
+                width: 36px;
+                height: 36px;
+            }
+
+            .theme-toggle,
+            .hamburger {
+                width: 40px;
+                height: 40px;
+            }
+
+            .hero-copy-panel,
+            .hero-side-panel,
+            .toc-shell,
+            .card,
+            .footer-shell {
+                padding: 20px;
+            }
+
+            .hero-copy-panel h1 {
+                font-size: 2.2rem;
+            }
+
+            .meta-pill,
+            .btn {
+                width: 100%;
+                justify-content: center;
             }
         }
     </style>
@@ -545,38 +758,40 @@
 <body>
     <nav>
         <div class="container">
-            <div class="nav-content">
+            <div class="nav-shell">
                 <a href="/" class="logo" aria-label="Hyperfect Nexus - Home">
-                    <span>Hyperfect</span><span class="logo-divider">/</span><span class="logo-product">Nexus</span>
+                    <span class="logo-mark"><img src="assets/brand/app-icon.png" alt=""></span>
+                    <span class="logo-wordmark"><span>Hyperfect</span><span class="logo-divider">/</span><span class="logo-product">Nexus</span></span>
                 </a>
+
                 <ul class="nav-center">
-                    <li><a href="/#features">Features</a></li>
-                    <li><a href="/#how-it-works">How It Works</a></li>
-                    <li><a href="/#demo-gallery">Demos</a></li>
+                    <li><a href="/#demo-gallery">Product</a></li>
+                    <li><a href="/#support-hub">Workflow</a></li>
                     <li><a href="/getting-started" class="active">Setup Guide</a></li>
                     <li><a href="/license-dashboard">Manage License</a></li>
                     <li><a href="/#faq">FAQ</a></li>
                 </ul>
+
                 <div class="nav-right">
                     <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
                         <span></span>
                         <span></span>
                         <span></span>
                     </button>
-                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark mode">
                         <svg id="sunIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="5"/>
-                            <line x1="12" y1="1" x2="12" y2="3"/>
-                            <line x1="12" y1="21" x2="12" y2="23"/>
-                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                            <line x1="1" y1="12" x2="3" y2="12"/>
-                            <line x1="21" y1="12" x2="23" y2="12"/>
-                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                            <circle cx="12" cy="12" r="4.5"/>
+                            <line x1="12" y1="2" x2="12" y2="4"/>
+                            <line x1="12" y1="20" x2="12" y2="22"/>
+                            <line x1="4.9" y1="4.9" x2="6.3" y2="6.3"/>
+                            <line x1="17.7" y1="17.7" x2="19.1" y2="19.1"/>
+                            <line x1="2" y1="12" x2="4" y2="12"/>
+                            <line x1="20" y1="12" x2="22" y2="12"/>
+                            <line x1="4.9" y1="19.1" x2="6.3" y2="17.7"/>
+                            <line x1="17.7" y1="6.3" x2="19.1" y2="4.9"/>
                         </svg>
-                        <svg id="moonIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
-                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                        <svg id="moonIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+                            <path d="M20 15.4A8.5 8.5 0 1 1 8.6 4a7 7 0 0 0 11.4 11.4z"/>
                         </svg>
                     </button>
                     <a class="cta-button" href="/#waitlist">Join Waitlist</a>
@@ -585,26 +800,54 @@
         </div>
     </nav>
 
-    <main class="container">
+    <main>
         <section class="hero">
-            <div class="eyebrow">Operator Documentation</div>
-            <h1>Nexus Start-to-End Setup Guide</h1>
-            <p>This guide is for first-time users and beta testers. It covers install, license activation, AI runtime setup, first search configuration, and practical troubleshooting so you can get to stable, repeatable runs quickly.</p>
+            <div class="container">
+                <div class="hero-shell">
+                    <div class="hero-copy-panel">
+                        <div class="eyebrow mono"><span class="eyebrow-dot"></span>Operator documentation</div>
+                        <h1>Nexus start-to-end setup guide.</h1>
+                        <p>This is the operational path for first-time users and beta testers: install the app, activate the key, connect the runtime, verify site sessions, then launch one clean run before scaling volume.</p>
+                        <div class="hero-meta">
+                            <div class="meta-pill">Install + activation</div>
+                            <div class="meta-pill">LLM setup</div>
+                            <div class="meta-pill">Search configuration</div>
+                            <div class="meta-pill">Troubleshooting</div>
+                        </div>
+                    </div>
+
+                    <div class="hero-side-panel">
+                        <h2>Fast path</h2>
+                        <div class="quick-stack">
+                            <div class="quick-item"><strong>1. Activate the app</strong><span>Download Nexus, install it, and apply your license key first.</span></div>
+                            <div class="quick-item"><strong>2. Verify runtime + sessions</strong><span>Test the model connection and sign in to your target platforms before creating a search.</span></div>
+                            <div class="quick-item"><strong>3. Run one controlled search</strong><span>Calibrate with a small batch before increasing application volume.</span></div>
+                        </div>
+                        <div class="hero-side-actions">
+                            <a class="btn" href="/license-dashboard">Manage License</a>
+                            <a class="btn" href="/#waitlist">Request Access</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <div class="layout">
-            <aside class="toc">
+        <section class="container docs-layout">
+            <aside class="toc-shell">
                 <h2>Contents</h2>
-                <a href="#preflight">1. Preflight Checklist</a>
-                <a href="#install">2. Install + Activation</a>
-                <a href="#llm-setup">3. AI Model Setup</a>
-                <a href="#accounts">4. Sessions + Accounts</a>
-                <a href="#profiles">5. Resume + Defaults</a>
-                <a href="#tasks">6. Create Your First Search</a>
-                <a href="#run-review">7. Run + Review Loop</a>
-                <a href="#troubleshooting">8. Troubleshooting</a>
-                <a href="#power-workflow">9. Power User Workflow</a>
-                <a href="#support">10. Support + Escalation</a>
+                <div class="toc-links">
+                    <a href="#preflight">1. Preflight Checklist</a>
+                    <a href="#install">2. Install + Activation</a>
+                    <a href="#llm-setup">3. AI Model Setup</a>
+                    <a href="#accounts">4. Sessions + Accounts</a>
+                    <a href="#profiles">5. Resume + Defaults</a>
+                    <a href="#tasks">6. Create Your First Search</a>
+                    <a href="#run-review">7. Run + Review Loop</a>
+                    <a href="#troubleshooting">8. Troubleshooting</a>
+                    <a href="#power-workflow">9. Power User Workflow</a>
+                    <a href="#support">10. Support + Escalation</a>
+                </div>
+                <p class="toc-note">Use this guide with the live app. Once Nexus is installed, the dashboard and setup checklist should become the day-to-day source of truth.</p>
             </aside>
 
             <div class="content">
@@ -629,7 +872,7 @@
                         <li>Paste your license key on the activation screen and click <strong>Activate</strong>.</li>
                         <li>If activation fails: verify internet connectivity and retry once.</li>
                     </ol>
-                    <div class="callout success">Once activated, Nexus stores local license state and periodically verifies in background.</div>
+                    <div class="callout success">Once activated, Nexus stores local license state and periodically verifies in the background.</div>
                     <div class="screenshot-slot">Add screenshot: activation screen + successful activation state.</div>
                 </section>
 
@@ -641,28 +884,27 @@
                     <ol>
                         <li>Open <strong>Settings &rarr; LLM Settings</strong>.</li>
                         <li>Select provider: <code>Nexus Built-in (Recommended)</code>.</li>
-                        <li>In the <strong>Model Manager</strong> section, click <strong>Download</strong> on your preferred model:
-                            <ul>
-                                <li><strong>phi-3-mini</strong> (~2.3 GB) — lightweight baseline for lower-memory systems.</li>
-                                <li><strong>qwen2.5-7b</strong> (~4.7 GB) — recommended default text model for scoring + form answers.</li>
-                                <li><strong>qwen2-vl-2b-visual</strong> (~2.4 GB) — recommended visual model for external apply recovery.</li>
-                            </ul>
-                        </li>
+                        <li>In the <strong>Model Manager</strong> section, click <strong>Download</strong> on your preferred model:</li>
+                        <ul>
+                            <li><strong>phi-3-mini</strong> (~2.3 GB) for lightweight systems.</li>
+                            <li><strong>qwen2.5-7b</strong> (~4.7 GB) as the recommended text baseline.</li>
+                            <li><strong>qwen2-vl-2b-visual</strong> (~2.4 GB) for external apply recovery.</li>
+                        </ul>
                         <li>Once downloaded, click <strong>Start</strong> to launch the local server.</li>
                         <li>Click <strong>Test Connection</strong> to verify.</li>
                     </ol>
                     <div class="callout success">Built-in text + visual runtimes can auto-start on demand once models are downloaded.</div>
 
-                    <h3>Option B: Ollama / LM Studio (Optional External Local Runtime)</h3>
+                    <h3>Option B: Ollama / LM Studio</h3>
                     <ol>
                         <li>Use this only if you specifically prefer your own local runtime.</li>
                         <li>Install Ollama or LM Studio from their official sites.</li>
                         <li>Download <code>qwen2.5-7b-instruct</code> (or your preferred model) and start the local server.</li>
                         <li>In Nexus Settings, switch provider to <code>Ollama</code> or <code>LM Studio</code>.</li>
-                        <li>API URL: <code>http://localhost:11434/v1</code> (Ollama) or <code>http://localhost:1234/v1</code> (LM Studio).</li>
+                        <li>Use <code>http://localhost:11434/v1</code> for Ollama or <code>http://localhost:1234/v1</code> for LM Studio.</li>
                     </ol>
 
-                    <h3>Option C: OpenAI / Anthropic (Cloud)</h3>
+                    <h3>Option C: OpenAI / Anthropic</h3>
                     <ul>
                         <li>Set provider to <code>OpenAI</code> or <code>Anthropic</code>.</li>
                         <li>Enter your API key. Job descriptions will be sent to the cloud provider.</li>
@@ -680,8 +922,8 @@
                     <h2>4. Sessions + Accounts</h2>
                     <p>Use the Accounts page in Nexus to verify platform sessions before running searches.</p>
                     <ol>
-                        <li>Open LinkedIn session window and sign in.</li>
-                        <li>Open Indeed session window and sign in.</li>
+                        <li>Open the LinkedIn session window and sign in.</li>
+                        <li>Open the Indeed session window and sign in.</li>
                         <li>Refresh status inside Nexus until each shows connected.</li>
                     </ol>
                     <div class="callout">If search start says “no login detected” but Command Center looks connected, refresh session status once before starting.</div>
@@ -690,10 +932,10 @@
                 <section class="card" id="profiles">
                     <h2>5. Resume Library + Auto-Fill Defaults</h2>
                     <ol>
-                        <li>Upload resume in Resumes tab.</li>
-                        <li>Confirm file path via “Open location” when needed.</li>
-                        <li>Set resume defaults: location, work authorization, phone, and work links.</li>
-                        <li>If available in your build, set demographic defaults (race, etc.) carefully.</li>
+                        <li>Upload your resume in the Resumes tab.</li>
+                        <li>Confirm the file path via “Open location” when needed.</li>
+                        <li>Set defaults for location, work authorization, phone, and work links.</li>
+                        <li>If available in your build, set demographic defaults carefully.</li>
                     </ol>
                     <p>For consistent outcomes, keep one primary resume per search and avoid switching mid-run.</p>
                 </section>
@@ -704,18 +946,18 @@
                     <ol>
                         <li>Choose site (LinkedIn or Indeed first).</li>
                         <li>Add keyword + location.</li>
-                        <li>Select resume for this search explicitly.</li>
-                        <li>Set minimum match score (example: 7.5/10).</li>
-                        <li>Set application limit (example: 10/day for calibration).</li>
-                        <li>Set Application Scope to <strong>Hybrid (Recommended)</strong> for a balanced on-platform + external flow.</li>
+                        <li>Select a resume for this search explicitly.</li>
+                        <li>Set minimum match score (for example: <code>7.5 / 10</code>).</li>
+                        <li>Set a daily application limit (for example: <code>10</code> for calibration).</li>
+                        <li>Set Application Scope to <strong>Hybrid (Recommended)</strong>.</li>
                     </ol>
 
                     <h3>Good first-pass defaults</h3>
                     <ul>
-                        <li>Start with only the required fields plus one resume.</li>
-                        <li>Application Scope: <strong>Hybrid</strong> (switch to platform-only when calibrating)</li>
+                        <li>Start with required fields plus one resume.</li>
+                        <li>Use <strong>Hybrid</strong> scope, or platform-only if you are calibrating slowly.</li>
                         <li>Leave advanced options collapsed until the first stable run.</li>
-                        <li>Discord webhook: ON for run completion and module gaps</li>
+                        <li>Keep Discord webhook notifications on for run completion and module gaps.</li>
                     </ul>
                     <div class="screenshot-slot">Add screenshot: Create Search modal with recommended defaults.</div>
                 </section>
@@ -723,10 +965,10 @@
                 <section class="card" id="run-review">
                     <h2>7. Run + Review Loop</h2>
                     <ol>
-                        <li>Start one search and watch first 2-3 applications closely.</li>
-                        <li>Confirm question answering behavior (text, dropdown, radio).</li>
-                        <li>Check activity logs for applied/skipped/failed counters.</li>
-                        <li>Review post-run summary and adjust thresholds.</li>
+                        <li>Start one search and watch the first 2 to 3 applications closely.</li>
+                        <li>Confirm question-answering behavior across text, dropdown, and radio fields.</li>
+                        <li>Check activity logs for applied, skipped, and failed counters.</li>
+                        <li>Review the post-run summary and adjust thresholds.</li>
                     </ol>
                     <p>After one stable run, scale to more pages and higher daily limits.</p>
                 </section>
@@ -734,36 +976,36 @@
                 <section class="card" id="troubleshooting">
                     <h2>8. Troubleshooting</h2>
 
-                    <h3>LLM test shows "connection failed"</h3>
+                    <h3>LLM test shows “connection failed”</h3>
                     <ul>
-                        <li>If using Nexus Built-in: ensure a model is downloaded and the server is started (green dot in Settings).</li>
-                        <li>If using Ollama: verify server is running and the model is loaded. Use <code>http://localhost:11434/v1</code>.</li>
-                        <li>If using LM Studio: verify server is running and a model is loaded. Use <code>http://localhost:1234/v1</code>.</li>
-                        <li>Leave model field blank for auto-select or use exact model ID.</li>
+                        <li>If using Nexus Built-in: ensure a model is downloaded and the server is started.</li>
+                        <li>If using Ollama: verify the server is running and the model is loaded. Use <code>http://localhost:11434/v1</code>.</li>
+                        <li>If using LM Studio: verify the server is running and a model is loaded. Use <code>http://localhost:1234/v1</code>.</li>
+                        <li>Leave the model field blank for auto-select or use the exact model ID.</li>
                     </ul>
 
                     <h3>Captcha interruptions</h3>
                     <ul>
-                        <li>Invisible reCAPTCHA: sign in to trusted account and retry.</li>
-                        <li>hCaptcha: complete manually when prompted.</li>
+                        <li>Invisible reCAPTCHA: sign in to the trusted account and retry.</li>
+                        <li>hCaptcha: complete the challenge manually when prompted.</li>
                     </ul>
 
-                    <h3>Easy Apply rate limit</h3>
+                    <h3>Easy Apply rate limits</h3>
                     <ul>
-                        <li>If rate-limited and the search is Easy Apply only, stop it and retry next day.</li>
+                        <li>If rate-limited and the search is Easy Apply only, stop it and retry the next day.</li>
                         <li>If external apply is enabled, skip easy applies and continue with supported external flows.</li>
                     </ul>
 
                     <h3>Form question validation failures</h3>
                     <ul>
-                        <li>For numeric-only fields (like GPA), avoid text responses.</li>
-                        <li>For dropdown/radio required fields, ensure defaults include location + authorization context.</li>
+                        <li>For numeric-only fields like GPA, avoid text responses.</li>
+                        <li>For required dropdown or radio fields, ensure defaults include location and authorization context.</li>
                     </ul>
                 </section>
 
                 <section class="card" id="power-workflow">
-                    <h2>9. Power User Workflow (Bot Operator Mode)</h2>
-                    <p>Borrowing from high-discipline automation playbooks (including sneaker-bot style ops):</p>
+                    <h2>9. Power User Workflow</h2>
+                    <p>Borrowing from high-discipline operator playbooks:</p>
                     <ul>
                         <li>Run small batches, validate quality, then scale volume.</li>
                         <li>Keep one known-good config profile as a fallback baseline.</li>
@@ -771,7 +1013,7 @@
                         <li>Rotate between high-quality keywords instead of broad scraping.</li>
                         <li>Review post-run outcomes daily and tune thresholds weekly.</li>
                     </ul>
-                    <div class="callout success">Quality > quantity. Higher acceptance and fewer platform flags come from controlled pacing.</div>
+                    <div class="callout success">Quality beats quantity. Higher acceptance and fewer platform flags come from controlled pacing.</div>
                 </section>
 
                 <section class="card" id="support">
@@ -781,25 +1023,30 @@
                         <li>Search ID and timestamp window</li>
                         <li>Relevant search logs</li>
                         <li>Target URL and platform</li>
-                        <li>Screenshot of blocking UI state</li>
+                        <li>Screenshot of the blocking UI state</li>
                     </ul>
                     <p>Contact support at <a class="inline" href="mailto:Hyperfectllc@gmail.com">Hyperfectllc@gmail.com</a> and include “Nexus Beta Support” in the subject line.</p>
                 </section>
             </div>
-        </div>
+        </section>
     </main>
 
-    <div class="container footer">
-        <div class="footer-divider">
-            <p class="footer-copy" id="footer-copy" style="cursor: default;">&copy; 2026 Hyperfect LLC. Nexus setup documentation.</p>
-            <p class="footer-note">Use this guide alongside the live app state. The dashboard and setup checklist should be your source of truth once Nexus is installed.</p>
-            <a id="admin-link" href="/waitlist-admin" style="display:none; font-size: 0.7rem; color: var(--text-tertiary); text-decoration: none; margin-top: 4px; opacity: 0.5;">Admin</a>
+    <footer>
+        <div class="container">
+            <div class="footer-shell">
+                <p class="footer-copy" id="footer-copy">&copy; 2026 Hyperfect LLC. Nexus setup documentation.</p>
+                <p class="footer-note">Use this guide alongside the live app state. Once Nexus is installed, the dashboard and setup checklist should be your operational source of truth.</p>
+                <a id="admin-link" href="/waitlist-admin">Admin</a>
+            </div>
         </div>
-    </div>
+    </footer>
+
     <script>
         const themeToggle = document.getElementById('themeToggle');
         const sunIcon = document.getElementById('sunIcon');
         const moonIcon = document.getElementById('moonIcon');
+        const hamburger = document.getElementById('hamburger');
+        const navCenter = document.querySelector('.nav-center');
 
         function initializeTheme() {
             const savedTheme = localStorage.getItem('theme') || 'dark';
@@ -824,9 +1071,6 @@
             setTheme(currentTheme === 'light' ? 'dark' : 'light');
         });
 
-        const hamburger = document.getElementById('hamburger');
-        const navCenter = document.querySelector('.nav-center');
-
         hamburger.addEventListener('click', () => {
             hamburger.classList.toggle('active');
             navCenter.classList.toggle('open');
@@ -844,17 +1088,16 @@
             let timer = null;
             const el = document.getElementById('footer-copy');
             const link = document.getElementById('admin-link');
-            if (el && link) {
-                el.addEventListener('click', function() {
-                    clicks++;
-                    clearTimeout(timer);
-                    timer = setTimeout(function() { clicks = 0; }, 1500);
-                    if (clicks >= 5) {
-                        link.style.display = 'inline-block';
-                        clicks = 0;
-                    }
-                });
-            }
+            if (!el || !link) return;
+            el.addEventListener('click', () => {
+                clicks += 1;
+                clearTimeout(timer);
+                timer = setTimeout(() => { clicks = 0; }, 1500);
+                if (clicks >= 5) {
+                    link.style.display = 'inline-block';
+                    clicks = 0;
+                }
+            });
         })();
 
         initializeTheme();
